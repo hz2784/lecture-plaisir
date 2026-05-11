@@ -464,20 +464,21 @@ header h1 em {
   border: 1px solid var(--border);
 }
 .flash-front {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--card-bg);
+  color: var(--ink);
   align-items: center;
   text-align: center;
+  border: 1px solid var(--border);
 }
 .flash-front .word-big {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--gold);
+  color: var(--ink);
 }
 .flash-front .word-pos {
   font-size: 0.72rem;
-  opacity: 0.5;
+  color: var(--muted);
   margin-top: 0.3rem;
   font-style: italic;
 }
@@ -555,6 +556,33 @@ header h1 em {
 .word-card.hidden { display: none; }
 .flash-card.hidden { display: none; }
 
+/* ─── TTS BUTTON ─── */
+.tts-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.15rem;
+  border-radius: 4px;
+  transition: color 0.15s, transform 0.1s;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+.tts-btn:hover { color: var(--accent); }
+.tts-btn:active { transform: scale(0.9); }
+.tts-btn.speaking { color: var(--accent); animation: pulse 0.8s ease infinite; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.word-example .tts-btn { margin-left: 0.3rem; }
+.flash-back .tts-btn { margin-top: 0.3rem; align-self: flex-start; }
+.study-card-front .tts-btn { color: var(--muted); margin-top: 0.5rem; }
+.study-card-front .tts-btn:hover { color: var(--accent); }
+.study-card-front .tts-btn.speaking { color: var(--accent); }
+.study-card-back .tts-btn { margin-left: 0.4rem; }
 
 /* ═══════ STUDY MODE ═══════ */
 .study-trigger {
@@ -853,8 +881,9 @@ header h1 em {
   box-shadow: 0 10px 40px rgba(26,20,16,0.12);
 }
 .study-card-front {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--card-bg);
+  color: var(--ink);
+  border: 1px solid var(--border);
 }
 .study-card-front::before {
   content: '';
@@ -862,14 +891,14 @@ header h1 em {
   inset: 0;
   border-radius: 14px;
   background:
-    repeating-linear-gradient(135deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 120px);
+    repeating-linear-gradient(135deg, transparent, transparent 60px, rgba(139,58,42,0.015) 60px, rgba(139,58,42,0.015) 120px);
   pointer-events: none;
 }
 .front-chapter {
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--accent);
   margin-bottom: 1.5rem;
   opacity: 0.8;
 }
@@ -877,29 +906,30 @@ header h1 em {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 600;
-  color: var(--gold);
+  color: var(--ink);
   margin-bottom: 0.5rem;
 }
 .front-pos {
   font-style: italic;
   font-size: 0.9rem;
-  color: rgba(245,240,232,0.55);
+  color: var(--muted);
   margin-bottom: 2rem;
 }
 .front-hint {
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(245,240,232,0.35);
-  border: 1px solid rgba(245,240,232,0.15);
+  color: var(--muted);
+  border: 1px solid var(--border);
   padding: 0.35rem 1rem;
   border-radius: 20px;
 }
 
 .study-card-back {
-  background: var(--card-bg);
+  background: var(--cream);
   transform: rotateY(180deg);
   color: var(--ink);
+  border: 1px solid var(--border);
 }
 .back-word-small {
   font-family: 'Playfair Display', serif;
@@ -972,7 +1002,35 @@ header h1 em {
   color: #5a8252;
 }
 .action-pass:hover { background: #5a8252; color: var(--paper); }
+.action-prev {
+  border-color: var(--border);
+  color: var(--muted);
+}
+.action-prev:hover { background: var(--cream); }
 .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.srs-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.srs-stats .srs-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.srs-tag .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.srs-tag .dot.due { background: var(--accent); }
+.srs-tag .dot.learning { background: var(--gold); }
+.srs-tag .dot.new { background: var(--border); }
+.srs-tag .dot.mastered { background: #5a8252; }
 
 /* ── Result screen ── */
 #result-screen { max-width: 600px; margin: 0 auto; width: 100%; }
@@ -1171,7 +1229,7 @@ header h1 em {
   <!-- Setup screen -->
   <div class="study-screen active" id="setup-screen">
     <h2 class="setup-heading">Session d'<em>étude</em></h2>
-    <p class="setup-sub">间隔记忆 · 错的会再考，掌握两次后通关</p>
+    <p class="setup-sub">到期词优先复习，新词按偏好补入 · 遗忘曲线自动调度</p>
 
     <div class="setup-section">
       <div class="setup-label">Chapitres · 章节</div>
@@ -1191,19 +1249,19 @@ header h1 em {
     </div>
 
     <div class="setup-section">
-      <div class="setup-label">Sélection · 选词偏好</div>
+      <div class="setup-label">Ordre des nouveaux mots · 新词排序</div>
       <div class="priority-select" id="priority-select">
         <button class="priority-btn selected" data-priority="freq">
           <div class="pri-title">Plus fréquents</div>
-          <div class="pri-desc">高频词优先 · 最常出现的</div>
+          <div class="pri-desc">高频词优先 · 新词按词频排</div>
         </button>
         <button class="priority-btn" data-priority="order">
           <div class="pri-title">Dans l'ordre</div>
-          <div class="pri-desc">按出现顺序 · 跟着小说</div>
+          <div class="pri-desc">按出现顺序 · 新词跟着小说</div>
         </button>
         <button class="priority-btn" data-priority="random">
           <div class="pri-title">Aléatoire</div>
-          <div class="pri-desc">随机选词 · 全面练习</div>
+          <div class="pri-desc">随机选词 · 新词随机排列</div>
         </button>
       </div>
     </div>
@@ -1211,6 +1269,7 @@ header h1 em {
     <div class="setup-summary" id="setup-summary">
       <strong id="summary-count">20</strong>
       <span id="summary-desc">mots sélectionnés</span>
+      <div class="srs-stats" id="srs-stats"></div>
     </div>
 
     <button class="start-btn" id="start-btn" onclick="startSession()">Commencer · 开始</button>
@@ -1237,6 +1296,7 @@ header h1 em {
           <div class="front-chapter" id="card-chapter">Chapitre 1</div>
           <div class="front-word" id="card-word">word</div>
           <div class="front-pos" id="card-pos">pos</div>
+          <button class="tts-btn" id="card-tts" onclick="speak(document.getElementById('card-word').textContent, event)" title="Écouter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></button>
           <div class="front-hint">Espace pour révéler · 1/2 pour répondre direct</div>
         </div>
         <div class="study-card-back">
@@ -1244,11 +1304,16 @@ header h1 em {
           <div class="back-meaning" id="back-en">English</div>
           <div class="back-meaning-zh" id="back-zh">中文</div>
           <div class="back-example" id="back-example"></div>
+          <button class="tts-btn" id="back-tts" onclick="speak(document.getElementById('back-example').textContent, event)" title="Écouter la phrase" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg> Écouter la phrase</button>
         </div>
       </div>
     </div>
 
     <div class="action-row">
+      <button class="action-btn action-prev" id="btn-prev" onclick="prevCard()" style="display:none">
+        <span>← Précédent</span>
+        <span class="key-hint">上一个</span>
+      </button>
       <button class="action-btn action-fail" id="btn-fail" onclick="answerCard(false)">
         <span>✕ Pas encore</span>
         <span class="key-hint">1 · 没记住</span>
@@ -1304,6 +1369,34 @@ let currentSort = 'freq';   // 'freq' or 'order'
 let activeChapter = 'all';
 let searchTerm = '';
 
+const TTS_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
+
+function speak(text, e) {
+  if (e) e.stopPropagation();
+  window.speechSynthesis.cancel();
+  const btn = e?.currentTarget;
+  document.querySelectorAll('.tts-btn.speaking').forEach(b => b.classList.remove('speaking'));
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR';
+  u.rate = 0.85;
+  const voices = speechSynthesis.getVoices();
+  const frVoice = voices.find(v => v.lang.startsWith('fr') && v.name.includes('Thomas'))
+    || voices.find(v => v.lang.startsWith('fr') && v.localService)
+    || voices.find(v => v.lang.startsWith('fr'));
+  if (frVoice) u.voice = frVoice;
+  if (btn) {
+    btn.classList.add('speaking');
+    u.onend = () => btn.classList.remove('speaking');
+    u.onerror = () => btn.classList.remove('speaking');
+  }
+  speechSynthesis.speak(u);
+}
+
+function ttsBtn(text, extraClass) {
+  const cls = extraClass ? `tts-btn ${extraClass}` : 'tts-btn';
+  return `<button class="${cls}" onclick="speak('${text.replace(/'/g, "\\'")}', event)" title="Écouter">${TTS_ICON}</button>`;
+}
+
 function highlightText(text, term) {
   if (!term) return escapeHtml(text);
   const escaped = escapeHtml(text);
@@ -1336,14 +1429,14 @@ function renderListCard(w, term) {
     : `<span class="freq-pill">${w.freq}×</span>`;
   return `<div class="word-card" data-word="${escapeHtml(w.word)}">
     <div class="word-card-top">
-      <span class="word-fr">${indicator} ${wordHl}</span>
+      <span class="word-fr">${indicator} ${wordHl} ${ttsBtn(w.word)}</span>
       <span class="word-lemma">${escapeHtml(w.lemma)}</span>
     </div>
     <div class="word-defs">
       <span class="def-en">${enHl}</span>
       <span class="def-zh">· ${zhHl}</span>
     </div>
-    ${ex ? `<div class="word-example">${ex}</div>` : ''}
+    ${ex ? `<div class="word-example">${ex} ${ttsBtn(w.sentence)}</div>` : ''}
   </div>`;
 }
 
@@ -1355,12 +1448,13 @@ function renderFlashCard(w, term) {
       <div class="flash-front">
         <div class="word-big">${escapeHtml(w.word)}</div>
         <div class="word-pos">${escapeHtml(pos)}</div>
+        ${ttsBtn(w.word)}
         <div class="flip-hint">Cliquez pour retourner</div>
       </div>
       <div class="flash-back">
         <div class="back-en">${escapeHtml(w.en)}</div>
         <div class="back-zh">${escapeHtml(w.zh)}</div>
-        ${ex ? `<div class="back-ex">${ex}</div>` : ''}
+        ${ex ? `<div class="back-ex">${ex} ${ttsBtn(w.sentence)}</div>` : ''}
       </div>
     </div>
   </div>`;
@@ -1499,6 +1593,80 @@ window.addEventListener('scroll', () => {
 
 
 
+// ═══════ SRS (Spaced Repetition System) ═══════
+const SRS_KEY = 'lecture-plaisir-srs';
+const HISTORY_KEY = 'lecture-plaisir-history';
+
+function srsLoad() {
+  try { return JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch { return {}; }
+}
+function srsSave(data) {
+  localStorage.setItem(SRS_KEY, JSON.stringify(data));
+}
+function historyLoad() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch { return []; }
+}
+function historySave(list) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(-100)));
+}
+
+function srsGet(word) {
+  const data = srsLoad();
+  return data[word] || { ease: 2.5, interval: 0, nextReview: 0, lapses: 0, reps: 0 };
+}
+
+function srsUpdate(word, passed) {
+  const data = srsLoad();
+  const card = data[word] || { ease: 2.5, interval: 0, nextReview: 0, lapses: 0, reps: 0 };
+  const now = Date.now();
+
+  if (passed) {
+    card.reps++;
+    if (card.reps === 1) {
+      card.interval = 1;
+    } else if (card.reps === 2) {
+      card.interval = 6;
+    } else {
+      card.interval = Math.round(card.interval * card.ease);
+    }
+    card.ease = Math.max(1.3, card.ease + 0.1);
+    card.nextReview = now + card.interval * 86400000;
+  } else {
+    card.lapses++;
+    card.reps = 0;
+    card.ease = Math.max(1.3, card.ease - 0.2);
+    card.interval = 1;
+    card.nextReview = now + 60000;
+  }
+
+  data[word] = card;
+  srsSave(data);
+}
+
+function srsClassify(word) {
+  const data = srsLoad();
+  const card = data[word];
+  if (!card) return 'new';
+  const now = Date.now();
+  if (card.interval >= 21) return 'mastered';
+  if (now >= card.nextReview) return 'due';
+  return 'learning';
+}
+
+function srsDueCount(pool) {
+  const now = Date.now();
+  const data = srsLoad();
+  let due = 0, learning = 0, mastered = 0, newW = 0;
+  pool.forEach(w => {
+    const card = data[w.word];
+    if (!card) { newW++; return; }
+    if (card.interval >= 21) { mastered++; return; }
+    if (now >= card.nextReview) { due++; return; }
+    learning++;
+  });
+  return { due, learning, mastered, new: newW };
+}
+
 // ═══════ STUDY MODE ═══════
 let selectedChapters = new Set();
 let selectedCount = 20;
@@ -1558,10 +1726,22 @@ function getEligibleWords() {
 function updateSummary() {
   const pool = getEligibleWords();
   const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
+  const stats = srsDueCount(pool);
+  const dueInSession = Math.min(stats.due, n);
+  const newInSession = Math.max(0, n - dueInSession);
+
   document.getElementById('summary-count').textContent = n;
   document.getElementById('summary-desc').textContent =
-    n === pool.length ? `mots disponibles · 全部` : `mots sur ${pool.length} disponibles`;
+    stats.due > 0
+      ? `${dueInSession} 到期复习 + ${newInSession} 新词`
+      : `${n} mots · 全部为新词`;
   document.getElementById('start-btn').disabled = n === 0;
+
+  document.getElementById('srs-stats').innerHTML =
+    `<span class="srs-tag"><span class="dot due"></span>${stats.due} 到期</span>` +
+    `<span class="srs-tag"><span class="dot learning"></span>${stats.learning} 未到期</span>` +
+    `<span class="srs-tag"><span class="dot new"></span>${stats.new} 新词</span>` +
+    `<span class="srs-tag"><span class="dot mastered"></span>${stats.mastered} 已掌握</span>`;
 }
 
 function openStudy() {
@@ -1613,18 +1793,46 @@ document.querySelectorAll('#priority-select .priority-btn').forEach(b => {
 // ─── SESSION LOGIC ───
 function startSession(wordList) {
   let pool = wordList || getEligibleWords();
+  const now = Date.now();
+  const srsData = srsLoad();
 
-  // Order pool by priority
   if (!wordList) {
-    if (priority === 'freq')        pool = [...pool].sort((a,b) => b.freq - a.freq);
-    else if (priority === 'order')  pool = [...pool].sort((a,b) => a.chapter - b.chapter || a.order - b.order);
-    else                            pool = [...pool].sort(() => Math.random() - 0.5);
-
     const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
-    pool = pool.slice(0, n);
 
-    // Shuffle the chosen pool (except when 'order' is chosen — preserve narrative order)
-    if (priority !== 'order') pool = [...pool].sort(() => Math.random() - 0.5);
+    // Split into due (needs review) and non-due (new + not yet due)
+    const due = [];
+    const rest = [];
+    pool.forEach(w => {
+      const card = srsData[w.word];
+      if (card && now >= card.nextReview && card.reps > 0) due.push(w);
+      else rest.push(w);
+    });
+
+    // Sort due words: most overdue first
+    due.sort((a, b) => (srsData[a.word].nextReview || 0) - (srsData[b.word].nextReview || 0));
+
+    // Sort new/not-yet-due words by selected mode
+    if (priority === 'freq')       rest.sort((a,b) => b.freq - a.freq);
+    else if (priority === 'order') rest.sort((a,b) => a.chapter - b.chapter || a.order - b.order);
+    else                           rest.sort(() => Math.random() - 0.5);
+
+    // Take due words first, fill remaining slots with new words
+    const selected = due.slice(0, n);
+    const remaining = n - selected.length;
+    if (remaining > 0) selected.push(...rest.slice(0, remaining));
+
+    // Shuffle the final set (due words mixed in with new), except in order mode
+    if (priority !== 'order') {
+      // Keep due words at the front, shuffle within each group
+      const dueSet = new Set(due.map(w => w.word));
+      const sessionDue = selected.filter(w => dueSet.has(w.word));
+      const sessionNew = selected.filter(w => !dueSet.has(w.word));
+      sessionDue.sort(() => Math.random() - 0.5);
+      sessionNew.sort(() => Math.random() - 0.5);
+      pool = [...sessionDue, ...sessionNew];
+    } else {
+      pool = selected;
+    }
   }
 
   session = {
@@ -1633,25 +1841,19 @@ function startSession(wordList) {
     mastered: 0,
     failed: 0,
     flips: 0,
-    failedWords: {}, // word -> fail count
+    failedWords: {},
     current: null,
-    revealed: false
+    revealed: false,
+    history: []
   };
   showScreen('card-screen');
   nextCard();
 }
 
-function nextCard() {
-  if (!session) return;
-  if (session.queue.length === 0) {
-    finishSession();
-    return;
-  }
-  session.current = session.queue.shift();
+function displayCard(c) {
   session.revealed = false;
   document.getElementById('study-card').classList.remove('flipped');
 
-  const c = session.current;
   document.getElementById('card-chapter').textContent = `Chapitre ${c.chapter}`;
   document.getElementById('card-word').textContent = c.word;
   const pos = c.lemma.match(/\(([^)]+)\)/)?.[1] || '';
@@ -1664,11 +1866,49 @@ function nextCard() {
     const re = new RegExp('(' + c.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
     document.getElementById('back-example').innerHTML = escapeHtml(c.sentence).replace(re, '<em>$1</em>');
     document.getElementById('back-example').style.display = '';
+    document.getElementById('back-tts').style.display = '';
   } else {
     document.getElementById('back-example').style.display = 'none';
+    document.getElementById('back-tts').style.display = 'none';
   }
 
+  document.getElementById('btn-prev').style.display = session.history.length > 0 ? '' : 'none';
   updateSessionStats();
+}
+
+function nextCard() {
+  if (!session) return;
+  if (session.queue.length === 0) {
+    finishSession();
+    return;
+  }
+  session.current = session.queue.shift();
+  displayCard(session.current);
+}
+
+function prevCard() {
+  if (!session || session.history.length === 0) return;
+  if (session.current) {
+    session.queue.unshift(session.current);
+  }
+  const prev = session.history.pop();
+  session.current = prev.card;
+
+  if (prev.wasAnswered) {
+    session.flips--;
+    if (prev.passed) {
+      if (prev.card.box >= 2) session.mastered--;
+      prev.card.box = prev.prevBox;
+    } else {
+      session.failed--;
+      session.failedWords[prev.card.word] = (session.failedWords[prev.card.word] || 1) - 1;
+      if (session.failedWords[prev.card.word] <= 0) delete session.failedWords[prev.card.word];
+      prev.card.box = prev.prevBox;
+      prev.card.failCount = Math.max(0, prev.card.failCount - 1);
+    }
+  }
+
+  displayCard(session.current);
 }
 
 function flipCard() {
@@ -1676,16 +1916,16 @@ function flipCard() {
   if (!session.revealed) {
     document.getElementById('study-card').classList.add('flipped');
     session.revealed = true;
+    speak(session.current.word, null);
   }
 }
 
 function answerCard(pass) {
   if (!session || !session.current) return;
-  // If user fails without flipping, briefly reveal the answer before advancing,
-  // so they actually see what they missed. Passing without flipping skips immediately.
   if (!session.revealed && !pass) {
     document.getElementById('study-card').classList.add('flipped');
     session.revealed = true;
+    speak(session.current.word, null);
     setTimeout(() => answerCardCommit(false), 1400);
     return;
   }
@@ -1695,15 +1935,16 @@ function answerCard(pass) {
 function answerCardCommit(pass) {
   if (!session || !session.current) return;
   const c = session.current;
+  const prevBox = c.box;
   session.flips++;
+
+  srsUpdate(c.word, pass);
 
   if (pass) {
     c.box++;
     if (c.box >= 2) {
-      // mastered — remove from queue
       session.mastered++;
     } else {
-      // passed once, send back to be reviewed later (~6 cards away)
       const insertAt = Math.min(session.queue.length, 6 + Math.floor(Math.random() * 2));
       session.queue.splice(insertAt, 0, c);
     }
@@ -1712,10 +1953,12 @@ function answerCardCommit(pass) {
     c.failCount++;
     session.failed++;
     session.failedWords[c.word] = (session.failedWords[c.word] || 0) + 1;
-    // failed — come back soon (~3 cards away)
     const insertAt = Math.min(session.queue.length, 3);
     session.queue.splice(insertAt, 0, c);
   }
+
+  session.history.push({ card: { ...c, box: c.box }, wasAnswered: true, passed: pass, prevBox });
+
   nextCard();
 }
 
@@ -1725,7 +1968,6 @@ function updateSessionStats() {
   document.getElementById('stat-mastered').textContent = session.mastered;
   document.getElementById('stat-failed').textContent = session.failed;
 
-  // Box meter: count current state across queue
   let nNew = 0, nLearn = 0;
   session.queue.forEach(c => { if (c.box === 0) nNew++; else nLearn++; });
   if (session.current) {
@@ -1738,11 +1980,24 @@ function updateSessionStats() {
 }
 
 function finishSession() {
-  showScreen('result-screen');
   const total = session.total;
   const flips = session.flips;
   const correctFlips = flips - session.failed;
   const accuracy = flips > 0 ? Math.round(correctFlips / flips * 100) : 0;
+
+  const history = historyLoad();
+  history.push({
+    date: new Date().toISOString(),
+    total,
+    mastered: session.mastered,
+    failed: session.failed,
+    flips,
+    accuracy,
+    hardWords: Object.keys(session.failedWords)
+  });
+  historySave(history);
+
+  showScreen('result-screen');
 
   document.getElementById('r-mastered').textContent = `${session.mastered}/${total}`;
   document.getElementById('r-accuracy').textContent = accuracy + '%';
@@ -1762,7 +2017,6 @@ function finishSession() {
     document.getElementById('practice-failed-btn').style.display = 'none';
   }
 
-  // Choose icon + msg based on accuracy
   const icon = document.getElementById('result-icon');
   const title = document.getElementById('result-title');
   const sub = document.getElementById('result-subtitle');
@@ -1801,10 +2055,17 @@ document.addEventListener('keydown', e => {
     if (!session.revealed) flipCard();
     return;
   }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') { prevCard(); return; }
   if (e.key === '1' || e.key.toLowerCase() === 'f') answerCard(false);
   else if (e.key === '2' || e.key.toLowerCase() === 'j') answerCard(true);
 });
 
+
+// Preload TTS voices
+speechSynthesis.getVoices();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
 
 // Boot
 buildSidebar();
