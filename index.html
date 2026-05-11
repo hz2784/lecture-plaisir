@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catherine Certitude — Vocabulaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1410;
+  --paper: #f5f0e8;
+  --cream: #ede8dc;
+  --accent: #8b3a2a;
+  --gold: #c9973a;
+  --muted: #7a6e62;
+  --border: #d4cdc0;
+  --card-bg: #faf7f2;
+  --shadow: rgba(26,20,16,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─── */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.02) 40px,
+    rgba(255,255,255,0.02) 80px
+  );
+}
+.header-inner { position: relative; z-index: 1; }
+.book-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+header h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.subtitle {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.1em;
+  font-style: italic;
+}
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  flex-wrap: wrap;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  display: block;
+}
+.stat-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.5);
+}
+
+/* ─── CONTROLS ─── */
+.controls {
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+.sort-btns { position: relative; }
+.sort-btns::before {
+  content: '';
+  position: absolute;
+  left: -0.55rem;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--border);
+}
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  max-width: 380px;
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+#search {
+  width: 100%;
+  padding: 0.55rem 0.8rem 0.55rem 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#search:focus { border-color: var(--accent); }
+
+.mode-btns {
+  display: flex;
+  gap: 0.4rem;
+  background: var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+.mode-btn {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.mode-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chapter-filter {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.ch-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-size: 0.72rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+.ch-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ch-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.ch-btn.all {
+  width: auto;
+  padding: 0 0.7rem;
+  border-radius: 15px;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─── MAIN LAYOUT ─── */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: calc(100vh - 200px);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  background: var(--cream);
+  position: sticky;
+  top: 57px;
+  height: calc(100vh - 57px);
+  overflow-y: auto;
+}
+.sidebar-title {
+  padding: 0 1.5rem 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+.chapter-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+  color: inherit;
+}
+.chapter-item:hover { background: rgba(139,58,42,0.06); }
+.chapter-item.active {
+  background: rgba(139,58,42,0.08);
+  border-left-color: var(--accent);
+}
+.ch-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 600;
+  min-width: 24px;
+  line-height: 1.3;
+}
+.ch-info { flex: 1; min-width: 0; }
+.ch-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  margin-bottom: 0.15rem;
+}
+.ch-count {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.ch-preview {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.2rem;
+  opacity: 0.8;
+}
+
+/* ─── CONTENT ─── */
+.content {
+  padding: 2rem;
+}
+.chapter-section {
+  margin-bottom: 3rem;
+  scroll-margin-top: 70px;
+}
+.chapter-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--ink);
+}
+.chapter-num-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1;
+}
+.chapter-title-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--muted);
+  flex: 1;
+}
+.chapter-count-badge {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+}
+.chapter-opener {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--gold);
+  line-height: 1.6;
+}
+
+/* ─── WORD GRID ─── */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+}
+
+/* ─── FLASHCARD MODE ─── */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* ─── WORD CARD (list) ─── */
+.word-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  transition: box-shadow 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.word-card:hover {
+  box-shadow: 0 4px 16px var(--shadow);
+  transform: translateY(-1px);
+}
+.word-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.word-fr {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.word-lemma {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.word-defs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.def-en {
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+.def-zh {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: normal;
+}
+.word-example {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 0.4rem;
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+.word-example em { color: var(--accent); font-style: normal; font-weight: 600; }
+.freq-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  opacity: 0.5;
+}
+.freq-pill, .order-pill {
+  display: inline-block;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  margin-right: 0.3rem;
+  vertical-align: 0.15em;
+  font-style: normal;
+}
+.freq-pill {
+  background: rgba(201,151,58,0.18);
+  color: #876b27;
+}
+.order-pill {
+  background: rgba(139,58,42,0.12);
+  color: var(--accent);
+}
+.freq-dot.high { opacity: 1; background: var(--accent); }
+.freq-dot.med { opacity: 0.75; background: var(--gold); }
+
+/* ─── FLASHCARD ─── */
+.flash-card {
+  perspective: 900px;
+  height: 160px;
+  cursor: pointer;
+}
+.flash-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+  transform-style: preserve-3d;
+}
+.flash-card.flipped .flash-inner {
+  transform: rotateY(180deg);
+}
+.flash-front, .flash-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+}
+.flash-front {
+  background: var(--ink);
+  color: var(--paper);
+  align-items: center;
+  text-align: center;
+}
+.flash-front .word-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.flash-front .word-pos {
+  font-size: 0.72rem;
+  opacity: 0.5;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+.flash-back {
+  background: var(--card-bg);
+  transform: rotateY(180deg);
+}
+.flash-back .back-en {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.flash-back .back-zh {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.flash-back .back-ex {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 0.4rem;
+  line-height: 1.45;
+}
+.flip-hint {
+  font-size: 0.62rem;
+  opacity: 0.3;
+  margin-top: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── SEARCH HIGHLIGHT ─── */
+.highlight { background: rgba(201,151,58,0.3); border-radius: 2px; }
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+.empty-state svg { margin: 0 auto 1rem; display: block; opacity: 0.3; }
+
+/* ─── SCROLL PROGRESS ─── */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 1000;
+  transition: width 0.1s;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .word-grid, .flashcard-grid { grid-template-columns: 1fr; }
+  .controls { padding: 0.75rem 1rem; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.word-card, .flash-card {
+  animation: fadeUp 0.3s ease both;
+}
+
+.chapter-section.hidden { display: none; }
+.word-card.hidden { display: none; }
+.flash-card.hidden { display: none; }
+
+
+/* ═══════ STUDY MODE ═══════ */
+.study-trigger {
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background 0.2s, transform 0.1s;
+  margin-left: auto;
+}
+.study-trigger:hover { background: #6b2c20; }
+.study-trigger:active { transform: scale(0.97); }
+
+.study-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.study-overlay.active { display: flex; }
+.study-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(201,151,58,0.06), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(139,58,42,0.05), transparent 45%);
+  pointer-events: none;
+}
+
+.study-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+  position: relative;
+  z-index: 2;
+}
+.study-topbar-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--muted);
+}
+.study-topbar-title strong {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 600;
+}
+.study-close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.study-close:hover { color: var(--accent); border-color: var(--accent); }
+
+.study-screen {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+.study-screen.active { display: flex; }
+
+/* ── Setup screen ── */
+#setup-screen { max-width: 720px; margin: 0 auto; width: 100%; }
+.setup-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+.setup-heading em { font-style: italic; color: var(--accent); }
+.setup-sub {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-bottom: 2.5rem;
+}
+.setup-section { margin-bottom: 2rem; width: 100%; }
+.setup-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+.chapter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.chip {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.selected {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.chip-count {
+  font-size: 0.65rem;
+  opacity: 0.6;
+  margin-left: 0.3rem;
+}
+.chip-all { font-weight: 600; }
+
+.count-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.count-buttons input {
+  width: 80px;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--card-bg);
+  outline: none;
+}
+.count-buttons input:focus { border-color: var(--accent); }
+
+.priority-select {
+  display: flex;
+  gap: 0.4rem;
+}
+.priority-btn {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.priority-btn:hover { border-color: var(--accent); }
+.priority-btn.selected {
+  border-color: var(--accent);
+  background: rgba(139,58,42,0.05);
+}
+.priority-btn .pri-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.priority-btn .pri-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.setup-summary {
+  text-align: center;
+  padding: 1.2rem;
+  background: var(--cream);
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+.setup-summary strong {
+  color: var(--accent);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.start-btn {
+  width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 600;
+}
+.start-btn:hover { background: var(--accent); }
+.start-btn:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* ── Card screen ── */
+#card-screen { max-width: 640px; margin: 0 auto; width: 100%; }
+
+.session-progress {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.session-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.session-stats span strong {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-right: 0.2rem;
+  font-weight: 600;
+}
+.session-stats .stat-mastered strong { color: #5a8252; }
+.session-stats .stat-failed strong { color: var(--accent); }
+
+.box-meter {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border);
+}
+.box-meter .seg {
+  transition: width 0.4s ease;
+}
+.box-meter .seg-new { background: var(--border); }
+.box-meter .seg-learning { background: var(--gold); }
+.box-meter .seg-mastered { background: #7ba673; }
+
+.study-card {
+  width: 100%;
+  min-height: 340px;
+  perspective: 1200px;
+  cursor: pointer;
+  margin: 1.5rem 0;
+}
+.study-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  transition: transform 0.6s cubic-bezier(.34,1.2,.5,1);
+  transform-style: preserve-3d;
+}
+.study-card.flipped .study-card-inner { transform: rotateY(180deg); }
+
+.study-card-front, .study-card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(26,20,16,0.12);
+}
+.study-card-front {
+  background: var(--ink);
+  color: var(--paper);
+}
+.study-card-front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(135deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 120px);
+  pointer-events: none;
+}
+.front-chapter {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+.front-word {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.front-pos {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(245,240,232,0.55);
+  margin-bottom: 2rem;
+}
+.front-hint {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.35);
+  border: 1px solid rgba(245,240,232,0.15);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+}
+
+.study-card-back {
+  background: var(--card-bg);
+  transform: rotateY(180deg);
+  color: var(--ink);
+}
+.back-word-small {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+}
+.back-word-small strong { color: var(--ink); font-style: normal; }
+.back-meaning {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+.back-meaning-zh {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.back-example {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  max-width: 480px;
+}
+.back-example em { color: var(--accent); font-weight: 600; font-style: normal; }
+
+.action-row {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+}
+.action-btn {
+  flex: 1;
+  padding: 1.1rem 1rem;
+  border: 2px solid;
+  border-radius: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+.action-btn:hover { transform: translateY(-2px); }
+.action-btn .key-hint {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  opacity: 0.45;
+  font-family: 'Source Serif 4', serif;
+  font-weight: 400;
+  font-style: italic;
+}
+.action-fail {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.action-fail:hover { background: var(--accent); color: var(--paper); }
+.action-pass {
+  border-color: #5a8252;
+  color: #5a8252;
+}
+.action-pass:hover { background: #5a8252; color: var(--paper); }
+.action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Result screen ── */
+#result-screen { max-width: 600px; margin: 0 auto; width: 100%; }
+.result-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.result-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+.result-subtitle {
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.result-stat {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 0.8rem;
+  text-align: center;
+}
+.result-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.result-stat-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.result-stat.mastered .result-stat-num { color: #5a8252; }
+.result-stat.accuracy .result-stat-num { color: var(--accent); }
+
+.hardest-words {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+.hardest-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.7rem;
+}
+.hardest-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.hardest-item {
+  background: rgba(139,58,42,0.08);
+  border: 1px solid rgba(139,58,42,0.2);
+  padding: 0.35rem 0.8rem;
+  border-radius: 18px;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+.hardest-item .fail-count {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-left: 0.3rem;
+}
+
+.result-actions {
+  display: flex;
+  gap: 0.7rem;
+  width: 100%;
+}
+.result-actions button {
+  flex: 1;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: 1px solid var(--ink);
+  background: var(--card-bg);
+  color: var(--ink);
+  transition: all 0.15s;
+}
+.result-actions button:hover { background: var(--ink); color: var(--paper); }
+.result-actions button.primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.result-actions button.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 640px) {
+  .study-trigger { margin-left: 0; }
+  .study-screen { padding: 1.5rem 1rem; }
+  .priority-select { flex-direction: column; }
+  .result-stats { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="book-label">Patrick Modiano · Sempé · Gallimard</div>
+    <h1><em>Catherine Certitude</em></h1>
+    <div class="subtitle">Vocabulaire organisé par chapitre · 词汇按章节整理</div>
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-num" id="total-count">611</span>
+        <span class="stat-label">Mots uniques</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">15</span>
+        <span class="stat-label">Chapitres</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="visible-count">611</span>
+        <span class="stat-label">Affichés</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Rechercher un mot…" autocomplete="off">
+  </div>
+
+  <div class="mode-btns">
+    <button class="mode-btn active" data-mode="list">Liste</button>
+    <button class="mode-btn" data-mode="flash">Cartes</button>
+  </div>
+
+  <div class="mode-btns sort-btns">
+    <button class="mode-btn active" data-sort="freq" title="按词频排列">⇅ Fréquence</button>
+    <button class="mode-btn" data-sort="order" title="按首次出现顺序排列">→ Ordre</button>
+  </div>
+
+  <button class="study-trigger" onclick="openStudy()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+    </svg>
+    Étudier · 学习
+  </button>
+
+  <div class="chapter-filter">
+    <button class="ch-btn all active" data-ch="all">Tous</button>
+    <button class="ch-btn" data-ch="1">1</button>
+    <button class="ch-btn" data-ch="2">2</button>
+    <button class="ch-btn" data-ch="3">3</button>
+    <button class="ch-btn" data-ch="4">4</button>
+    <button class="ch-btn" data-ch="5">5</button>
+    <button class="ch-btn" data-ch="6">6</button>
+    <button class="ch-btn" data-ch="7">7</button>
+    <button class="ch-btn" data-ch="8">8</button>
+    <button class="ch-btn" data-ch="9">9</button>
+    <button class="ch-btn" data-ch="14">14</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-title">Chapitres</div>
+  </nav>
+
+  <main class="content" id="content">
+  </main>
+
+</div>
+
+<!-- ═══════ STUDY OVERLAY ═══════ -->
+<div class="study-overlay" id="study-overlay">
+  <div class="study-topbar">
+    <div class="study-topbar-title" id="study-topbar-title">Mode d'étude · <strong>Catherine Certitude</strong></div>
+    <button class="study-close" onclick="closeStudy()" title="Fermer (Esc)">✕</button>
+  </div>
+
+  <!-- Setup screen -->
+  <div class="study-screen active" id="setup-screen">
+    <h2 class="setup-heading">Session d'<em>étude</em></h2>
+    <p class="setup-sub">间隔记忆 · 错的会再考，掌握两次后通关</p>
+
+    <div class="setup-section">
+      <div class="setup-label">Chapitres · 章节</div>
+      <div class="chapter-chips" id="chapter-chips"></div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-label">Nombre de mots · 单词数量</div>
+      <div class="count-buttons" id="count-buttons">
+        <button class="chip" data-count="10">10</button>
+        <button class="chip selected" data-count="20">20</button>
+        <button class="chip" data-count="30">30</button>
+        <button class="chip" data-count="50">50</button>
+        <button class="chip" data-count="all">Tous</button>
+        <input type="number" id="count-custom" placeholder="Auto" min="1" max="611">
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-label">Sélection · 选词偏好</div>
+      <div class="priority-select" id="priority-select">
+        <button class="priority-btn selected" data-priority="freq">
+          <div class="pri-title">Plus fréquents</div>
+          <div class="pri-desc">高频词优先 · 最常出现的</div>
+        </button>
+        <button class="priority-btn" data-priority="order">
+          <div class="pri-title">Dans l'ordre</div>
+          <div class="pri-desc">按出现顺序 · 跟着小说</div>
+        </button>
+        <button class="priority-btn" data-priority="random">
+          <div class="pri-title">Aléatoire</div>
+          <div class="pri-desc">随机选词 · 全面练习</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="setup-summary" id="setup-summary">
+      <strong id="summary-count">20</strong>
+      <span id="summary-desc">mots sélectionnés</span>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startSession()">Commencer · 开始</button>
+  </div>
+
+  <!-- Card screen -->
+  <div class="study-screen" id="card-screen">
+    <div class="session-progress">
+      <div class="session-stats">
+        <span><strong id="stat-remaining">0</strong>restant</span>
+        <span class="stat-mastered"><strong id="stat-mastered">0</strong>maîtrisés</span>
+        <span class="stat-failed"><strong id="stat-failed">0</strong>erreurs</span>
+      </div>
+      <div class="box-meter" id="box-meter">
+        <div class="seg seg-mastered" style="width: 0%"></div>
+        <div class="seg seg-learning" style="width: 0%"></div>
+        <div class="seg seg-new" style="width: 100%"></div>
+      </div>
+    </div>
+
+    <div class="study-card" id="study-card" onclick="flipCard()">
+      <div class="study-card-inner">
+        <div class="study-card-front">
+          <div class="front-chapter" id="card-chapter">Chapitre 1</div>
+          <div class="front-word" id="card-word">word</div>
+          <div class="front-pos" id="card-pos">pos</div>
+          <div class="front-hint">Espace pour révéler · 1/2 pour répondre direct</div>
+        </div>
+        <div class="study-card-back">
+          <div class="back-word-small" id="back-word"><strong>word</strong> · pos</div>
+          <div class="back-meaning" id="back-en">English</div>
+          <div class="back-meaning-zh" id="back-zh">中文</div>
+          <div class="back-example" id="back-example"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn action-fail" id="btn-fail" onclick="answerCard(false)">
+        <span>✕ Pas encore</span>
+        <span class="key-hint">1 · 没记住</span>
+      </button>
+      <button class="action-btn action-pass" id="btn-pass" onclick="answerCard(true)">
+        <span>✓ Je m'en souviens</span>
+        <span class="key-hint">2 · 记住了</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Result screen -->
+  <div class="study-screen" id="result-screen">
+    <div class="result-icon" id="result-icon">🎉</div>
+    <div class="result-title" id="result-title">Session terminée !</div>
+    <div class="result-subtitle" id="result-subtitle">完成所有单词</div>
+
+    <div class="result-stats">
+      <div class="result-stat mastered">
+        <span class="result-stat-num" id="r-mastered">0</span>
+        <span class="result-stat-label">Maîtrisés</span>
+      </div>
+      <div class="result-stat accuracy">
+        <span class="result-stat-num" id="r-accuracy">0%</span>
+        <span class="result-stat-label">Précision</span>
+      </div>
+      <div class="result-stat">
+        <span class="result-stat-num" id="r-flips">0</span>
+        <span class="result-stat-label">Cartes vues</span>
+      </div>
+    </div>
+
+    <div class="hardest-words" id="hardest-section" style="display:none">
+      <div class="hardest-title">Mots à revoir · 难词</div>
+      <div class="hardest-list" id="hardest-list"></div>
+    </div>
+
+    <div class="result-actions">
+      <button onclick="restartSetup()">Nouvelle session</button>
+      <button id="practice-failed-btn" onclick="practiceFailed()" style="display:none">Revoir les erreurs</button>
+      <button class="primary" onclick="closeStudy()">Terminer</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const VOCAB = {"1":[{"word":"monsieur","freq":70,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"monsieur (n.m.)","en":"Mr., Sir, gentleman","zh":"先生","pos":2605,"order":112},{"word":"dit","freq":57,"sentence":"– Vous voyez bien que nous nous pesons, avait dit papa.","lemma":"dire (v.)","en":"said (past part.)","zh":"说了","pos":3546,"order":148},{"word":"lunettes","freq":41,"sentence":"Il y a parmi ces élèves, une petite fille qui porte des lunettes.","lemma":"lunettes (n.f.pl.)","en":"glasses, spectacles","zh":"眼镜","pos":504,"order":28},{"word":"moi","freq":38,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"moi (pron.)","en":"me; I (emphatic)","zh":"我（强调形式）","pos":324,"order":19},{"word":"maman","freq":27,"sentence":"Lui et maman sont installés maintenant dans un petit appartement de Greenwich Village.","lemma":"maman (n.f.)","en":"mom, mummy","zh":"妈妈","pos":1758,"order":75},{"word":"rue","freq":26,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"rue (n.f.)","en":"street","zh":"街道","pos":128,"order":4},{"word":"père","freq":24,"sentence":"Mon père lui aussi devrait prendre sa retraite mais il ne peut s’y résoudre.","lemma":"père (n.m.)","en":"father","zh":"父亲","pos":1589,"order":68},{"word":"magasin","freq":23,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"magasin (n.m.)","en":"shop, store","zh":"商店","pos":2109,"order":93},{"word":"cours","freq":21,"sentence":"Elle les a posées sur une chaise, avant de commencer le cours, comme je le faisais au même âge chez Madame Dismaïlova.","lemma":"cours (n.m.)","en":"class, lesson; course","zh":"课程；上课","pos":570,"order":29},{"word":"danse","freq":18,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"danse (n.f.)","en":"dance","zh":"舞蹈","pos":178,"order":8},{"word":"fille","freq":17,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"fille (n.f.)","en":"girl; daughter","zh":"女儿；女孩","pos":298,"order":17},{"word":"petite","freq":17,"sentence":"Il y a parmi ces élèves, une petite fille qui porte des lunettes.","lemma":"petite (adj.)","en":"small, little (fem.)","zh":"小的（阴性）","pos":477,"order":26},{"word":"madame","freq":17,"sentence":"Elle les a posées sur une chaise, avant de commencer le cours, comme je le faisais au même âge chez Madame Dismaïlova.","lemma":"madame (n.f.)","en":"Mrs., Madam","zh":"夫人；女士","pos":614,"order":30},{"word":"soir","freq":17,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"soir (n.m.)","en":"evening","zh":"傍晚；晚上","pos":2144,"order":94},{"word":"bureau","freq":17,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"bureau (n.m.)","en":"desk; office","zh":"书桌；办公室","pos":3745,"order":157},{"word":"monde","freq":15,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"monde (n.m.)","en":"world; people","zh":"世界；人们","pos":918,"order":41},{"word":"fait","freq":14,"sentence":"Ici à New York, j’ai fait partie d’une troupe de ballet pendant quelques années.","lemma":"faire (v.)","en":"done; made (past part.)","zh":"做了","pos":1366,"order":59},{"word":"devant","freq":14,"sentence":"Nous avions l’air de prendre la pose devant l’objectif d’un photographe.","lemma":"devant (prép.)","en":"in front of","zh":"在…前面","pos":3112,"order":134},{"word":"étais","freq":14,"sentence":"voulait dicter mes devoirs et j’étais obligée de le laisser faire.","lemma":"être (v.)","en":"was (1st/2nd pers. imperf.)","zh":"是（第一二人称过去时）","pos":6647,"order":239},{"word":"deux","freq":13,"sentence":"Nous restions là, tous les deux, les mains de papa sur mes épaules.","lemma":"deux (num.)","en":"two","zh":"两；二","pos":3012,"order":129},{"word":"autres","freq":12,"sentence":"Des New-Yorkais comme tant d’autres.","lemma":"autres (adj.)","en":"others","zh":"其他的","pos":1899,"order":81},{"word":"homme","freq":12,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"homme (n.m.)","en":"man","zh":"男人","pos":5111,"order":193},{"word":"école","freq":11,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"école (n.f.)","en":"school","zh":"学校","pos":169,"order":7},{"word":"dire","freq":11,"sentence":"En somme, rien à dire sur nous.","lemma":"dire (v.)","en":"to say, tell","zh":"说；告诉","pos":1855,"order":79},{"word":"air","freq":11,"sentence":"Nous avions l’air de prendre la pose devant l’objectif d’un photographe.","lemma":"air (n.m.)","en":"look, appearance; avoir l'air = to seem","zh":"样子；外表","pos":3089,"order":133},{"word":"midi","freq":11,"sentence":"– Ma petite Catherine, je ne peux pas venir te chercher cet après-midi à l’école…","lemma":"midi (n.m.)","en":"midday; noon; South of France","zh":"正午；南方","pos":5011,"order":192},{"word":"caisses","freq":10,"sentence":"Il y avait toujours des caisses et des paquets empilés les uns sur les autres.","lemma":"caisse (n.f.)","en":"crate, box","zh":"箱子","pos":2304,"order":101},{"word":"demandé","freq":10,"sentence":"avait-il demandé.","lemma":"demander (v.)","en":"asked (past part.)","zh":"问了","pos":3423,"order":145},{"word":"bas","freq":10,"sentence":"Papa lui avait promis que nous irions la rejoindre là-bas, dès qu’il aurait réglé ses « affaires commerciales ».","lemma":"bas (adv./adj.)","en":"low; là-bas = over there","zh":"低处；那边","pos":4345,"order":168},{"word":"assis","freq":9,"sentence":"Papa était assis, en face, à l’autre bureau, et il avait ôté ses lunettes.","lemma":"assis (adj.)","en":"seated, sitting","zh":"坐着的","pos":5729,"order":216},{"word":"porte","freq":8,"sentence":"Il y a parmi ces élèves, une petite fille qui porte des lunettes.","lemma":"porte (n.f.)","en":"door; gate","zh":"门","pos":494,"order":27},{"word":"temps","freq":8,"sentence":"Le temps s’était arrêté.","lemma":"temps (n.m.)","en":"time; weather","zh":"时间；天气","pos":3251,"order":140},{"word":"jour","freq":8,"sentence":"Un jour, Monsieur Casterade, l’associé de papa, nous avait surpris sur cette balance.","lemma":"jour (n.m.)","en":"day","zh":"天；日","pos":3298,"order":142},{"word":"autre","freq":8,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"autre (adj.)","en":"other","zh":"另一个；其他的","pos":4592,"order":178},{"word":"buste","freq":8,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"buste (n.m.)","en":"upper body, torso","zh":"上半身；胸部","pos":5141,"order":197},{"word":"jeunesse","freq":8,"sentence":"Il voulait un homme qui connût bien l’orthographe et Monsieur Casterade, dans sa jeunesse, avait préparé une licence ès lettres.","lemma":"jeunesse (n.f.)","en":"youth, young days","zh":"青春；年轻时","pos":5454,"order":206},{"word":"accent","freq":8,"sentence":"Alors Monsieur Casterade, avec son accent du Midi, lisait le compte rendu des catastrophes et des crimes.","lemma":"accent (n.m.)","en":"accent; inflection","zh":"口音；强调","pos":5828,"order":217},{"word":"fois","freq":8,"sentence":"Combien de fois ai-je vu papa taper à la machine des lettres d’affaires sous la dictée de Monsieur Casterade, et cela sans oser lui dire – par délicatesse – que ces lettres ne servaient à rien…","lemma":"fois (n.f.)","en":"time (instance); à la fois = at once","zh":"次；同时","pos":6233,"order":228},{"word":"voulu","freq":8,"sentence":"Un après-midi que je revenais de l’école avec papa, Monsieur Casterade avait voulu que je lui montre mon bulletin.","lemma":"vouloir (v.)","en":"wanted (past part.)","zh":"曾经想要","pos":7394,"order":261},{"word":"gens","freq":7,"sentence":"Les contours des gens et des choses perdaient leur acuité, tout devenait flou, les sons eux-mêmes étaient de plus en plus étouffés.","lemma":"gens (n.m.pl.)","en":"people","zh":"人们","pos":800,"order":36},{"word":"voyais","freq":7,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"voir (v.)","en":"was seeing (imperf.)","zh":"看见（过去进行时）","pos":937,"order":42},{"word":"ans","freq":7,"sentence":"Voilà presque trente ans de cela.","lemma":"an (n.m.)","en":"year (of age)","zh":"岁；年","pos":2056,"order":89},{"word":"balance","freq":7,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"balance (n.f.)","en":"scale, weighing machine","zh":"秤；天平","pos":2366,"order":104},{"word":"tenait","freq":7,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"tenir (v.)","en":"was holding; stood (imperf.)","zh":"持有；站立","pos":2660,"order":114},{"word":"lettre","freq":7,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"lettre (n.f.)","en":"letter","zh":"信；字母","pos":4603,"order":179},{"word":"voulait","freq":7,"sentence":"Il voulait un homme qui connût bien l’orthographe et Monsieur Casterade, dans sa jeunesse, avait préparé une licence ès lettres.","lemma":"vouloir (v.)","en":"wanted (imperf.)","zh":"想要（过去进行时）","pos":5376,"order":205},{"word":"appartement","freq":6,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"appartement (n.m.)","en":"apartment, flat","zh":"公寓","pos":106,"order":3},{"word":"derrière","freq":6,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"derrière (prép.)","en":"behind, at the back","zh":"在…后面","pos":199,"order":10},{"word":"vitrée","freq":6,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"vitrée (adj.)","en":"glazed; glass (fem.)","zh":"玻璃的","pos":216,"order":12},{"word":"travaille","freq":6,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"travailler (v.)","en":"works (3rd pers.)","zh":"工作（第三人称）","pos":309,"order":18},{"word":"souviens","freq":6,"sentence":"Je me souviens qu’à l’époque de Madame Dismaïlova, je m’exerçais pendant la journée à ne plus porter mes lunettes.","lemma":"se souvenir (v.)","en":"to remember","zh":"记得；记忆","pos":674,"order":31},{"word":"années","freq":6,"sentence":"Ici à New York, j’ai fait partie d’une troupe de ballet pendant quelques années.","lemma":"année (n.f.)","en":"year","zh":"年；年份","pos":1418,"order":63},{"word":"seule","freq":6,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"seule (adj.)","en":"alone; only (fem.)","zh":"单独的（阴性）","pos":1910,"order":82},{"word":"chose","freq":6,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"chose (n.f.)","en":"thing","zh":"事情；东西","pos":1916,"order":83},{"word":"trois","freq":6,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"trois (num.)","en":"three","zh":"三","pos":2498,"order":110},{"word":"associé","freq":6,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"associé (n.m.)","en":"business partner","zh":"合伙人","pos":2629,"order":113},{"word":"ôté","freq":6,"sentence":"J’avais ôté mes lunettes, et papa avait ôté les siennes.","lemma":"ôter (v.)","en":"removed, taken off","zh":"摘掉；取下","pos":3156,"order":137},{"word":"affaires","freq":6,"sentence":"Papa lui avait promis que nous irions la rejoindre là-bas, dès qu’il aurait réglé ses « affaires commerciales ».","lemma":"affaires (n.f.pl.)","en":"business; commercial affairs","zh":"生意；事务","pos":4379,"order":171},{"word":"tard","freq":6,"sentence":"Mais plus tard, j’ai compris qu’il y avait, au départ de maman, d’autres raisons.","lemma":"tard (adv.)","en":"late","zh":"晚；迟","pos":4466,"order":174},{"word":"orthographe","freq":6,"sentence":"Maman faisait quelquefois une faute d’orthographe.","lemma":"orthographe (n.f.)","en":"spelling","zh":"拼写；正字法","pos":4837,"order":186},{"word":"lettres","freq":6,"sentence":"Il voulait un homme qui connût bien l’orthographe et Monsieur Casterade, dans sa jeunesse, avait préparé une licence ès lettres.","lemma":"lettres (n.f.pl.)","en":"letters; literature","zh":"信件；文学","pos":5493,"order":209},{"word":"lisait","freq":6,"sentence":"Alors Monsieur Casterade, avec son accent du Midi, lisait le compte rendu des catastrophes et des crimes.","lemma":"lire (v.)","en":"was reading (imperf.)","zh":"读（过去进行时）","pos":5844,"order":218},{"word":"professeur","freq":6,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"professeur (n.m.)","en":"teacher, professor","zh":"老师；教授","pos":6738,"order":243},{"word":"mademoiselle","freq":6,"sentence":"– Un peu de sérieux, Mademoiselle, disait papa.","lemma":"mademoiselle (n.f.)","en":"Miss, young lady","zh":"小姐","pos":7198,"order":259},{"word":"baie","freq":5,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"baie (n.f.)","en":"bay window; glazed wall","zh":"大玻璃窗；落地窗","pos":211,"order":11},{"word":"rejoindre","freq":5,"sentence":"Tout à l’heure, j’irai les rejoindre.","lemma":"rejoindre (v.)","en":"to join, meet up with","zh":"加入；汇合","pos":437,"order":24},{"word":"parmi","freq":5,"sentence":"Il y a parmi ces élèves, une petite fille qui porte des lunettes.","lemma":"parmi (prép.)","en":"among, amongst","zh":"在…中间","pos":455,"order":25},{"word":"époque","freq":5,"sentence":"Je me souviens qu’à l’époque de Madame Dismaïlova, je m’exerçais pendant la journée à ne plus porter mes lunettes.","lemma":"époque (n.f.)","en":"era, time, period","zh":"时代；时期","pos":690,"order":32},{"word":"porter","freq":5,"sentence":"Je me souviens qu’à l’époque de Madame Dismaïlova, je m’exerçais pendant la journée à ne plus porter mes lunettes.","lemma":"porter (v.)","en":"to wear; to carry","zh":"穿戴；携带","pos":762,"order":35},{"word":"quelques","freq":5,"sentence":"Ici à New York, j’ai fait partie d’une troupe de ballet pendant quelques années.","lemma":"quelques (adj.)","en":"a few, some","zh":"几个；一些","pos":1409,"order":62},{"word":"prendre","freq":5,"sentence":"Mon père lui aussi devrait prendre sa retraite mais il ne peut s’y résoudre.","lemma":"prendre (v.)","en":"to take","zh":"拿；取","pos":1612,"order":69},{"word":"petit","freq":5,"sentence":"Lui et maman sont installés maintenant dans un petit appartement de Greenwich Village.","lemma":"petit (adj.)","en":"small, little","zh":"小的；矮的","pos":1798,"order":76},{"word":"départ","freq":5,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"départ (n.m.)","en":"departure, leaving","zh":"出发；离开","pos":1962,"order":85},{"word":"sept","freq":5,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"sept (num.)","en":"seven","zh":"七","pos":2152,"order":95},{"word":"rideau","freq":5,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"rideau (n.m.)","en":"curtain; rideau de fer = iron shutter","zh":"窗帘；卷帘门","pos":2168,"order":97},{"word":"danseuses","freq":5,"sentence":"A vingt ans, elle appartenait à une troupe de danseuses, venues en tournée à Paris.","lemma":"danseuses (n.f.pl.)","en":"female dancers (pl.)","zh":"女舞蹈演员们","pos":3950,"order":160},{"word":"danser","freq":5,"sentence":"Ils s’étaient mariés, et maman avait continué de danser à Paris, dans les music-halls : L’Empire, Le Tabarin, L’Alhambra…","lemma":"danser (v.)","en":"to dance","zh":"跳舞","pos":4082,"order":162},{"word":"parlait","freq":5,"sentence":"Quand papa me parlait de son associé Raymond Casterade, il le surnommait : « Le Crampon ».","lemma":"parler (v.)","en":"was talking (imperf.)","zh":"说话（过去进行时）","pos":4868,"order":187},{"word":"crampon","freq":5,"sentence":"Quand papa me parlait de son associé Raymond Casterade, il le surnommait : « Le Crampon ».","lemma":"crampon (n.m.)","en":"clamp; fig. persistent, clingy person","zh":"爪钩；缠人的人","pos":4934,"order":189},{"word":"chercher","freq":5,"sentence":"– Ma petite Catherine, je ne peux pas venir te chercher cet après-midi à l’école…","lemma":"chercher (v.)","en":"to look for; venir chercher = to pick up","zh":"寻找；接（某人）","pos":4992,"order":191},{"word":"yeux","freq":5,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"yeux (n.m.pl.)","en":"eyes","zh":"眼睛（复数）","pos":5126,"order":195},{"word":"élèves","freq":4,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"élève (n.m/f.)","en":"student, pupil","zh":"学生","pos":228,"order":13},{"word":"mêmes","freq":4,"sentence":"Les contours des gens et des choses perdaient leur acuité, tout devenait flou, les sons eux-mêmes étaient de plus en plus étouffés.","lemma":"même (adj.)","en":"same; even","zh":"相同的；甚至","pos":875,"order":39},{"word":"demandait","freq":4,"sentence":"me demandait papa.","lemma":"demander (v.)","en":"was asking (imperf.)","zh":"问（过去进行时）","pos":1143,"order":51},{"word":"tel","freq":4,"sentence":"Avec mes lunettes, je voyais le monde tel qu’il est.","lemma":"tel (adj.)","en":"such; tel que = such as","zh":"这样的；如…一般","pos":1304,"order":56},{"word":"pris","freq":4,"sentence":"Puis elle a pris sa retraite et j’ai continué sans elle.","lemma":"prendre (v.)","en":"taken (past part.)","zh":"拿了；接受了","pos":1491,"order":66},{"word":"dessus","freq":4,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"dessus (adv.)","en":"above; au-dessus de = above","zh":"上面","pos":2087,"order":91},{"word":"heures","freq":4,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"heure (n.f.)","en":"hour; o'clock","zh":"小时；点钟","pos":2157,"order":96},{"word":"fer","freq":4,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"fer (n.m.)","en":"iron; rideau de fer = metal shutter","zh":"铁；卷帘门","pos":2178,"order":98},{"word":"paquets","freq":4,"sentence":"Il y avait toujours des caisses et des paquets empilés les uns sur les autres.","lemma":"paquet (n.m.)","en":"packet, parcel, package","zh":"包裹；包","pos":2319,"order":102},{"word":"milieu","freq":4,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"milieu (n.m.)","en":"middle; environment","zh":"中间；环境","pos":2693,"order":117},{"word":"quelquefois","freq":4,"sentence":"Quelquefois, il me disait :","lemma":"quelquefois (adv.)","en":"sometimes","zh":"有时","pos":2893,"order":128},{"word":"avions","freq":4,"sentence":"Nous avions l’air de prendre la pose devant l’objectif d’un photographe.","lemma":"avoir (v.)","en":"we had (imperf.)","zh":"我们有","pos":3080,"order":132},{"word":"bout","freq":4,"sentence":"Au bout de quelques années, elle avait décidé de retourner en Amérique.","lemma":"bout (n.m.)","en":"end; au bout de = after","zh":"尽头；之后","pos":4222,"order":165},{"word":"décidé","freq":4,"sentence":"Au bout de quelques années, elle avait décidé de retourner en Amérique.","lemma":"décider (v.)","en":"decided (past part.)","zh":"决定了","pos":4258,"order":166},{"word":"compris","freq":4,"sentence":"Mais plus tard, j’ai compris qu’il y avait, au départ de maman, d’autres raisons.","lemma":"comprendre (v.)","en":"understood (past part.)","zh":"理解了","pos":4477,"order":175},{"word":"semaine","freq":4,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"semaine (n.f.)","en":"week","zh":"周；星期","pos":4545,"order":177},{"word":"toi","freq":4,"sentence":"Ta maman qui pense à toi.","lemma":"toi (pron.)","en":"you (emphatic)","zh":"你（强调）","pos":4792,"order":185},{"word":"long","freq":4,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"long (adj.)","en":"long","zh":"长的","pos":5152,"order":198},{"word":"morale","freq":4,"sentence":"Il faisait la morale pour un oui pour un non.","lemma":"morale (n.f.)","en":"moral lecture; faire la morale = to lecture","zh":"道德；说教","pos":5565,"order":211},{"word":"matin","freq":4,"sentence":"Le matin, il venait s’asseoir à son bureau et dépliait lentement son journal.","lemma":"matin (n.m.)","en":"morning","zh":"早上；早晨","pos":5643,"order":214},{"word":"dicter","freq":4,"sentence":"avait une autre manie : celle de dicter des lettres, le buste cambré, le verbe haut.","lemma":"dicter (v.)","en":"to dictate","zh":"口授；听写","pos":6170,"order":225},{"word":"laisser","freq":4,"sentence":"voulait dicter mes devoirs et j’étais obligée de le laisser faire.","lemma":"laisser (v.)","en":"to let, allow; to leave","zh":"允许；留下","pos":6667,"order":240},{"word":"bonne","freq":4,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"bonne (adj.)","en":"good (fem.)","zh":"好的（阴性）","pos":6706,"order":241},{"word":"rire","freq":4,"sentence":"Et comme il prenait l’accent du Midi de Monsieur Casterade, j’avais une crise de fou rire.","lemma":"rire (v./n.m.)","en":"to laugh; laughter","zh":"笑；笑声","pos":7171,"order":258},{"word":"cigarette","freq":4,"sentence":"Il le lisait en mordillant son fume-cigarette.","lemma":"cigarette (n.f.)","en":"cigarette","zh":"香烟","pos":7468,"order":264},{"word":"fenêtre","freq":3,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"fenêtre (n.f.)","en":"window","zh":"窗户","pos":91,"order":2},{"word":"face","freq":3,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"face (n.f.)","en":"face; en face = opposite","zh":"脸；对面","pos":149,"order":6},{"word":"heure","freq":3,"sentence":"Tout à l’heure, j’irai les rejoindre.","lemma":"heure (n.f.)","en":"hour; tout à l'heure = in a moment","zh":"小时；一会儿","pos":419,"order":23},{"word":"flou","freq":3,"sentence":"Les contours des gens et des choses perdaient leur acuité, tout devenait flou, les sons eux-mêmes étaient de plus en plus étouffés.","lemma":"flou (adj.)","en":"blurry, hazy","zh":"模糊的","pos":856,"order":38},{"word":"doux","freq":3,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"doux (adj.)","en":"soft, gentle, mild","zh":"柔和的；温柔的","pos":1000,"order":44},{"word":"endormir","freq":3,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"s'endormir (v.)","en":"to fall asleep","zh":"入睡；睡着","pos":1099,"order":50},{"word":"pouvais","freq":3,"sentence":"Je ne pouvais plus rêver.","lemma":"pouvoir (v.)","en":"could (imperf.)","zh":"能够（过去时）","pos":1325,"order":57},{"word":"mère","freq":3,"sentence":"Ensuite, j’ai dirigé avec ma mère un cours de danse.","lemma":"mère (n.f.)","en":"mother","zh":"母亲","pos":1455,"order":65},{"word":"retraite","freq":3,"sentence":"Puis elle a pris sa retraite et j’ai continué sans elle.","lemma":"retraite (n.f.)","en":"retirement; prendre sa retraite = to retire","zh":"退休","pos":1499,"order":67},{"word":"peut","freq":3,"sentence":"Mon père lui aussi devrait prendre sa retraite mais il ne peut s’y résoudre.","lemma":"pouvoir (v.)","en":"can, is able to (3rd pers.)","zh":"能；可以","pos":1643,"order":70},{"word":"enfance","freq":3,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"enfance (n.f.)","en":"childhood","zh":"童年","pos":2000,"order":86},{"word":"arrondissement","freq":3,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"arrondissement(n.m.)","en":"district (of Paris)","zh":"区（巴黎行政区）","pos":2019,"order":87},{"word":"plateau","freq":3,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"plateau (n.m.)","en":"platform, tray; scale platform","zh":"平台；秤盘","pos":2389,"order":106},{"word":"cadran","freq":3,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"cadran (n.m.)","en":"dial, face of scale/clock","zh":"表盘；刻度盘","pos":2473,"order":108},{"word":"regard","freq":3,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"regard (n.m.)","en":"look, gaze; glance","zh":"目光；眼神","pos":2787,"order":123},{"word":"fond","freq":3,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"fond (n.m.)","en":"back, bottom; au fond = at the back","zh":"底部；深处","pos":3627,"order":153},{"word":"travailler","freq":3,"sentence":"C’est après le départ de maman que Monsieur Casterade a commencé de travailler avec papa.","lemma":"travailler (v.)","en":"to work","zh":"工作","pos":3860,"order":158},{"word":"connaissance","freq":3,"sentence":"Elle avait fait la connaissance de mon père.","lemma":"connaissance (n.f.)","en":"acquaintance; faire connaissance = to meet","zh":"认识；结识","pos":4007,"order":161},{"word":"pays","freq":3,"sentence":"Mais elle avait le mal du pays.","lemma":"pays (n.m.)","en":"country; mal du pays = homesickness","zh":"国家；思乡","pos":4213,"order":164},{"word":"aurait","freq":3,"sentence":"Papa lui avait promis que nous irions la rejoindre là-bas, dès qu’il aurait réglé ses « affaires commerciales ».","lemma":"avoir (v.)","en":"would have (conditional)","zh":"将会有（条件式）","pos":4360,"order":169},{"word":"moins","freq":3,"sentence":"Voilà, du moins, les explications qu’il me donnait.","lemma":"moins (adv.)","en":"less; au moins = at least","zh":"更少；至少","pos":4414,"order":172},{"word":"pense","freq":3,"sentence":"Ta maman qui pense à toi.","lemma":"penser (v.)","en":"to think","zh":"思考；认为","pos":4784,"order":184},{"word":"peux","freq":3,"sentence":"– Ma petite Catherine, je ne peux pas venir te chercher cet après-midi à l’école…","lemma":"pouvoir (v.)","en":"can, am able to (1st pers.)","zh":"能；可以","pos":4974,"order":190},{"word":"patins","freq":3,"sentence":"Ce buste long et raide cachait le mouvement de ses jambes et on aurait dit qu’il glissait sur des patins à roulettes ou même des patins à glace.","lemma":"patin (n.m.)","en":"skate; patin à roulettes = roller skate","zh":"溜冰鞋","pos":5256,"order":201},{"word":"glace","freq":3,"sentence":"Ce buste long et raide cachait le mouvement de ses jambes et on aurait dit qu’il glissait sur des patins à roulettes ou même des patins à glace.","lemma":"glace (n.f.)","en":"ice; ice cream; mirror","zh":"冰；冰淇淋；镜子","pos":5296,"order":203},{"word":"catastrophes","freq":3,"sentence":"Il aimait aussi annoncer les catastrophes.","lemma":"catastrophe (n.f.)","en":"catastrophe, disaster","zh":"灾难；大祸","pos":5626,"order":213},{"word":"compte","freq":3,"sentence":"Alors Monsieur Casterade, avec son accent du Midi, lisait le compte rendu des catastrophes et des crimes.","lemma":"compte (n.m.)","en":"account; compte rendu = report","zh":"账户；报告","pos":5854,"order":219},{"word":"rendu","freq":3,"sentence":"Alors Monsieur Casterade, avec son accent du Midi, lisait le compte rendu des catastrophes et des crimes.","lemma":"rendre (v.)","en":"compte rendu = report; rendered","zh":"汇报；使","pos":5861,"order":220},{"word":"ailleurs","freq":3,"sentence":"Vous êtes ailleurs…","lemma":"ailleurs (adv.)","en":"elsewhere; être ailleurs = absent-minded","zh":"别处；心不在焉","pos":5977,"order":221},{"word":"courage","freq":3,"sentence":"Vous n’avez pas le courage de voir le monde tel qu’il est…","lemma":"courage (n.m.)","en":"courage; bon courage = good luck","zh":"勇气；加油","pos":6006,"order":222},{"word":"dos","freq":3,"sentence":"Dès que son associé tournait le dos, papa déchirait souvent la lettre.","lemma":"dos (n.m.)","en":"back (of body)","zh":"背部","pos":6544,"order":236},{"word":"point","freq":3,"sentence":"– Point-virgule, ouvrez les guillemets, virgule, deux-points, ouvrez la parenthèse, à la ligne, fermez la parenthèse et les guillemets…","lemma":"point (n.m.)","en":"point; period (punctuation)","zh":"点；句号","pos":6952,"order":251},{"word":"œil","freq":3,"sentence":"Il m’a fixée de son œil noir :","lemma":"œil (n.m.)","en":"eye; d'un œil distrait = absent-mindedly","zh":"眼睛","pos":7499,"order":266},{"word":"levé","freq":3,"sentence":"Monsieur Casterade s’est levé, le buste dédaigneux, et il a glissé jusqu’à la porte du bureau.","lemma":"lever (v.)","en":"raised; gotten up","zh":"举起；起身","pos":7889,"order":271},{"word":"regarde","freq":2,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"regarder (v.)","en":"to look at; I look","zh":"看；注视","pos":75,"order":1},{"word":"immeuble","freq":2,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"immeuble (n.m.)","en":"apartment building, block","zh":"公寓楼","pos":135,"order":5},{"word":"entrechats","freq":2,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"entrechat (n.m.)","en":"entrechat (ballet jump crossing feet)","zh":"交叉跳（芭蕾）","pos":283,"order":16},{"word":"montre","freq":2,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"montrer (v.)","en":"to show; shows","zh":"展示；显示","pos":351,"order":20},{"word":"détendre","freq":2,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"détendre (v.)","en":"to relax, loosen up","zh":"放松","pos":368,"order":21},{"word":"musique","freq":2,"sentence":"Ma fille, qui travaille avec moi comme assistante, leur montre, pour les détendre, un pas sur une musique de jazz.","lemma":"musique (n.f.)","en":"music","zh":"音乐","pos":393,"order":22},{"word":"pendant","freq":2,"sentence":"Je me souviens qu’à l’époque de Madame Dismaïlova, je m’exerçais pendant la journée à ne plus porter mes lunettes.","lemma":"pendant (prép.)","en":"during, while","zh":"在…期间","pos":733,"order":33},{"word":"gros","freq":2,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"gros (adj.)","en":"fat, big, large","zh":"大的；胖的","pos":1029,"order":46},{"word":"finissais","freq":2,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"finir (v.)","en":"was ending; used to end up (imperf.)","zh":"结束（过去进行时）","pos":1083,"order":49},{"word":"précision","freq":2,"sentence":"Je lui obéissais et tout retrouvait sa dureté et sa précision coutumières.","lemma":"précision (n.f.)","en":"precision, sharpness","zh":"精确；清晰","pos":1243,"order":54},{"word":"rêver","freq":2,"sentence":"Je ne pouvais plus rêver.","lemma":"rêver (v.)","en":"to dream","zh":"做梦；梦想","pos":1338,"order":58},{"word":"partie","freq":2,"sentence":"Ici à New York, j’ai fait partie d’une troupe de ballet pendant quelques années.","lemma":"partie (n.f.)","en":"part; faire partie de = to be part of","zh":"部分；参与","pos":1371,"order":60},{"word":"troupe","freq":2,"sentence":"Ici à New York, j’ai fait partie d’une troupe de ballet pendant quelques années.","lemma":"troupe (n.f.)","en":"troupe, company (of performers)","zh":"剧团；演出团","pos":1384,"order":61},{"word":"juste","freq":2,"sentence":"Sa retraite de quoi, au juste ?","lemma":"juste (adj./adv.)","en":"just, right; au juste = exactly","zh":"恰好；准确","pos":1686,"order":72},{"word":"exactement","freq":2,"sentence":"Je n’ai jamais su quel est exactement le métier de papa.","lemma":"exactement (adv.)","en":"exactly, precisely","zh":"确切地；正是","pos":1721,"order":73},{"word":"métier","freq":2,"sentence":"Je n’ai jamais su quel est exactement le métier de papa.","lemma":"métier (n.m.)","en":"job, trade, profession","zh":"职业；行业","pos":1735,"order":74},{"word":"village","freq":2,"sentence":"Lui et maman sont installés maintenant dans un petit appartement de Greenwich Village.","lemma":"village (n.m.)","en":"village","zh":"村庄","pos":1829,"order":77},{"word":"tant","freq":2,"sentence":"Des New-Yorkais comme tant d’autres.","lemma":"tant (adv.)","en":"so much; tant d'autres = so many others","zh":"如此多","pos":1892,"order":80},{"word":"étrange","freq":2,"sentence":"La seule chose un peu étrange c’est ceci : avant notre départ pour l’Amérique, j’ai vécu mon enfance dans le Xe arrondissement.","lemma":"étrange (adj.)","en":"strange, odd","zh":"奇怪的","pos":1929,"order":84},{"word":"presque","freq":2,"sentence":"Voilà presque trente ans de cela.","lemma":"presque (adv.)","en":"almost, nearly","zh":"几乎","pos":2041,"order":88},{"word":"sorte","freq":2,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"sorte (n.f.)","en":"sort, type; une sorte de = a kind of","zh":"种类；一种","pos":2100,"order":92},{"word":"vaste","freq":2,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"vaste (adj.)","en":"vast, wide, large","zh":"宽广的；庞大的","pos":2383,"order":105},{"word":"ras","freq":2,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"ras (n.m.)","en":"au ras du sol = at ground level","zh":"紧贴地面","pos":2401,"order":107},{"word":"indiquait","freq":2,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"indiquer (v.)","en":"indicated, showed","zh":"显示；指示","pos":2480,"order":109},{"word":"kilos","freq":2,"sentence":"Et une balance, dont le vaste plateau, au ras du sol, était fait pour supporter des poids importants, puisque son cadran indiquait jusqu’à trois cents kilos.","lemma":"kilo (n.m.)","en":"kilogram","zh":"千克；公斤","pos":2510,"order":111},{"word":"immobile","freq":2,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"immobile (adj.)","en":"motionless, still","zh":"一动不动的","pos":2667,"order":115},{"word":"silencieux","freq":2,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"silencieux (adj.)","en":"silent, quiet","zh":"沉默的；安静的","pos":2679,"order":116},{"word":"mains","freq":2,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"mains (n.f.pl.)","en":"hands","zh":"双手","pos":2730,"order":118},{"word":"visage","freq":2,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"visage (n.m.)","en":"face","zh":"脸；面孔","pos":2756,"order":120},{"word":"pensif","freq":2,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"pensif (adj.)","en":"pensive, thoughtful","zh":"沉思的","pos":2794,"order":124},{"word":"épaules","freq":2,"sentence":"Nous restions là, tous les deux, les mains de papa sur mes épaules.","lemma":"épaules (n.f.pl.)","en":"shoulders","zh":"双肩","pos":3044,"order":130},{"word":"autour","freq":2,"sentence":"Tout était doux et brumeux autour de nous.","lemma":"autour (prép.)","en":"around","zh":"周围；围绕","pos":3232,"order":139},{"word":"arrêté","freq":2,"sentence":"Le temps s’était arrêté.","lemma":"arrêter (v.)","en":"to stop; stopped","zh":"停止","pos":3265,"order":141},{"word":"surpris","freq":2,"sentence":"Un jour, Monsieur Casterade, l’associé de papa, nous avait surpris sur cette balance.","lemma":"surprendre (v.)","en":"surprised; caught (past part.)","zh":"惊讶；撞见","pos":3354,"order":143},{"word":"faites","freq":2,"sentence":"– Qu’est-ce que vous faites là ?","lemma":"faire (v.)","en":"do; what are you doing?","zh":"做（命令/疑问）","pos":3402,"order":144},{"word":"charme","freq":2,"sentence":"Le charme était rompu.","lemma":"charme (n.m.)","en":"charm, spell; le charme est rompu = spell broken","zh":"魅力；魔法","pos":3435,"order":146},{"word":"répondre","freq":2,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"répondre (v.)","en":"to answer, reply","zh":"回答；回复","pos":3574,"order":150},{"word":"disparu","freq":2,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"disparaître (v.)","en":"disappeared (past part.)","zh":"消失了","pos":3593,"order":151},{"word":"vingt","freq":2,"sentence":"A vingt ans, elle appartenait à une troupe de danseuses, venues en tournée à Paris.","lemma":"vingt (num.)","en":"twenty","zh":"二十","pos":3906,"order":159},{"word":"promis","freq":2,"sentence":"Papa lui avait promis que nous irions la rejoindre là-bas, dès qu’il aurait réglé ses « affaires commerciales ».","lemma":"promettre (v.)","en":"promised (past part.)","zh":"承诺了","pos":4306,"order":167},{"word":"réglé","freq":2,"sentence":"Papa lui avait promis que nous irions la rejoindre là-bas, dès qu’il aurait réglé ses « affaires commerciales ».","lemma":"régler (v.)","en":"settled, resolved (past part.)","zh":"解决了","pos":4367,"order":170},{"word":"donnait","freq":2,"sentence":"Voilà, du moins, les explications qu’il me donnait.","lemma":"donner (v.)","en":"was giving (imperf.)","zh":"给（过去进行时）","pos":4447,"order":173},{"word":"raisons","freq":2,"sentence":"Mais plus tard, j’ai compris qu’il y avait, au départ de maman, d’autres raisons.","lemma":"raisons (n.f.pl.)","en":"reasons","zh":"原因","pos":4529,"order":176},{"word":"enveloppe","freq":2,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"enveloppe (n.f.)","en":"envelope","zh":"信封","pos":4629,"order":180},{"word":"rouges","freq":2,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"rouge (adj.)","en":"red (pl.)","zh":"红色的（复数）","pos":4670,"order":182},{"word":"embrasse","freq":2,"sentence":"« Catherine, je t’embrasse très forte.","lemma":"embrasser (v.)","en":"to kiss; to embrace","zh":"亲吻；拥抱","pos":4750,"order":183},{"word":"brun","freq":2,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"brun (adj.)","en":"brown, dark-haired","zh":"棕色的；深色的","pos":5117,"order":194},{"word":"noirs","freq":2,"sentence":"Monsieur Casterade était un homme brun aux yeux noirs, au buste très long.","lemma":"noir (adj.)","en":"black (pl.)","zh":"黑色的（复数）","pos":5131,"order":196},{"word":"mouvement","freq":2,"sentence":"Ce buste long et raide cachait le mouvement de ses jambes et on aurait dit qu’il glissait sur des patins à roulettes ou même des patins à glace.","lemma":"mouvement (n.m.)","en":"movement, motion","zh":"动作；运动","pos":5192,"order":200},{"word":"roulettes","freq":2,"sentence":"Ce buste long et raide cachait le mouvement de ses jambes et on aurait dit qu’il glissait sur des patins à roulettes ou même des patins à glace.","lemma":"roulette (n.f.)","en":"wheel; patin à roulettes = roller skate","zh":"轮子；轮滑鞋","pos":5265,"order":202},{"word":"préparé","freq":2,"sentence":"Il voulait un homme qui connût bien l’orthographe et Monsieur Casterade, dans sa jeunesse, avait préparé une licence ès lettres.","lemma":"préparer (v.)","en":"prepared (past part.)","zh":"准备了","pos":5470,"order":207},{"word":"devenu","freq":2,"sentence":"était devenu son associé.","lemma":"devenir (v.)","en":"became (past part.)","zh":"变成了","pos":5531,"order":210},{"word":"annoncer","freq":2,"sentence":"Il aimait aussi annoncer les catastrophes.","lemma":"annoncer (v.)","en":"to announce, foretell","zh":"宣布；预告","pos":5613,"order":212},{"word":"asseoir","freq":2,"sentence":"Le matin, il venait s’asseoir à son bureau et dépliait lentement son journal.","lemma":"s'asseoir (v.)","en":"to sit down","zh":"坐下","pos":5662,"order":215},{"word":"remettre","freq":2,"sentence":"Vous devriez remettre vos lunettes…","lemma":"remettre (v.)","en":"to put back on; to hand over","zh":"重新戴上；交还","pos":6059,"order":223},{"word":"haut","freq":2,"sentence":"avait une autre manie : celle de dicter des lettres, le buste cambré, le verbe haut.","lemma":"haut (adj./adv.)","en":"high; loud; le verbe haut = authoritatively","zh":"高的；大声地","pos":6216,"order":227},{"word":"machine","freq":2,"sentence":"Combien de fois ai-je vu papa taper à la machine des lettres d’affaires sous la dictée de Monsieur Casterade, et cela sans oser lui dire – par délicatesse – que ces lettres ne servaient à rien…","lemma":"machine (n.f.)","en":"machine; typewriter","zh":"机器；打字机","pos":6263,"order":229},{"word":"oser","freq":2,"sentence":"Combien de fois ai-je vu papa taper à la machine des lettres d’affaires sous la dictée de Monsieur Casterade, et cela sans oser lui dire – par délicatesse – que ces lettres ne servaient à rien…","lemma":"oser (v.)","en":"to dare","zh":"敢于；胆敢","pos":6345,"order":230},{"word":"mots","freq":2,"sentence":"Monsieur Casterade épelait les mots, indiquait la ponctuation et le moindre accent circonflexe.","lemma":"mot (n.m.)","en":"word","zh":"词；单词","pos":6447,"order":233},{"word":"général","freq":2,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"général (n.m.)","en":"general; en général = generally","zh":"通常来说；一般","pos":6726,"order":242},{"word":"écrivait","freq":2,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"écrire (v.)","en":"was writing (imperf.)","zh":"写（过去进行时）","pos":6749,"order":244},{"word":"hors","freq":2,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"hors (prép.)","en":"outside; hors sujet = off-topic","zh":"在…外；离题","pos":6775,"order":246},{"word":"sujet","freq":2,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"sujet (n.m.)","en":"subject; hors sujet = off-topic","zh":"主题；离题","pos":6780,"order":247},{"word":"virgule","freq":2,"sentence":"– Point-virgule, ouvrez les guillemets, virgule, deux-points, ouvrez la parenthèse, à la ligne, fermez la parenthèse et les guillemets…","lemma":"virgule (n.f.)","en":"comma (punctuation)","zh":"逗号","pos":6958,"order":252},{"word":"ouvrez","freq":2,"sentence":"– Point-virgule, ouvrez les guillemets, virgule, deux-points, ouvrez la parenthèse, à la ligne, fermez la parenthèse et les guillemets…","lemma":"ouvrir (v.)","en":"open (imperative)","zh":"打开（命令式）","pos":6967,"order":253},{"word":"guillemets","freq":2,"sentence":"– Point-virgule, ouvrez les guillemets, virgule, deux-points, ouvrez la parenthèse, à la ligne, fermez la parenthèse et les guillemets…","lemma":"guillemet (n.m.)","en":"quotation mark « »","zh":"引号","pos":6978,"order":254},{"word":"parenthèse","freq":2,"sentence":"– Point-virgule, ouvrez les guillemets, virgule, deux-points, ouvrez la parenthèse, à la ligne, fermez la parenthèse et les guillemets…","lemma":"parenthèse (n.f.)","en":"parenthesis; bracket","zh":"括号","pos":7022,"order":255},{"word":"crise","freq":2,"sentence":"Et comme il prenait l’accent du Midi de Monsieur Casterade, j’avais une crise de fou rire.","lemma":"crise (n.f.)","en":"crisis; crise de fou rire = fit of laughter","zh":"危机；大笑发作","pos":7158,"order":256},{"word":"fou","freq":2,"sentence":"Et comme il prenait l’accent du Midi de Monsieur Casterade, j’avais une crise de fou rire.","lemma":"fou (adj.)","en":"crazy; fou rire = fit of laughter","zh":"疯狂的；大笑","pos":7167,"order":257},{"word":"bulletin","freq":2,"sentence":"Un après-midi que je revenais de l’école avec papa, Monsieur Casterade avait voulu que je lui montre mon bulletin.","lemma":"bulletin (n.m.)","en":"school report card","zh":"成绩单","pos":7422,"order":262},{"word":"noir","freq":2,"sentence":"Il m’a fixée de son œil noir :","lemma":"noir (adj.)","en":"black; dark","zh":"黑色的；深色的","pos":7503,"order":267},{"word":"part","freq":2,"sentence":"Je m’attendais à de meilleurs résultats de votre part, surtout en orthographe…","lemma":"part (n.f.)","en":"part; de votre part = from you","zh":"份；来自某人","pos":7608,"order":269},{"word":"surtout","freq":2,"sentence":"Je m’attendais à de meilleurs résultats de votre part, surtout en orthographe…","lemma":"surtout (adv.)","en":"especially, above all","zh":"尤其；特别是","pos":7614,"order":270},{"word":"droit","freq":2,"sentence":"Il a disparu, très droit, très digne sur ses patins à roulettes invisibles, et papa et moi, nous nous sommes regardés par-dessus nos lunettes.","lemma":"droit (adj./adv.)","en":"straight; upright","zh":"笔直的；直立","pos":7978,"order":273},{"word":"invisibles","freq":2,"sentence":"Il a disparu, très droit, très digne sur ses patins à roulettes invisibles, et papa et moi, nous nous sommes regardés par-dessus nos lunettes.","lemma":"invisible (adj.)","en":"invisible","zh":"看不见的","pos":8023,"order":274},{"word":"neige","freq":1,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"neige (n.f.)","en":"snow","zh":"雪","pos":51,"order":0},{"word":"dirige","freq":1,"sentence":"A New York, il neige aujourd’hui et je regarde, par la fenêtre de mon appartement de la 59e rue, l’immeuble d’en face où se trouve l’école de danse que je dirige.","lemma":"diriger (v.)","en":"to direct, manage, lead","zh":"管理；指导","pos":191,"order":9},{"word":"justaucorps","freq":1,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"justaucorps (n.m.)","en":"leotard (ballet bodysuit)","zh":"紧身连体衣（芭蕾）","pos":238,"order":14},{"word":"pointes","freq":1,"sentence":"Derrière la baie vitrée, les élèves en justaucorps ont cessé leurs pointes et leurs entrechats.","lemma":"pointe (n.f.)","en":"ballet tip-toe; faire des pointes","zh":"芭蕾脚尖动作","pos":266,"order":15},{"word":"journée","freq":1,"sentence":"Je me souviens qu’à l’époque de Madame Dismaïlova, je m’exerçais pendant la journée à ne plus porter mes lunettes.","lemma":"journée (n.f.)","en":"day (duration)","zh":"一整天","pos":744,"order":34},{"word":"acuité","freq":1,"sentence":"Les contours des gens et des choses perdaient leur acuité, tout devenait flou, les sons eux-mêmes étaient de plus en plus étouffés.","lemma":"acuité (n.f.)","en":"sharpness, acuteness (of vision)","zh":"敏锐；清晰度","pos":834,"order":37},{"word":"étouffés","freq":1,"sentence":"Les contours des gens et des choses perdaient leur acuité, tout devenait flou, les sons eux-mêmes étaient de plus en plus étouffés.","lemma":"étouffé (adj.)","en":"muffled, stifled","zh":"闷着的；压抑的","pos":905,"order":40},{"word":"aspérités","freq":1,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"aspérité (n.f.)","en":"roughness, sharpness","zh":"粗糙；棱角","pos":974,"order":43},{"word":"duveteux","freq":1,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"duveteux (adj.)","en":"downy, fluffy","zh":"绒毛般柔软的","pos":1014,"order":45},{"word":"oreiller","freq":1,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"oreiller (n.m.)","en":"pillow","zh":"枕头","pos":1034,"order":47},{"word":"joue","freq":1,"sentence":"Le monde, quand je le voyais sans lunettes, n’avait plus d’aspérités, il était aussi doux et aussi duveteux qu’un gros oreiller contre lequel j’appuyais ma joue, et je finissais par m’endormir.","lemma":"joue (n.f.)","en":"cheek","zh":"脸颊","pos":1071,"order":48},{"word":"obéissais","freq":1,"sentence":"Je lui obéissais et tout retrouvait sa dureté et sa précision coutumières.","lemma":"obéir (v.)","en":"was obeying (imperf.)","zh":"服从（过去时）","pos":1198,"order":52},{"word":"dureté","freq":1,"sentence":"Je lui obéissais et tout retrouvait sa dureté et sa précision coutumières.","lemma":"dureté (n.f.)","en":"hardness, harshness","zh":"硬度；严酷","pos":1230,"order":53},{"word":"coutumières","freq":1,"sentence":"Je lui obéissais et tout retrouvait sa dureté et sa précision coutumières.","lemma":"coutumier (adj.)","en":"customary, usual","zh":"惯常的；日常的","pos":1253,"order":55},{"word":"dirigé","freq":1,"sentence":"Ensuite, j’ai dirigé avec ma mère un cours de danse.","lemma":"diriger (v.)","en":"directed, led (past part.)","zh":"领导了；管理了","pos":1440,"order":64},{"word":"résoudre","freq":1,"sentence":"Mon père lui aussi devrait prendre sa retraite mais il ne peut s’y résoudre.","lemma":"résoudre (v.)","en":"to resolve; ne peut s'y résoudre = can't bring himself to","zh":"解决；下决心","pos":1652,"order":71},{"word":"somme","freq":1,"sentence":"En somme, rien à dire sur nous.","lemma":"somme (n.f.)","en":"sum; en somme = in short","zh":"总计；总之","pos":1841,"order":78},{"word":"habitions","freq":1,"sentence":"Nous habitions au-dessus d’une sorte de magasin dont papa baissait, chaque soir, à sept heures, le rideau de fer.","lemma":"habiter (v.)","en":"we lived (imperf.)","zh":"我们住（过去进行时）","pos":2074,"order":90},{"word":"expédie","freq":1,"sentence":"Cela ressemblait au local des gares de province où l’on consigne et où l’on expédie les bagages.","lemma":"expédier (v.)","en":"to send, dispatch","zh":"发送；托运","pos":2259,"order":99},{"word":"bagages","freq":1,"sentence":"Cela ressemblait au local des gares de province où l’on consigne et où l’on expédie les bagages.","lemma":"bagage (n.m.)","en":"luggage, baggage","zh":"行李","pos":2271,"order":100},{"word":"empilés","freq":1,"sentence":"Il y avait toujours des caisses et des paquets empilés les uns sur les autres.","lemma":"empiler (v.)","en":"piled up (past part.)","zh":"叠放着的","pos":2327,"order":103},{"word":"poches","freq":1,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"poche (n.f.)","en":"pockets","zh":"口袋","pos":2745,"order":119},{"word":"incliné","freq":1,"sentence":"Aux rares moments où Monsieur Casterade, son associé, était absent, papa se tenait immobile et silencieux au milieu du plateau de la balance, les mains dans les poches, le visage incliné.","lemma":"incliner (v.)","en":"inclined, tilted","zh":"低着；倾斜的","pos":2763,"order":121},{"word":"fixait","freq":1,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"fixer (v.)","en":"was staring at (imperf.)","zh":"凝视；盯着","pos":2775,"order":122},{"word":"aiguille","freq":1,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"aiguille (n.f.)","en":"needle; hand (of clock/scale)","zh":"针；指针","pos":2833,"order":125},{"word":"marquait","freq":1,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"marquer (v.)","en":"marked, indicated (imperf.)","zh":"标记；显示","pos":2842,"order":126},{"word":"soixante","freq":1,"sentence":"Il fixait d’un regard pensif le cadran de la balance, dont l’aiguille marquait – je m’en souviens – soixante-sept kilos.","lemma":"soixante (num.)","en":"sixty","zh":"六十","pos":2872,"order":127},{"word":"bougions","freq":1,"sentence":"Nous ne bougions pas.","lemma":"bouger (v.)","en":"we moved (imperf.)","zh":"我们动（过去时）","pos":3061,"order":131},{"word":"objectif","freq":1,"sentence":"Nous avions l’air de prendre la pose devant l’objectif d’un photographe.","lemma":"objectif (n.m.)","en":"objective; lens (camera)","zh":"目标；镜头","pos":3121,"order":135},{"word":"photographe","freq":1,"sentence":"Nous avions l’air de prendre la pose devant l’objectif d’un photographe.","lemma":"photographe (n.m.)","en":"photographer","zh":"摄影师","pos":3135,"order":136},{"word":"brumeux","freq":1,"sentence":"Tout était doux et brumeux autour de nous.","lemma":"brumeux (adj.)","en":"misty, hazy","zh":"朦胧的；有雾的","pos":3224,"order":138},{"word":"pesons","freq":1,"sentence":"– Vous voyez bien que nous nous pesons, avait dit papa.","lemma":"peser (v.)","en":"we are weighing ourselves","zh":"我们在称重","pos":3532,"order":147},{"word":"daigner","freq":1,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"daigner (v.)","en":"to deign, condescend to","zh":"屈尊；勉强","pos":3561,"order":149},{"word":"nerveux","freq":1,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"nerveux (adj.)","en":"nervous; sharp","zh":"紧张的；急促的","pos":3610,"order":152},{"word":"paroi","freq":1,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"paroi (n.f.)","en":"partition wall; panel","zh":"隔板；墙壁","pos":3645,"order":154},{"word":"noyer","freq":1,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"noyer (n.m.)","en":"walnut (wood/tree)","zh":"核桃木","pos":3686,"order":155},{"word":"pivotantes","freq":1,"sentence":"Sans daigner nous répondre, il avait disparu d’un pas nerveux, tout au fond, derrière la paroi vitrée, là où deux gros bureaux de noyer se faisaient face avec leurs chaises pivotantes : le bureau de papa et celui de Monsieur Casterade.","lemma":"pivotant (adj.)","en":"swivel (chairs)","zh":"旋转的","pos":3729,"order":156},{"word":"programmes","freq":1,"sentence":"J’ai gardé tous les programmes.","lemma":"programme (n.m.)","en":"programme; schedule","zh":"节目单；计划","pos":4175,"order":163},{"word":"barres","freq":1,"sentence":"Chaque semaine, papa et moi nous recevions, l’un et l’autre, une lettre d’Amérique, dont l’enveloppe était bordée de petites barres rouges et bleues.","lemma":"barre (n.f.)","en":"bar, stripe","zh":"横杠；条纹","pos":4663,"order":181},{"word":"surnommait","freq":1,"sentence":"Quand papa me parlait de son associé Raymond Casterade, il le surnommait : « Le Crampon ».","lemma":"surnommer (v.)","en":"used to nickname (imperf.)","zh":"给…起外号","pos":4916,"order":188},{"word":"raide","freq":1,"sentence":"Ce buste long et raide cachait le mouvement de ses jambes et on aurait dit qu’il glissait sur des patins à roulettes ou même des patins à glace.","lemma":"raide (adj.)","en":"stiff, rigid","zh":"僵硬的；笔直的","pos":5175,"order":199},{"word":"secrétaire","freq":1,"sentence":"J’ai su, plus tard, que papa l’avait d’abord engagé comme secrétaire.","lemma":"secrétaire (n.m.)","en":"secretary","zh":"秘书","pos":5361,"order":204},{"word":"licence","freq":1,"sentence":"Il voulait un homme qui connût bien l’orthographe et Monsieur Casterade, dans sa jeunesse, avait préparé une licence ès lettres.","lemma":"licence (n.f.)","en":"university degree","zh":"学士学位","pos":5482,"order":208},{"word":"manie","freq":1,"sentence":"avait une autre manie : celle de dicter des lettres, le buste cambré, le verbe haut.","lemma":"manie (n.f.)","en":"mania, obsessive habit","zh":"怪癖；偏执习惯","pos":6153,"order":224},{"word":"cambré","freq":1,"sentence":"avait une autre manie : celle de dicter des lettres, le buste cambré, le verbe haut.","lemma":"cambré (adj.)","en":"arched (back); with arched posture","zh":"挺胸拱背的","pos":6199,"order":226},{"word":"délicatesse","freq":1,"sentence":"Combien de fois ai-je vu papa taper à la machine des lettres d’affaires sous la dictée de Monsieur Casterade, et cela sans oser lui dire – par délicatesse – que ces lettres ne servaient à rien…","lemma":"délicatesse (n.f.)","en":"delicacy, tact","zh":"细腻；得体","pos":6365,"order":231},{"word":"épelait","freq":1,"sentence":"Monsieur Casterade épelait les mots, indiquait la ponctuation et le moindre accent circonflexe.","lemma":"épeler (v.)","en":"was spelling out (imperf.)","zh":"拼写（过去进行时）","pos":6435,"order":232},{"word":"ponctuation","freq":1,"sentence":"Monsieur Casterade épelait les mots, indiquait la ponctuation et le moindre accent circonflexe.","lemma":"ponctuation (n.f.)","en":"punctuation","zh":"标点符号","pos":6466,"order":234},{"word":"circonflexe","freq":1,"sentence":"Monsieur Casterade épelait les mots, indiquait la ponctuation et le moindre accent circonflexe.","lemma":"accent circonflexe","en":"circumflex accent (^)","zh":"抑扬符号（ˆ）","pos":6499,"order":235},{"word":"déchirait","freq":1,"sentence":"Dès que son associé tournait le dos, papa déchirait souvent la lettre.","lemma":"déchirer (v.)","en":"was tearing up (imperf.)","zh":"撕毁（过去进行时）","pos":6554,"order":237},{"word":"devoirs","freq":1,"sentence":"voulait dicter mes devoirs et j’étais obligée de le laisser faire.","lemma":"devoir (n.m.)","en":"homework; duty","zh":"作业；职责","pos":6634,"order":238},{"word":"copie","freq":1,"sentence":"J’avais quelquefois une bonne note mais, en général, le professeur écrivait sur ma copie : « hors sujet ».","lemma":"copie (n.f.)","en":"copy; exam paper","zh":"试卷；副本","pos":6765,"order":245},{"word":"déchire","freq":1,"sentence":"– Si tu sens qu’il est « hors sujet », déchire le devoir qu’il te dicte.","lemma":"déchirer (v.)","en":"to tear up, rip","zh":"撕碎；撕毁","pos":6854,"order":248},{"word":"recommence","freq":1,"sentence":"Et recommence-le toute seule.","lemma":"recommencer (v.)","en":"to start again","zh":"重新开始","pos":6891,"order":249},{"word":"imitait","freq":1,"sentence":"En son absence, papa l’imitait.","lemma":"imiter (v.)","en":"was imitating (imperf.)","zh":"模仿（过去进行时）","pos":6941,"order":250},{"word":"tréma","freq":1,"sentence":"N’oubliez pas le tréma sur le u…","lemma":"tréma (n.m.)","en":"diaeresis / umlaut (¨)","zh":"分音符号（¨）","pos":7242,"order":260},{"word":"mordillant","freq":1,"sentence":"Il le lisait en mordillant son fume-cigarette.","lemma":"mordiller (v.)","en":"was nibbling (imperf.)","zh":"轻咬（过去进行时）","pos":7448,"order":263},{"word":"fixée","freq":1,"sentence":"Il m’a fixée de son œil noir :","lemma":"fixer (v.)","en":"stared at (past part. fem.)","zh":"凝视了","pos":7486,"order":265},{"word":"résultats","freq":1,"sentence":"Je m’attendais à de meilleurs résultats de votre part, surtout en orthographe…","lemma":"résultat (n.m.)","en":"result; grade","zh":"结果；成绩","pos":7589,"order":268},{"word":"dédaigneux","freq":1,"sentence":"Monsieur Casterade s’est levé, le buste dédaigneux, et il a glissé jusqu’à la porte du bureau.","lemma":"dédaigneux (adj.)","en":"disdainful, scornful","zh":"蔑视的；轻蔑的","pos":7904,"order":272}],"2":[{"word":"entendu","freq":6,"sentence":"Mais, un jour que Monsieur Casterade était très fâché, je l’avais entendu dire à papa :","lemma":"entendre (v.)","en":"heard (past part.)","zh":"听到了","pos":728,"order":3},{"word":"amis","freq":5,"sentence":"– Vous devriez vous rappeler, Georges, que les vrais amis sont ceux qui vous sortent des griffes de la Justice.","lemma":"ami (n.m.)","en":"friend","zh":"朋友","pos":803,"order":4},{"word":"donner","freq":4,"sentence":"Il n’a jamais voulu me donner d’autres détails.","lemma":"donner (v.)","en":"to give","zh":"给；给予","pos":637,"order":1},{"word":"connu","freq":4,"sentence":"Quand papa avait connu Casterade, celui-ci venait d’abandonner son poste de professeur de français dans un collège de la banlieue.","lemma":"connaître (v.)","en":"known, met (past part.)","zh":"认识了","pos":879,"order":7},{"word":"français","freq":4,"sentence":"Quand papa avait connu Casterade, celui-ci venait d’abandonner son poste de professeur de français dans un collège de la banlieue.","lemma":"français (adj./n.)","en":"French","zh":"法语；法国的","pos":952,"order":9},{"word":"appelle","freq":4,"sentence":"Le livre s’appelle : Cantilènes et il est édité chez l’auteur, 15, rue de l’Aqueduc, à Paris Xe.","lemma":"s'appeler (v.)","en":"to be called/named","zh":"叫做；名为","pos":1345,"order":17},{"word":"auteur","freq":4,"sentence":"Le livre s’appelle : Cantilènes et il est édité chez l’auteur, 15, rue de l’Aqueduc, à Paris Xe.","lemma":"auteur (n.m.)","en":"author","zh":"作者","pos":1389,"order":18},{"word":"passé","freq":3,"sentence":"J’ai ici, dans la bibliothèque de mon appartement de New York, l’un de ses ouvrages, que mon père avait sans doute fourré dans sa valise, à notre départ de France, pour garder une trace du passé.","lemma":"passé (n.m.)","en":"past","zh":"过去","pos":1327,"order":15},{"word":"livre","freq":3,"sentence":"Le livre s’appelle : Cantilènes et il est édité chez l’auteur, 15, rue de l’Aqueduc, à Paris Xe.","lemma":"livre (n.m.)","en":"book","zh":"书","pos":1337,"order":16},{"word":"détails","freq":2,"sentence":"Il n’a jamais voulu me donner d’autres détails.","lemma":"détail (n.m.)","en":"detail","zh":"细节；详情","pos":653,"order":2},{"word":"collège","freq":2,"sentence":"Quand papa avait connu Casterade, celui-ci venait d’abandonner son poste de professeur de français dans un collège de la banlieue.","lemma":"collège (n.m.)","en":"secondary school","zh":"初中；学院","pos":969,"order":10},{"word":"jadis","freq":2,"sentence":"Il avait profité du respect de papa à l’égard de ceux qui écrivent des livres : Monsieur Casterade avait publié jadis plusieurs volumes de vers.","lemma":"jadis (adv.)","en":"formerly, in the past","zh":"从前；昔日","pos":1105,"order":12},{"word":"volumes","freq":2,"sentence":"Il avait profité du respect de papa à l’égard de ceux qui écrivent des livres : Monsieur Casterade avait publié jadis plusieurs volumes de vers.","lemma":"volume (n.m.)","en":"volume; book","zh":"卷；书册","pos":1121,"order":13},{"word":"lointains","freq":1,"sentence":"Plus tard, en Amérique, le magasin de la rue d’Hauteville et Monsieur Casterade nous semblaient si lointains que nous finissions par nous demander s’ils avaient jamais existé.","lemma":"lointain (adj.)","en":"distant, far-away","zh":"遥远的；久远的","pos":135,"order":0},{"word":"griffes","freq":1,"sentence":"– Vous devriez vous rappeler, Georges, que les vrais amis sont ceux qui vous sortent des griffes de la Justice.","lemma":"griffe (n.f.)","en":"claws; claw grip","zh":"爪子；魔爪","pos":839,"order":5},{"word":"justice","freq":1,"sentence":"– Vous devriez vous rappeler, Georges, que les vrais amis sont ceux qui vous sortent des griffes de la Justice.","lemma":"justice (n.f.)","en":"justice; law","zh":"正义；司法","pos":853,"order":6},{"word":"poste","freq":1,"sentence":"Quand papa avait connu Casterade, celui-ci venait d’abandonner son poste de professeur de français dans un collège de la banlieue.","lemma":"poste (n.m.)","en":"position, post (job)","zh":"职位；岗位","pos":929,"order":8},{"word":"banlieue","freq":1,"sentence":"Quand papa avait connu Casterade, celui-ci venait d’abandonner son poste de professeur de français dans un collège de la banlieue.","lemma":"banlieue (n.f.)","en":"suburb","zh":"郊区","pos":983,"order":11},{"word":"bibliothèque","freq":1,"sentence":"J’ai ici, dans la bibliothèque de mon appartement de New York, l’un de ses ouvrages, que mon père avait sans doute fourré dans sa valise, à notre départ de France, pour garder une trace du passé.","lemma":"bibliothèque (n.f.)","en":"library; bookcase","zh":"图书馆；书柜","pos":1156,"order":14},{"word":"aqueduc","freq":1,"sentence":"Le livre s’appelle : Cantilènes et il est édité chez l’auteur, 15, rue de l’Aqueduc, à Paris Xe.","lemma":"aqueduc (n.m.)","en":"aqueduct","zh":"水渠；渡槽","pos":1410,"order":19},{"word":"lauréat","freq":1,"sentence":"Lauréat des jeux floraux du Languedoc, des Mussetistes de Bordeaux et de la Fédération littéraire Gascogne-Afrique du Nord.","lemma":"lauréat (n.m.)","en":"laureate, prize-winner","zh":"获奖者","pos":1502,"order":20}],"3":[{"word":"main","freq":15,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"main (n.f.)","en":"hand","zh":"手","pos":2113,"order":41},{"word":"grande","freq":12,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"grande (adj.)","en":"big, large (fem.)","zh":"大的（阴性）","pos":76,"order":1},{"word":"nom","freq":11,"sentence":"Certitude est notre nom de famille, à mon père et à moi.","lemma":"nom (n.m.)","en":"name","zh":"名字；姓名","pos":270,"order":10},{"word":"restaurant","freq":10,"sentence":"Je restais deux fois par semaine à la cantine de l’école, et les autres jours je déjeunais avec papa dans un restaurant du quartier, rue de Chabrol : « Le Picardie ».","lemma":"restaurant (n.m.)","en":"restaurant","zh":"餐厅","pos":3573,"order":64},{"word":"moment","freq":8,"sentence":"Au moment de transcrire sur la fiche le nom si compliqué de mon père, il avait poussé un soupir.","lemma":"moment (n.m.)","en":"moment","zh":"时刻；片刻","pos":933,"order":18},{"word":"hommes","freq":7,"sentence":"Par la fenêtre de ma chambre, je voyais des hommes entrer et sortir du magasin en transportant des caisses.","lemma":"homme (n.m.pl.)","en":"men","zh":"男人们","pos":1910,"order":36},{"word":"portait","freq":6,"sentence":"Le magasin de la rue d’Hauteville portait donc pour enseigne : « CASTERADE & CERTITUDE – Exp.","lemma":"porter (v.)","en":"was wearing (imperf.)","zh":"穿戴（过去进行时）","pos":1505,"order":28},{"word":"suite","freq":6,"sentence":"A tout de suite, Raymond, disait mon père.","lemma":"suite (n.f.)","en":"sequence; tout de suite = right away","zh":"随即；马上","pos":2832,"order":51},{"word":"quartier","freq":6,"sentence":"Je restais deux fois par semaine à la cantine de l’école, et les autres jours je déjeunais avec papa dans un restaurant du quartier, rue de Chabrol : « Le Picardie ».","lemma":"quartier (n.m.)","en":"neighborhood, district","zh":"街区；社区","pos":3587,"order":65},{"word":"bleu","freq":5,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"bleu (adj.)","en":"blue","zh":"蓝色的","pos":194,"order":8},{"word":"camion","freq":5,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"camion (n.m.)","en":"truck, lorry","zh":"卡车","pos":2179,"order":44},{"word":"sièges","freq":5,"sentence":"– Alors, Chevreau, ça vous intéresse, cinquante sièges d’avion Constellation ?","lemma":"siège (n.m.)","en":"seat; headquarters","zh":"座位；总部","pos":4744,"order":83},{"word":"travers","freq":5,"sentence":"Pour faciliter le trafic des marchandises à travers l’Europe, il existe dans chaque pays ce qu’on appelle des messageries, et à leur tête…","lemma":"travers (n.m.)","en":"à travers = through, across","zh":"穿越；通过","pos":5457,"order":90},{"word":"tête","freq":5,"sentence":"Pour faciliter le trafic des marchandises à travers l’Europe, il existe dans chaque pays ce qu’on appelle des messageries, et à leur tête…","lemma":"tête (n.f.)","en":"head","zh":"头；头部","pos":5546,"order":91},{"word":"écrit","freq":4,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"écrire (v.)","en":"written; to write (past part.)","zh":"写了","pos":174,"order":6},{"word":"jeune","freq":4,"sentence":"Un après-midi d’été, juste avant la guerre, quand papa était jeune, il avait eu besoin d’un extrait d’acte de naissance et il s’était rendu à la mairie du IXe arrondissement de Paris, là où son père à lui l’avait inscrit sous le nom de Tscerstistscekvadze ou Chertchetitudjvili.","lemma":"jeune (adj.)","en":"young","zh":"年轻的","pos":626,"order":14},{"word":"ouvert","freq":4,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"ouvert (adj.)","en":"open; opened","zh":"打开的","pos":2101,"order":40},{"word":"mesure","freq":4,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"mesure (n.f.)","en":"measure; au fur et à mesure = gradually","zh":"度量；随着","pos":2134,"order":42},{"word":"bon","freq":4,"sentence":"– Bon courage, Catherine…","lemma":"bon (adj.)","en":"good","zh":"好的","pos":3065,"order":55},{"word":"peur","freq":4,"sentence":"Mais il savait que Monsieur Casterade me faisait peur avec ses perpétuelles leçons de morale et d’orthographe et lui, papa, cherchait, au contraire, à me rassurer.","lemma":"peur (n.f.)","en":"fear; faire peur = to frighten","zh":"恐惧；害怕","pos":3349,"order":58},{"word":"table","freq":4,"sentence":"Nous le guettions, au coin de la rue, et nous attendions une dizaine de minutes après qu’il était entré dans le restaurant pour ne pas nous asseoir à la même table que lui.","lemma":"table (n.f.)","en":"table","zh":"桌子","pos":3831,"order":68},{"word":"seul","freq":4,"sentence":"Papa voulait être seul avec moi et craignait que Casterade ne parlât encore de catastrophes, de morale et d’orthographe.","lemma":"seul (adj.)","en":"alone; only","zh":"单独的；唯一的","pos":3864,"order":69},{"word":"crois","freq":4,"sentence":"Je crois que papa s’était mis d’accord avec le patron du restaurant pour qu’il nous donnât la table la plus éloignée de celle de Casterade.","lemma":"croire (v.)","en":"to believe, think","zh":"相信；认为","pos":3970,"order":70},{"word":"parler","freq":4,"sentence":"Je les écoutais parler mais je ne comprenais pas tout ce qu’ils disaient.","lemma":"parler (v.)","en":"to speak, talk","zh":"说话；讲","pos":4402,"order":76},{"word":"caractères","freq":3,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"caractère (n.m.)","en":"character; typeface; lettering","zh":"字体；字符","pos":183,"order":7},{"word":"donne","freq":3,"sentence":"– Vous avez un nom qui donne chaud, avait-il dit à papa en s’épongeant le front.","lemma":"donner (v.)","en":"to give; gives","zh":"给予","pos":1298,"order":26},{"word":"resté","freq":3,"sentence":"Mon père est toujours resté discret et évasif là-dessus.","lemma":"rester (v.)","en":"stayed (past part.)","zh":"留下了","pos":1633,"order":30},{"word":"vieux","freq":3,"sentence":"J’ai retrouvé, dans de vieux papiers, l’une des pages de ce registre :","lemma":"vieux (adj.)","en":"old","zh":"老的；旧的","pos":2270,"order":47},{"word":"accompagnait","freq":3,"sentence":"Papa m’y accompagnait après avoir levé le rideau de fer du magasin.","lemma":"accompagner (v.)","en":"was accompanying (imperf.)","zh":"陪同（过去进行时）","pos":2590,"order":49},{"word":"chemin","freq":3,"sentence":"Chaque matin, sur notre chemin, nous croisions Monsieur Casterade qui descendait la rue d’Hauteville pour rejoindre son bureau de « CASTERADE & CERTITUDE – Exp.","lemma":"chemin (n.m.)","en":"path, way, road","zh":"小路；路途","pos":2673,"order":50},{"word":"leçons","freq":3,"sentence":"Mais il savait que Monsieur Casterade me faisait peur avec ses perpétuelles leçons de morale et d’orthographe et lui, papa, cherchait, au contraire, à me rassurer.","lemma":"leçon (n.f.)","en":"lesson; moral lecture","zh":"课；教训","pos":3376,"order":60},{"word":"coin","freq":3,"sentence":"Nous le guettions, au coin de la rue, et nous attendions une dizaine de minutes après qu’il était entré dans le restaurant pour ne pas nous asseoir à la même table que lui.","lemma":"coin (n.m.)","en":"corner","zh":"角落；街角","pos":3695,"order":67},{"word":"accord","freq":3,"sentence":"Je crois que papa s’était mis d’accord avec le patron du restaurant pour qu’il nous donnât la table la plus éloignée de celle de Casterade.","lemma":"accord (n.m.)","en":"agreement; d'accord = agreed","zh":"协议；同意","pos":3999,"order":71},{"word":"fin","freq":3,"sentence":"Souvent, ceux avec qui il traitait des affaires venaient le retrouver à la fin du repas et s’asseyaient à notre table.","lemma":"fin (n.f.)","en":"end","zh":"结束；末尾","pos":4342,"order":73},{"word":"bouche","freq":3,"sentence":"Il y avait aussi, parmi eux, un roux aux lunettes à monture d’or, qui écoutait papa, bouche bée.","lemma":"bouche (n.f.)","en":"mouth","zh":"嘴；嘴巴","pos":4605,"order":81},{"word":"exemple","freq":3,"sentence":"– Eh bien, vous pouvez, par exemple, les transformer en sièges de cinéma.","lemma":"exemple (n.m.)","en":"example; par exemple = for example","zh":"例子；例如","pos":4961,"order":85},{"word":"habitude","freq":3,"sentence":"Chevreau considérait mon père, bouche bée, comme à son habitude.","lemma":"habitude (n.f.)","en":"habit; d'habitude = usually","zh":"习惯；通常","pos":5062,"order":86},{"word":"imagination","freq":3,"sentence":"– Ah çà, vous avez de l’imagination…","lemma":"imagination (n.f.)","en":"imagination","zh":"想象力","pos":5096,"order":87},{"word":"vraiment","freq":3,"sentence":"Je suis vraiment épaté…","lemma":"vraiment (adv.)","en":"truly, really","zh":"真的；确实","pos":5177,"order":88},{"word":"vitre","freq":2,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"vitre (n.f.)","en":"glass pane; window","zh":"玻璃窗","pos":83,"order":2},{"word":"marine","freq":2,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"marine (adj.)","en":"navy (blue)","zh":"海军蓝","pos":199,"order":9},{"word":"famille","freq":2,"sentence":"Certitude est notre nom de famille, à mon père et à moi.","lemma":"famille (n.f.)","en":"family","zh":"家庭；家族","pos":277,"order":11},{"word":"expliqué","freq":2,"sentence":"Papa m’a expliqué, plus tard, que notre vrai nom était beaucoup plus compliqué.","lemma":"expliquer (v.)","en":"explained (past part.)","zh":"解释了","pos":428,"order":12},{"word":"vrai","freq":2,"sentence":"Papa m’a expliqué, plus tard, que notre vrai nom était beaucoup plus compliqué.","lemma":"vrai (adj.)","en":"true, real","zh":"真实的；真正的","pos":459,"order":13},{"word":"naissance","freq":2,"sentence":"Un après-midi d’été, juste avant la guerre, quand papa était jeune, il avait eu besoin d’un extrait d’acte de naissance et il s’était rendu à la mairie du IXe arrondissement de Paris, là où son père à lui l’avait inscrit sous le nom de Tscerstistscekvadze ou Chertchetitudjvili.","lemma":"naissance (n.f.)","en":"birth","zh":"出生；诞生","pos":675,"order":15},{"word":"inscrit","freq":2,"sentence":"Un après-midi d’été, juste avant la guerre, quand papa était jeune, il avait eu besoin d’un extrait d’acte de naissance et il s’était rendu à la mairie du IXe arrondissement de Paris, là où son père à lui l’avait inscrit sous le nom de Tscerstistscekvadze ou Chertchetitudjvili.","lemma":"inscrire (v.)","en":"enrolled, registered","zh":"登记；注册","pos":778,"order":16},{"word":"désert","freq":2,"sentence":"Dans le bureau désert et ensoleillé de l’état civil, un employé se tenait, solitaire.","lemma":"désert (adj.)","en":"deserted, empty","zh":"空旷的；荒凉的","pos":859,"order":17},{"word":"enseigne","freq":2,"sentence":"Le magasin de la rue d’Hauteville portait donc pour enseigne : « CASTERADE & CERTITUDE – Exp.","lemma":"enseigne (n.f.)","en":"sign, shop sign","zh":"招牌；标志","pos":1523,"order":29},{"word":"travail","freq":2,"sentence":"Le travail se faisait de nuit.","lemma":"travail (n.m.)","en":"work, job","zh":"工作；劳动","pos":1723,"order":31},{"word":"nuit","freq":2,"sentence":"Le travail se faisait de nuit.","lemma":"nuit (n.f.)","en":"night","zh":"夜晚","pos":1745,"order":32},{"word":"moteur","freq":2,"sentence":"Souvent, j’étais réveillée par des allers et venues de camions qui s’arrêtaient et laissaient tourner leur moteur.","lemma":"moteur (n.m.)","en":"motor, engine","zh":"发动机；马达","pos":1858,"order":34},{"word":"chambre","freq":2,"sentence":"Par la fenêtre de ma chambre, je voyais des hommes entrer et sortir du magasin en transportant des caisses.","lemma":"chambre (n.f.)","en":"bedroom, room","zh":"卧室；房间","pos":1887,"order":35},{"word":"trottoir","freq":2,"sentence":"Papa et Monsieur Casterade, au milieu du trottoir, dirigeaient ces activités nocturnes de manutention.","lemma":"trottoir (n.m.)","en":"pavement, sidewalk","zh":"人行道","pos":2015,"order":37},{"word":"registre","freq":2,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"registre (n.m.)","en":"register, logbook","zh":"记录本；账簿","pos":2092,"order":39},{"word":"notes","freq":2,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"note (n.f.)","en":"note; school grade/mark","zh":"笔记；成绩","pos":2240,"order":45},{"word":"retrouvé","freq":2,"sentence":"J’ai retrouvé, dans de vieux papiers, l’une des pages de ce registre :","lemma":"retrouver (v.)","en":"found again (past part.)","zh":"重新找到了","pos":2252,"order":46},{"word":"papiers","freq":2,"sentence":"J’ai retrouvé, dans de vieux papiers, l’une des pages de ce registre :","lemma":"papier (n.m.)","en":"paper; document","zh":"纸；文件","pos":2276,"order":48},{"word":"vite","freq":2,"sentence":"Et son long buste continuait de glisser de plus en plus vite, puisque la rue d’Hauteville est en pente.","lemma":"vite (adv.)","en":"fast, quickly","zh":"快速地","pos":2949,"order":52},{"word":"épaule","freq":2,"sentence":"Mon père me tapotait l’épaule.","lemma":"épaule (n.f.)","en":"shoulder","zh":"肩膀","pos":3055,"order":54},{"word":"importance","freq":2,"sentence":"Et, cela n’a aucune importance si tu continues à faire des fautes d’orthographe comme ton papa…","lemma":"importance (n.f.)","en":"importance","zh":"重要性","pos":3109,"order":56},{"word":"contraire","freq":2,"sentence":"Mais il savait que Monsieur Casterade me faisait peur avec ses perpétuelles leçons de morale et d’orthographe et lui, papa, cherchait, au contraire, à me rassurer.","lemma":"contraire (n.m.)","en":"opposite; au contraire = on the contrary","zh":"相反；相反地","pos":3438,"order":61},{"word":"retrouver","freq":2,"sentence":"Souvent, ceux avec qui il traitait des affaires venaient le retrouver à la fin du repas et s’asseyaient à notre table.","lemma":"retrouver (v.)","en":"to find again; meet up","zh":"重新找到；相聚","pos":4327,"order":72},{"word":"repas","freq":2,"sentence":"Souvent, ceux avec qui il traitait des affaires venaient le retrouver à la fin du repas et s’asseyaient à notre table.","lemma":"repas (n.m.)","en":"meal","zh":"餐；饭","pos":4349,"order":74},{"word":"écoutais","freq":2,"sentence":"Je les écoutais parler mais je ne comprenais pas tout ce qu’ils disaient.","lemma":"écouter (v.)","en":"was listening to (imperf.)","zh":"听（过去进行时）","pos":4393,"order":75},{"word":"comprenais","freq":2,"sentence":"Je les écoutais parler mais je ne comprenais pas tout ce qu’ils disaient.","lemma":"comprendre (v.)","en":"to understand (imperf.)","zh":"理解（过去进行时）","pos":4420,"order":77},{"word":"moustaches","freq":2,"sentence":"Des hommes bruns avec des moustaches et de vieux pardessus.","lemma":"moustaches (n.f.pl.)","en":"moustaches; whiskers","zh":"胡须","pos":4486,"order":78},{"word":"pardessus","freq":2,"sentence":"Des hommes bruns avec des moustaches et de vieux pardessus.","lemma":"pardessus (n.m.)","en":"overcoat","zh":"大衣","pos":4509,"order":79},{"word":"roux","freq":2,"sentence":"Il y avait aussi, parmi eux, un roux aux lunettes à monture d’or, qui écoutait papa, bouche bée.","lemma":"roux (adj.)","en":"red-haired; auburn","zh":"红发的","pos":4552,"order":80},{"word":"bée","freq":2,"sentence":"Il y avait aussi, parmi eux, un roux aux lunettes à monture d’or, qui écoutait papa, bouche bée.","lemma":"bouche bée (loc.)","en":"open-mouthed, gaping","zh":"张口结舌","pos":4612,"order":82},{"word":"avion","freq":2,"sentence":"– Alors, Chevreau, ça vous intéresse, cinquante sièges d’avion Constellation ?","lemma":"avion (n.m.)","en":"airplane","zh":"飞机","pos":4753,"order":84},{"word":"chérie","freq":2,"sentence":"– Comment t’expliquer, ma chérie ?","lemma":"chéri/chérie (n.)","en":"darling, dear","zh":"亲爱的","pos":5404,"order":89},{"word":"façade","freq":1,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"façade (n.f.)","en":"façade, front (of building)","zh":"外墙；正面","pos":52,"order":0},{"word":"dépolie","freq":1,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"dépoli (adj.)","en":"frosted (glass)","zh":"磨砂的（玻璃）","pos":89,"order":3},{"word":"décourageait","freq":1,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"décourager (v.)","en":"was discouraging (imperf.)","zh":"使气馁（过去时）","pos":101,"order":4},{"word":"passants","freq":1,"sentence":"Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants de la rue d’Hauteville – il était écrit en caractères bleu marine : « CASTERADE & CERTITUDE – Exp.","lemma":"passant (n.m.)","en":"passer-by","zh":"过路人","pos":131,"order":5},{"word":"machinal","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"machinal (adj.)","en":"mechanical, automatic","zh":"机械的；无意识的","pos":1042,"order":19},{"word":"essaim","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"essaim (n.m.)","en":"swarm (of bees)","zh":"蜂群；一群","pos":1071,"order":20},{"word":"abeilles","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"abeille (n.f.)","en":"bee","zh":"蜜蜂","pos":1080,"order":21},{"word":"moustiques","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"moustique (n.m.)","en":"mosquito","zh":"蚊子","pos":1105,"order":22},{"word":"grillons","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"grillon (n.m.)","en":"cricket (insect)","zh":"蟋蟀","pos":1121,"order":23},{"word":"bourdonnement","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"bourdonnement(n.m.)","en":"buzzing, humming sound","zh":"嗡嗡声","pos":1222,"order":24},{"word":"insectes","freq":1,"sentence":"D’un mouvement machinal, il avait chassé un essaim d’abeilles invisibles, des moustiques, des grillons, comme si ces Czer, ces Tser, ces Tits, et ces Tce du nom de mon père lui avaient évoqué le bourdonnement de centaines d’insectes autour de lui.","lemma":"insecte (n.m.)","en":"insect","zh":"昆虫","pos":1251,"order":25},{"word":"épongeant","freq":1,"sentence":"– Vous avez un nom qui donne chaud, avait-il dit à papa en s’épongeant le front.","lemma":"éponger (v.)","en":"mopping, wiping","zh":"擦拭；拭汗","pos":1336,"order":27},{"word":"tourner","freq":1,"sentence":"Souvent, j’étais réveillée par des allers et venues de camions qui s’arrêtaient et laissaient tourner leur moteur.","lemma":"tourner (v.)","en":"to turn","zh":"转动；转弯","pos":1845,"order":33},{"word":"manutention","freq":1,"sentence":"Papa et Monsieur Casterade, au milieu du trottoir, dirigeaient ces activités nocturnes de manutention.","lemma":"manutention (n.f.)","en":"handling, moving goods","zh":"搬运；装卸","pos":2064,"order":38},{"word":"déchargeait","freq":1,"sentence":"Papa tenait un registre ouvert à la main, et au fur et à mesure que l’on déchargeait les caisses d’un camion ou que l’on chargeait un autre camion, il prenait des notes.","lemma":"décharger (v.)","en":"was unloading (imperf.)","zh":"卸货（过去进行时）","pos":2150,"order":43},{"word":"tapotait","freq":1,"sentence":"Mon père me tapotait l’épaule.","lemma":"tapoter (v.)","en":"was tapping (imperf.)","zh":"轻拍（过去进行时）","pos":3044,"order":53},{"word":"indifférent","freq":1,"sentence":"Maintenant, je comprends qu’il ne disait pas cela parce qu’il était un père indifférent à l’éducation de sa fille.","lemma":"indifférent (adj.)","en":"indifferent","zh":"无所谓的；漠然的","pos":3261,"order":57},{"word":"perpétuelles","freq":1,"sentence":"Mais il savait que Monsieur Casterade me faisait peur avec ses perpétuelles leçons de morale et d’orthographe et lui, papa, cherchait, au contraire, à me rassurer.","lemma":"perpétuel (adj.)","en":"perpetual, constant","zh":"永恒的；不断的","pos":3363,"order":59},{"word":"rassurer","freq":1,"sentence":"Mais il savait que Monsieur Casterade me faisait peur avec ses perpétuelles leçons de morale et d’orthographe et lui, papa, cherchait, au contraire, à me rassurer.","lemma":"rassurer (v.)","en":"to reassure","zh":"安慰；使放心","pos":3454,"order":62},{"word":"cantine","freq":1,"sentence":"Je restais deux fois par semaine à la cantine de l’école, et les autres jours je déjeunais avec papa dans un restaurant du quartier, rue de Chabrol : « Le Picardie ».","lemma":"cantine (n.f.)","en":"school canteen; cafeteria","zh":"学校食堂","pos":3502,"order":63},{"word":"guettions","freq":1,"sentence":"Nous le guettions, au coin de la rue, et nous attendions une dizaine de minutes après qu’il était entré dans le restaurant pour ne pas nous asseoir à la même table que lui.","lemma":"guetter (v.)","en":"were watching for (imperf.)","zh":"守候；等待","pos":3681,"order":66},{"word":"simplifier","freq":1,"sentence":"Enfin, disons pour simplifier que des gens m’envoient des caisses et des paquets…","lemma":"simplifier (v.)","en":"to simplify","zh":"简化","pos":5571,"order":92}],"4":[{"word":"voix","freq":12,"sentence":"– Et vous, Mademoiselle, me disait-il d’une voix encore plus sèche, quels poètes français avez-vous étudiés cet après-midi à l’école ?","lemma":"voix (n.f.)","en":"voice","zh":"声音；嗓音","pos":1106,"order":17},{"word":"bras","freq":7,"sentence":"Et moi, je restais debout les bras croisés.","lemma":"bras (n.m.)","en":"arm","zh":"手臂","pos":1423,"order":20},{"word":"partir","freq":6,"sentence":"A partir du mois d’avril, les fins d’après-midi, il m’accompagnait dans le square, devant l’église Saint-Vincent-de-Paul.","lemma":"partir (v.)","en":"to leave, depart","zh":"离开；出发","pos":38,"order":0},{"word":"square","freq":6,"sentence":"A partir du mois d’avril, les fins d’après-midi, il m’accompagnait dans le square, devant l’église Saint-Vincent-de-Paul.","lemma":"square (n.m.)","en":"small public garden","zh":"小广场；小花园","pos":111,"order":2},{"word":"côté","freq":6,"sentence":"Papa était assis sur un banc et me surveillait d’un œil distrait tandis que des hommes bruns à moustaches et aux vieux pardessus – les mêmes que ceux du restaurant – et Chevreau lui aussi prenaient place, à tour de rôle, sur le banc à côté de lui.","lemma":"côté (n.m.)","en":"side; à côté de = next to","zh":"旁边；侧面","pos":485,"order":8},{"word":"attendait","freq":6,"sentence":"Il attendait papa, dans le fond du magasin, assis à son bureau.","lemma":"attendre (v.)","en":"was waiting for","zh":"等候","pos":827,"order":16},{"word":"banc","freq":4,"sentence":"Papa était assis sur un banc et me surveillait d’un œil distrait tandis que des hommes bruns à moustaches et aux vieux pardessus – les mêmes que ceux du restaurant – et Chevreau lui aussi prenaient place, à tour de rôle, sur le banc à côté de lui.","lemma":"banc (n.m.)","en":"bench","zh":"长椅","pos":274,"order":5},{"word":"place","freq":4,"sentence":"Papa était assis sur un banc et me surveillait d’un œil distrait tandis que des hommes bruns à moustaches et aux vieux pardessus – les mêmes que ceux du restaurant – et Chevreau lui aussi prenaient place, à tour de rôle, sur le banc à côté de lui.","lemma":"place (n.f.)","en":"place, square; seat","zh":"广场；位置","pos":448,"order":6},{"word":"début","freq":4,"sentence":"Je me souviens encore du début de l’un d’eux, pour lequel il semblait éprouver une tendresse particulière :","lemma":"début (n.m.)","en":"beginning, start","zh":"开始；起初","pos":1731,"order":24},{"word":"semblait","freq":4,"sentence":"Je me souviens encore du début de l’un d’eux, pour lequel il semblait éprouver une tendresse particulière :","lemma":"sembler (v.)","en":"seemed, appeared (imperf.)","zh":"似乎；看来","pos":1767,"order":25},{"word":"mois","freq":3,"sentence":"A partir du mois d’avril, les fins d’après-midi, il m’accompagnait dans le square, devant l’église Saint-Vincent-de-Paul.","lemma":"mois (n.m.)","en":"month","zh":"月份","pos":48,"order":1},{"word":"camarades","freq":3,"sentence":"J’y retrouvais quelques-unes de mes camarades de classe et nous jouions jusqu’à six heures.","lemma":"camarade (n.m/f.)","en":"classmate, pal","zh":"同学；伙伴","pos":194,"order":4},{"word":"humeur","freq":3,"sentence":"– Casterade va être de mauvaise humeur.","lemma":"humeur (n.f.)","en":"mood; bonne/mauvaise humeur","zh":"情绪；心情","pos":683,"order":12},{"word":"veste","freq":3,"sentence":"Monsieur Casterade sortait de la poche intérieure de sa veste l’un des recueils de poèmes dont il était l’auteur.","lemma":"veste (n.f.)","en":"jacket","zh":"夹克；外套","pos":1493,"order":22},{"word":"poèmes","freq":3,"sentence":"Monsieur Casterade sortait de la poche intérieure de sa veste l’un des recueils de poèmes dont il était l’auteur.","lemma":"poème (n.m.)","en":"poem","zh":"诗歌","pos":1520,"order":23},{"word":"église","freq":2,"sentence":"A partir du mois d’avril, les fins d’après-midi, il m’accompagnait dans le square, devant l’église Saint-Vincent-de-Paul.","lemma":"église (n.f.)","en":"church","zh":"教堂","pos":128,"order":3},{"word":"parlaient","freq":2,"sentence":"Ils parlaient et papa écrivait des notes sur un calepin.","lemma":"parler (v.)","en":"were talking (imperf.)","zh":"说话（过去进行时复数）","pos":502,"order":9},{"word":"mauvaise","freq":2,"sentence":"– Casterade va être de mauvaise humeur.","lemma":"mauvais (adj.)","en":"bad; de mauvaise humeur = in a bad mood","zh":"坏的；差的","pos":674,"order":11},{"word":"rendez","freq":2,"sentence":"Il ne comprend pas que je donne mes rendez-vous dans le square.","lemma":"rendez-vous (n.m.)","en":"appointment; meeting","zh":"约会；约定","pos":727,"order":13},{"word":"mieux","freq":2,"sentence":"Avec ce beau temps, on travaille beaucoup mieux dehors…","lemma":"mieux (adv.)","en":"better","zh":"更好","pos":810,"order":14},{"word":"dehors","freq":2,"sentence":"Avec ce beau temps, on travaille beaucoup mieux dehors…","lemma":"dehors (adv.)","en":"outside, outdoors","zh":"外面；户外","pos":816,"order":15},{"word":"contrarier","freq":2,"sentence":"Il ne fallait pas le contrarier, à ce moment-là.","lemma":"contrarier (v.)","en":"to upset, go against","zh":"反对；使烦恼","pos":1335,"order":18},{"word":"debout","freq":2,"sentence":"Et moi, je restais debout les bras croisés.","lemma":"debout (adv.)","en":"standing up","zh":"站立","pos":1412,"order":19},{"word":"poche","freq":2,"sentence":"Monsieur Casterade sortait de la poche intérieure de sa veste l’un des recueils de poèmes dont il était l’auteur.","lemma":"poche (n.f.)","en":"pocket","zh":"口袋","pos":1470,"order":21},{"word":"soirs","freq":2,"sentence":"Là-bas, à Castelnaudary, les soirs d’automne…","lemma":"soir (n.m.pl.)","en":"evenings","zh":"傍晚（复数）","pos":1935,"order":28},{"word":"automne","freq":2,"sentence":"Là-bas, à Castelnaudary, les soirs d’automne…","lemma":"automne (n.m.)","en":"autumn, fall","zh":"秋天","pos":1943,"order":29},{"word":"réveillait","freq":2,"sentence":"Bien plus tard, papa me réveillait.","lemma":"réveiller (v.)","en":"was waking up (imperf.)","zh":"叫醒（过去进行时）","pos":2047,"order":30},{"word":"baisser","freq":2,"sentence":"Alors, je l’aidais à baisser le rideau de fer du magasin.","lemma":"baisser (v.)","en":"to lower, pull down","zh":"放下；降低","pos":2178,"order":31},{"word":"rôle","freq":1,"sentence":"Papa était assis sur un banc et me surveillait d’un œil distrait tandis que des hommes bruns à moustaches et aux vieux pardessus – les mêmes que ceux du restaurant – et Chevreau lui aussi prenaient place, à tour de rôle, sur le banc à côté de lui.","lemma":"rôle (n.m.)","en":"role, part","zh":"角色；作用","pos":465,"order":7},{"word":"calepin","freq":1,"sentence":"Ils parlaient et papa écrivait des notes sur un calepin.","lemma":"calepin (n.m.)","en":"small notebook","zh":"小笔记本","pos":546,"order":10},{"word":"éprouver","freq":1,"sentence":"Je me souviens encore du début de l’un d’eux, pour lequel il semblait éprouver une tendresse particulière :","lemma":"éprouver (v.)","en":"to feel, experience","zh":"感受；体验","pos":1776,"order":26},{"word":"tendresse","freq":1,"sentence":"Je me souviens encore du début de l’un d’eux, pour lequel il semblait éprouver une tendresse particulière :","lemma":"tendresse (n.f.)","en":"tenderness, affection","zh":"温情；柔情","pos":1789,"order":27}],"5":[{"word":"vie","freq":8,"sentence":"– A nous deux, Madame la vie.","lemma":"vie (n.f.)","en":"life","zh":"生活；生命","pos":446,"order":4},{"word":"gare","freq":7,"sentence":"Il contemplait le paysage : les toits et, tout là-bas, la verrière de la gare de l’Est.","lemma":"gare (n.f.)","en":"train station","zh":"火车站","pos":313,"order":2},{"word":"déjeuner","freq":3,"sentence":"Il avait préparé le petit déjeuner qui nous attendait sur la table du salon-salle à manger.","lemma":"déjeuner (v./n.m.)","en":"to have lunch; lunch","zh":"午餐；吃午饭","pos":92,"order":0},{"word":"cravate","freq":3,"sentence":"Et il disait en nouant le nœud de sa cravate, sur un ton pensif ou quelquefois très résolu :","lemma":"cravate (n.f.)","en":"tie, necktie","zh":"领带","pos":365,"order":3},{"word":"manger","freq":2,"sentence":"Il avait préparé le petit déjeuner qui nous attendait sur la table du salon-salle à manger.","lemma":"manger (v.)","en":"to eat","zh":"吃","pos":150,"order":1}],"6":[{"word":"grand","freq":10,"sentence":"Un grand camion bâché, qui portait des inscriptions en espagnol, était garé devant le magasin et trois hommes commençaient à le décharger en posant les caisses sur le trottoir.","lemma":"grand (adj.)","en":"big, large, tall","zh":"大的；高的","pos":177,"order":1},{"word":"téléphone","freq":5,"sentence":"Il a raccroché le combiné du téléphone et Monsieur Casterade a dit :","lemma":"téléphone (n.m.)","en":"telephone","zh":"电话","pos":948,"order":20},{"word":"attention","freq":5,"sentence":"– Faites attention, Georges : vous vous lancez dans une aventure périlleuse…","lemma":"attention (n.f.)","en":"attention; watch out!","zh":"注意；小心","pos":997,"order":21},{"word":"venu","freq":4,"sentence":"Le soir, un autre camion est venu prendre livraison des caisses de danseuses.","lemma":"venir (v.)","en":"came; venu chercher = came to pick up","zh":"来了","pos":1466,"order":28},{"word":"danseuse","freq":4,"sentence":"– Ma petite Catherine, m’a dit papa, ça te plairait d’être une danseuse toi aussi ?","lemma":"danseuse (n.f.)","en":"female dancer, ballerina","zh":"女舞蹈演员","pos":1805,"order":30},{"word":"tendu","freq":3,"sentence":"Les trois hommes ont tendu un reçu à papa.","lemma":"tendu (adj.)","en":"stretched, tense; ballet step tendu","zh":"紧绷的；（芭蕾）tendu","pos":501,"order":9},{"word":"reçu","freq":3,"sentence":"Les trois hommes ont tendu un reçu à papa.","lemma":"reçu (n.m.)","en":"receipt","zh":"收据","pos":510,"order":10},{"word":"statuettes","freq":3,"sentence":"Elles contenaient des statuettes de danseuses classiques.","lemma":"statuette (n.f.)","en":"statuette, figurine","zh":"小雕像","pos":664,"order":14},{"word":"langue","freq":3,"sentence":"Il parlait dans une langue étrangère.","lemma":"langue (n.f.)","en":"language; tongue","zh":"语言；舌头","pos":901,"order":18},{"word":"failli","freq":3,"sentence":"Ils ont failli vous entraîner très loin, vos après-ski…","lemma":"faillir (v.)","en":"nearly; j'ai failli = I almost","zh":"差点；几乎","pos":1268,"order":26},{"word":"silence","freq":3,"sentence":"Mais mon père avait ôté ses lunettes et gardait le silence.","lemma":"silence (n.m.)","en":"silence","zh":"沉默；安静","pos":1428,"order":27},{"word":"dimanche","freq":2,"sentence":"Un dimanche, nous prenions notre petit déjeuner quand nous avons entendu la sonnerie du magasin.","lemma":"dimanche (n.m.)","en":"Sunday","zh":"星期天","pos":39,"order":0},{"word":"téléphoné","freq":2,"sentence":"Papa leur a fait transporter les caisses à l’intérieur et il a téléphoné à la pension de famille où habitait Monsieur Casterade.","lemma":"téléphoner (v.)","en":"phoned (past part.)","zh":"打了电话","pos":414,"order":8},{"word":"signé","freq":2,"sentence":"Il l’a signé et le camion est reparti dans un ronflement de moteur.","lemma":"signer (v.)","en":"signed (past part.)","zh":"签了名","pos":530,"order":11},{"word":"morceaux","freq":2,"sentence":"Dans certaines caisses, les statuettes étaient brisées et nous avons rangé leurs morceaux sur les étagères du magasin.","lemma":"morceau (n.m.)","en":"piece, chunk","zh":"碎片；一块","pos":781,"order":15},{"word":"étagères","freq":2,"sentence":"Dans certaines caisses, les statuettes étaient brisées et nous avons rangé leurs morceaux sur les étagères du magasin.","lemma":"étagère (n.f.)","en":"shelf","zh":"架子；书架","pos":798,"order":16},{"word":"refermé","freq":2,"sentence":"Puis mon père a refermé les autres caisses et il a téléphoné.","lemma":"refermer (v.)","en":"closed again (past part.)","zh":"重新关上了","pos":835,"order":17},{"word":"combiné","freq":2,"sentence":"Il a raccroché le combiné du téléphone et Monsieur Casterade a dit :","lemma":"combiné (n.m.)","en":"telephone receiver","zh":"电话听筒","pos":937,"order":19},{"word":"affaire","freq":2,"sentence":"Rappelez-vous l’affaire des mille après-ski autrichiens auxquels vous avez fait franchir la douane.","lemma":"affaire (n.f.)","en":"matter; business deal","zh":"事情；生意","pos":1176,"order":24},{"word":"ski","freq":2,"sentence":"Rappelez-vous l’affaire des mille après-ski autrichiens auxquels vous avez fait franchir la douane.","lemma":"ski (n.m.)","en":"ski; skiing","zh":"滑雪","pos":1200,"order":25},{"word":"bâché","freq":1,"sentence":"Un grand camion bâché, qui portait des inscriptions en espagnol, était garé devant le magasin et trois hommes commençaient à le décharger en posant les caisses sur le trottoir.","lemma":"bâché (adj.)","en":"covered with a tarpaulin","zh":"带帆布篷的","pos":190,"order":2},{"word":"inscriptions","freq":1,"sentence":"Un grand camion bâché, qui portait des inscriptions en espagnol, était garé devant le magasin et trois hommes commençaient à le décharger en posant les caisses sur le trottoir.","lemma":"inscription (n.f.)","en":"inscription; sign; text","zh":"题词；铭文","pos":213,"order":3},{"word":"espagnol","freq":1,"sentence":"Un grand camion bâché, qui portait des inscriptions en espagnol, était garé devant le magasin et trois hommes commençaient à le décharger en posant les caisses sur le trottoir.","lemma":"espagnol (adj./n.)","en":"Spanish","zh":"西班牙语；西班牙的","pos":229,"order":4},{"word":"garé","freq":1,"sentence":"Un grand camion bâché, qui portait des inscriptions en espagnol, était garé devant le magasin et trois hommes commençaient à le décharger en posant les caisses sur le trottoir.","lemma":"garer (v.)","en":"parked (past part.)","zh":"停放了","pos":245,"order":5},{"word":"transporter","freq":1,"sentence":"Papa leur a fait transporter les caisses à l’intérieur et il a téléphoné à la pension de famille où habitait Monsieur Casterade.","lemma":"transporter (v.)","en":"to transport, carry","zh":"运输；搬运","pos":368,"order":6},{"word":"intérieur","freq":1,"sentence":"Papa leur a fait transporter les caisses à l’intérieur et il a téléphoné à la pension de famille où habitait Monsieur Casterade.","lemma":"intérieur (n.m.)","en":"interior, inside","zh":"内部；里面","pos":396,"order":7},{"word":"reparti","freq":1,"sentence":"Il l’a signé et le camion est reparti dans un ronflement de moteur.","lemma":"repartir (v.)","en":"left again (past part.)","zh":"重新出发；再次离开","pos":553,"order":12},{"word":"ronflement","freq":1,"sentence":"Il l’a signé et le camion est reparti dans un ronflement de moteur.","lemma":"ronflement (n.m.)","en":"roar (of engine); snoring","zh":"轰鸣声；打鼾","pos":569,"order":13},{"word":"aventure","freq":1,"sentence":"– Faites attention, Georges : vous vous lancez dans une aventure périlleuse…","lemma":"aventure (n.f.)","en":"adventure","zh":"冒险；奇遇","pos":1044,"order":22},{"word":"périlleuse","freq":1,"sentence":"– Faites attention, Georges : vous vous lancez dans une aventure périlleuse…","lemma":"périlleux (adj.)","en":"perilous, dangerous","zh":"危险的；冒险的","pos":1053,"order":23},{"word":"livraison","freq":1,"sentence":"Le soir, un autre camion est venu prendre livraison des caisses de danseuses.","lemma":"livraison (n.f.)","en":"delivery","zh":"送货；交货","pos":1479,"order":29}],"7":[{"word":"pied","freq":7,"sentence":"Pied dans la main…","lemma":"pied (n.m.)","en":"foot; à pied = on foot","zh":"脚；步行","pos":1960,"order":22},{"word":"femme","freq":6,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"femme (n.f.)","en":"woman; wife","zh":"女人；妻子","pos":3538,"order":36},{"word":"vivre","freq":5,"sentence":"Mais, à la réflexion, je me suis dit que j’avais un avantage : vivre dans deux mondes différents, selon que je portais ou non mes lunettes.","lemma":"vivre (v.)","en":"to live","zh":"生活；居住","pos":413,"order":3},{"word":"jeudi","freq":5,"sentence":"Les cours avaient lieu chaque jeudi soir et papa m’y accompagnait.","lemma":"jeudi (n.m.)","en":"Thursday","zh":"星期四","pos":1214,"order":12},{"word":"drôle","freq":5,"sentence":"Cela m’a fait drôle de voir le grand studio désert, et le piano, tout au fond, avec son tabouret vide.","lemma":"drôle (adj.)","en":"funny; strange, odd","zh":"奇怪的；有趣的","pos":2460,"order":27},{"word":"premier","freq":4,"sentence":"Je me souviens de mon premier cours de danse.","lemma":"premier (adj.)","en":"first","zh":"第一","pos":58,"order":0},{"word":"avantage","freq":4,"sentence":"Mais, à la réflexion, je me suis dit que j’avais un avantage : vivre dans deux mondes différents, selon que je portais ou non mes lunettes.","lemma":"avantage (n.m.)","en":"advantage","zh":"优势；好处","pos":402,"order":2},{"word":"studio","freq":4,"sentence":"La grande baie vitrée du studio de danse donnait sur la gare du Nord.","lemma":"studio (n.m.)","en":"dance studio","zh":"工作室；舞蹈室","pos":1276,"order":13},{"word":"banquette","freq":4,"sentence":"Les mères des élèves étaient assises sur une longue banquette de moleskine rouge.","lemma":"banquette (n.f.)","en":"padded bench, seat","zh":"长凳；卡座","pos":1373,"order":15},{"word":"rouge","freq":4,"sentence":"Les mères des élèves étaient assises sur une longue banquette de moleskine rouge.","lemma":"rouge (adj.)","en":"red","zh":"红色的","pos":1396,"order":17},{"word":"russe","freq":4,"sentence":"Elle avait conservé un très fort accent russe.","lemma":"russe (adj.)","en":"Russian","zh":"俄罗斯的","pos":1819,"order":20},{"word":"personne","freq":4,"sentence":"J’ai frappé à la porte mais personne ne répondait.","lemma":"personne (n.f.)","en":"person; (neg.) nobody","zh":"人；没有人","pos":2195,"order":24},{"word":"blanche","freq":4,"sentence":"A travers la baie vitrée, montait une lumière blanche, celle des quais de la gare du Nord.","lemma":"blanc/blanche (adj.)","en":"white","zh":"白色的","pos":2641,"order":28},{"word":"voit","freq":4,"sentence":"On m’y voit, devant le magasin, entre papa et Monsieur Casterade.","lemma":"voir (v.)","en":"sees; on voit = one can see","zh":"看见","pos":3351,"order":33},{"word":"simple","freq":3,"sentence":"Tout était simple pour elles.","lemma":"simple (adj.)","en":"simple, plain","zh":"简单的","pos":331,"order":1},{"word":"simplement","freq":3,"sentence":"Et le monde de la danse n’était pas la vie réelle, mais un monde où l’on sautait et où l’on faisait des entrechats au lieu de marcher simplement.","lemma":"simplement (adv.)","en":"simply, just","zh":"简单地；只是","pos":624,"order":6},{"word":"sortie","freq":3,"sentence":"A la sortie de ce premier cours, j’ai dit à papa :","lemma":"sortie (n.f.)","en":"exit; outing","zh":"出口；外出","pos":725,"order":9},{"word":"raison","freq":3,"sentence":"– Tu as raison, a dit papa.","lemma":"raison (n.f.)","en":"reason; avoir raison = to be right","zh":"理由；对的","pos":986,"order":10},{"word":"fort","freq":3,"sentence":"Elle avait conservé un très fort accent russe.","lemma":"fort (adj./adv.)","en":"strong; hard; loudly","zh":"强烈；用力","pos":1807,"order":19},{"word":"seconde","freq":3,"sentence":"Ouvrrrez seconde…","lemma":"seconde (n.f.)","en":"second (ballet position); moment","zh":"第二位置（芭蕾）；秒","pos":1931,"order":21},{"word":"piano","freq":3,"sentence":"Une lumière de veilleuse qui venait de la lampe, sur le piano, laissait des zones de pénombre.","lemma":"piano (n.m.)","en":"piano","zh":"钢琴","pos":2407,"order":26},{"word":"quais","freq":3,"sentence":"A travers la baie vitrée, montait une lumière blanche, celle des quais de la gare du Nord.","lemma":"quai (n.m.)","en":"platform (station); quay","zh":"站台；码头","pos":1605,"order":18},{"word":"prise","freq":3,"sentence":"J’ai retrouvé une photographie de cette époque, prise par Chevreau, le roux aux lunettes d’or avec qui travaillait papa.","lemma":"prise (n.f.)","en":"taken (past part. f.); photo taken","zh":"抓住；拍摄","pos":3191,"order":31},{"word":"différents","freq":2,"sentence":"Mais, à la réflexion, je me suis dit que j’avais un avantage : vivre dans deux mondes différents, selon que je portais ou non mes lunettes.","lemma":"différent (adj.)","en":"different","zh":"不同的","pos":436,"order":4},{"word":"lieu","freq":2,"sentence":"Et le monde de la danse n’était pas la vie réelle, mais un monde où l’on sautait et où l’on faisait des entrechats au lieu de marcher simplement.","lemma":"lieu (n.m.)","en":"place; avoir lieu = to take place","zh":"地方；举行","pos":608,"order":5},{"word":"rêve","freq":2,"sentence":"Oui, un monde de rêve comme celui, flou et tendre, que je voyais sans mes lunettes.","lemma":"rêve (n.m.)","en":"dream","zh":"梦；梦想","pos":653,"order":7},{"word":"tendre","freq":2,"sentence":"Oui, un monde de rêve comme celui, flou et tendre, que je voyais sans mes lunettes.","lemma":"tendre (adj./v.)","en":"tender; to stretch out","zh":"温柔的；延伸","pos":679,"order":8},{"word":"douceur","freq":2,"sentence":"Les autres te trouveront dans le regard, quand tu ne porteras pas tes lunettes, une sorte de buée et de douceur…","lemma":"douceur (n.f.)","en":"softness; gentleness; sweetness","zh":"柔和；温柔","pos":1149,"order":11},{"word":"mères","freq":2,"sentence":"Les mères des élèves étaient assises sur une longue banquette de moleskine rouge.","lemma":"mères (n.f.pl.)","en":"mothers","zh":"母亲们","pos":1325,"order":14},{"word":"moleskine","freq":2,"sentence":"Les mères des élèves étaient assises sur une longue banquette de moleskine rouge.","lemma":"moleskine (n.f.)","en":"moleskin fabric (faux leather)","zh":"仿皮革布料","pos":1386,"order":16},{"word":"allée","freq":2,"sentence":"Un jeudi soir, j’ai oublié mes lunettes au cours de danse et, comme papa avait du travail, je suis allée toute seule rue de Maubeuge pour les rechercher.","lemma":"allée (n.f.)","en":"path, alley","zh":"小路；通道","pos":2112,"order":23},{"word":"lumière","freq":2,"sentence":"Une lumière de veilleuse qui venait de la lampe, sur le piano, laissait des zones de pénombre.","lemma":"lumière (n.f.)","en":"light","zh":"光；光线","pos":2355,"order":25},{"word":"entendre","freq":2,"sentence":"Il m’a suffi d’un peu d’imagination pour entendre dans le silence la musique du piano et la voix de Madame Dismaïlova :","lemma":"entendre (v.)","en":"to hear","zh":"听；听到","pos":2768,"order":29},{"word":"revenu","freq":2,"sentence":"Et puis j’ai arrêté de danser et le silence est revenu.","lemma":"revenir (v.)","en":"came back (past part.)","zh":"回来了","pos":2985,"order":30},{"word":"partions","freq":2,"sentence":"C’était un jeudi après-midi, avant que nous ne partions pour le cours de danse.","lemma":"partir (v.)","en":"were leaving (imperf.)","zh":"出发（过去进行时）","pos":3311,"order":32},{"word":"photo","freq":2,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"photo (n.f.)","en":"photograph","zh":"照片","pos":3514,"order":34},{"word":"hôtesse","freq":2,"sentence":"C’est une hôtesse de l’air…","lemma":"hôtesse (n.f.)","en":"hostess","zh":"女主人；空姐","pos":3815,"order":40},{"word":"répété","freq":2,"sentence":"Et vingt ans après, quand je lui ai montré cette photo et désigné la femme à côté de nous, il m’a répété, en levant les yeux vers le ciel :","lemma":"répéter (v.)","en":"repeated (past part.)","zh":"重复了","pos":3931,"order":42},{"word":"ciel","freq":2,"sentence":"Et vingt ans après, quand je lui ai montré cette photo et désigné la femme à côté de nous, il m’a répété, en levant les yeux vers le ciel :","lemma":"ciel (n.m.)","en":"sky; heaven","zh":"天空；天堂","pos":3966,"order":43},{"word":"distingue","freq":1,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"distinguer (v.)","en":"to make out, distinguish","zh":"辨认出；区分","pos":3524,"order":35},{"word":"éveillé","freq":1,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"éveiller (v.)","en":"awoken; aroused (past part.)","zh":"唤起；激发","pos":3562,"order":37},{"word":"vague","freq":1,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"vague (adj./n.f.)","en":"vague; wave; feeling","zh":"模糊的；波浪；感觉","pos":3582,"order":38},{"word":"souvenir","freq":1,"sentence":"A droite de la photo, on distingue une femme qui, peu à peu, a éveillé chez moi un vague souvenir.","lemma":"souvenir (n.m.)","en":"memory; souvenir","zh":"记忆；纪念品","pos":3588,"order":39},{"word":"désigné","freq":1,"sentence":"Et vingt ans après, quand je lui ai montré cette photo et désigné la femme à côté de nous, il m’a répété, en levant les yeux vers le ciel :","lemma":"désigner (v.)","en":"pointed out, designated (past part.)","zh":"指出；指定","pos":3891,"order":41}],"8":[{"word":"camionnette","freq":8,"sentence":"– Et j’aimerais que, demain, vous veniez nous chercher ma fille et moi pour nous emmener à la même adresse, dans votre camionnette.","lemma":"camionnette (n.f.)","en":"van","zh":"小货车","pos":2540,"order":15},{"word":"boulevard","freq":7,"sentence":"Une dame l’attendait à proximité de la bouche du métro, devant un kiosque à journaux du boulevard Rochechouart.","lemma":"boulevard (n.m.)","en":"boulevard","zh":"大道；林荫道","pos":707,"order":6},{"word":"conversation","freq":5,"sentence":"Elle avait engagé la conversation :","lemma":"conversation (n.f.)","en":"conversation","zh":"对话；交谈","pos":191,"order":1},{"word":"parents","freq":5,"sentence":"Nos noms, à papa et à moi, avaient été écrits sur l’invitation par Odile elle-même et je m’étonne que papa n’ait pas compris à l’époque qu’elle l’avait fait à l’insu de ses parents.","lemma":"parents (n.m.pl.)","en":"parents; relatives","zh":"父母；亲戚","pos":1348,"order":10},{"word":"cocktail","freq":5,"sentence":"Papa était à la fois très anxieux et très impatient de se rendre au cocktail de printemps, chez les parents d’Odile.","lemma":"cocktail (n.m.)","en":"cocktail party","zh":"鸡尾酒会","pos":2870,"order":17},{"word":"numéro","freq":5,"sentence":"Nous avons marché jusqu’au numéro 21.","lemma":"numéro (n.m.)","en":"number","zh":"号码；编号","pos":4364,"order":31},{"word":"terrasse","freq":5,"sentence":"Nous sommes arrivés sur la terrasse.","lemma":"terrasse (n.f.)","en":"terrace; café terrace","zh":"露台；露天座位","pos":5067,"order":39},{"word":"soleil","freq":5,"sentence":"Il y avait un soleil et une brise de printemps.","lemma":"soleil (n.m.)","en":"sun","zh":"太阳","pos":5394,"order":48},{"word":"amie","freq":4,"sentence":"Ma seule amie, à ce cours de danse, était une petite fille qui venait chez Madame Dismaïlova chaque jeudi, toute seule, sans sa mère.","lemma":"amie (n.f.)","en":"female friend","zh":"女朋友；女性友人","pos":45,"order":0},{"word":"métro","freq":4,"sentence":"A la fin du cours, elle nous demandait, à mon père et à moi, de l’accompagner jusqu’à la station de métro la plus proche, la station Anvers.","lemma":"métro (n.m.)","en":"subway, metro","zh":"地铁","pos":578,"order":3},{"word":"demain","freq":4,"sentence":"Vendredi, c’est demain…","lemma":"demain (adv.)","en":"tomorrow","zh":"明天","pos":1451,"order":11},{"word":"printemps","freq":4,"sentence":"Papa était à la fois très anxieux et très impatient de se rendre au cocktail de printemps, chez les parents d’Odile.","lemma":"printemps (n.m.)","en":"spring (season)","zh":"春天","pos":2882,"order":18},{"word":"sais","freq":4,"sentence":"– Tu sais, ma petite Catherine…","lemma":"savoir (v.)","en":"to know (1st pers.)","zh":"知道（第一人称）","pos":3141,"order":21},{"word":"cheval","freq":4,"sentence":"Et, à côté de lui, le monsieur en culotte de cheval, un joueur de polo de l’île de Saint-Domingue…","lemma":"cheval (n.m.)","en":"horse; culotte de cheval = riding breeches","zh":"马；马裤","pos":6011,"order":54},{"word":"traction","freq":4,"sentence":"– Moi, a-t-il dit sur un ton qu’il s’efforçait de rendre badin, je reste fidèle à la traction avant.","lemma":"traction (n.f.)","en":"Citroën Traction = classic French car","zh":"牵引力；雪铁龙经典款车","pos":7177,"order":65},{"word":"enchanté","freq":4,"sentence":"– Enchanté de faire votre connaissance, a dit papa en inclinant la tête.","lemma":"enchanté (adj.)","en":"pleased to meet you; delighted","zh":"幸会；高兴认识你","pos":5658,"order":50},{"word":"station","freq":3,"sentence":"A la fin du cours, elle nous demandait, à mon père et à moi, de l’accompagner jusqu’à la station de métro la plus proche, la station Anvers.","lemma":"station (n.f.)","en":"station; stop","zh":"车站；站","pos":567,"order":2},{"word":"invitation","freq":3,"sentence":"Nos noms, à papa et à moi, avaient été écrits sur l’invitation par Odile elle-même et je m’étonne que papa n’ait pas compris à l’époque qu’elle l’avait fait à l’insu de ses parents.","lemma":"invitation (n.f.)","en":"invitation","zh":"邀请；请帖","pos":1227,"order":9},{"word":"écrire","freq":3,"sentence":"Papa s’est assis à son bureau, devant sa machine à écrire et Monsieur Casterade, buste tendu, a commencé :","lemma":"écrire (v.)","en":"to write","zh":"写","pos":1603,"order":13},{"word":"répétait","freq":3,"sentence":"– Des gens très bien, ces Ancorena, me répétait-il d’un ton mondain que je ne lui connaissais pas.","lemma":"répéter (v.)","en":"kept repeating (imperf.)","zh":"反复说（过去进行时）","pos":2958,"order":19},{"word":"costume","freq":3,"sentence":"Papa avait revêtu un costume marron à rayures, après bien des hésitations.","lemma":"costume (n.m.)","en":"suit; costume","zh":"西装；服装","pos":3348,"order":22},{"word":"chapeau","freq":3,"sentence":"Il portait à la main son chapeau mou des dimanches.","lemma":"chapeau (n.m.)","en":"hat","zh":"帽子","pos":3523,"order":24},{"word":"peine","freq":3,"sentence":"A peine étions-nous engagés boulevard de la Saussaye que papa a dit :","lemma":"peine (n.f.)","en":"sorrow; trouble; à peine = barely","zh":"悲伤；几乎不","pos":3845,"order":26},{"word":"femmes","freq":3,"sentence":"Les femmes portaient des robes très fluides, les hommes avaient tous une désinvolture sportive.","lemma":"femmes (n.f.pl.)","en":"women","zh":"女人们","pos":5195,"order":44},{"word":"voiture","freq":3,"sentence":"– J’ai failli me tuer hier soir dans la Talbot, a dit le couturier, en désignant une voiture de grand luxe, en bas.","lemma":"voiture (n.f.)","en":"car; carriage","zh":"汽车；马车","pos":6801,"order":59},{"word":"geste","freq":3,"sentence":"Puis l’homme s’est éloigné en tournant de l’index un cadran imaginaire et en collant la paume de sa main à son oreille – geste qui signifie qu’« on se téléphonera ».","lemma":"geste (n.m.)","en":"gesture","zh":"手势；姿势","pos":9840,"order":80},{"word":"important","freq":3,"sentence":"– Quelqu’un de très important qui va pouvoir m’aider.","lemma":"important (adj.)","en":"important; large","zh":"重要的；大量的","pos":9951,"order":81},{"word":"proche","freq":2,"sentence":"A la fin du cours, elle nous demandait, à mon père et à moi, de l’accompagner jusqu’à la station de métro la plus proche, la station Anvers.","lemma":"proche (adj.)","en":"close, near","zh":"近的；亲近的","pos":592,"order":4},{"word":"dame","freq":2,"sentence":"Une dame l’attendait à proximité de la bouche du métro, devant un kiosque à journaux du boulevard Rochechouart.","lemma":"dame (n.f.)","en":"lady, woman","zh":"女士；女人","pos":623,"order":5},{"word":"magazines","freq":2,"sentence":"Elle lisait des magazines.","lemma":"magazine (n.m.)","en":"magazine","zh":"杂志","pos":747,"order":7},{"word":"noms","freq":2,"sentence":"Nos noms, à papa et à moi, avaient été écrits sur l’invitation par Odile elle-même et je m’étonne que papa n’ait pas compris à l’époque qu’elle l’avait fait à l’insu de ses parents.","lemma":"noms (n.m.pl.)","en":"names","zh":"名字们","pos":1179,"order":8},{"word":"rendre","freq":2,"sentence":"Papa était à la fois très anxieux et très impatient de se rendre au cocktail de printemps, chez les parents d’Odile.","lemma":"rendre (v.)","en":"to return; se rendre = to go to","zh":"归还；前往","pos":2860,"order":16},{"word":"marron","freq":2,"sentence":"Papa avait revêtu un costume marron à rayures, après bien des hésitations.","lemma":"marron (adj.)","en":"brown; chestnut-colored","zh":"棕色的","pos":3356,"order":23},{"word":"chauffeur","freq":2,"sentence":"Et c’était comme s’il avait donné un ordre à son chauffeur.","lemma":"chauffeur (n.m.)","en":"driver; chauffeur","zh":"司机","pos":3738,"order":25},{"word":"préfère","freq":2,"sentence":"– Je préfère que vous nous laissiez ici.","lemma":"préférer (v.)","en":"prefers; I prefer","zh":"更喜欢；偏爱","pos":4011,"order":27},{"word":"reste","freq":2,"sentence":"Nous ferons le reste du chemin à pied.","lemma":"reste (n.m.)","en":"rest, remainder","zh":"剩余；其余","pos":4062,"order":28},{"word":"surprise","freq":2,"sentence":"Monsieur Chevreau ne cachait pas sa surprise.","lemma":"surprise (n.f.)","en":"surprise","zh":"惊喜；意外","pos":4122,"order":29},{"word":"marché","freq":2,"sentence":"Nous avons marché jusqu’au numéro 21.","lemma":"marché (n.m.)","en":"market; deal; marcher = to walk","zh":"市场；交易","pos":4348,"order":30},{"word":"hôtel","freq":2,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"hôtel (n.m.)","en":"hotel; hôtel particulier = private mansion","zh":"酒店；私人宅邸","pos":4386,"order":32},{"word":"particulier","freq":2,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"particulier (adj.)","en":"private; hôtel particulier = mansion","zh":"私人的；私宅","pos":4392,"order":33},{"word":"ascenseur","freq":2,"sentence":"Elle nous a guidés à travers le grand hall et nous a précédés dans un ascenseur aux parois de velours rouge.","lemma":"ascenseur (n.m.)","en":"elevator, lift","zh":"电梯","pos":4769,"order":38},{"word":"serviteurs","freq":2,"sentence":"Des serviteurs en veste blanche circulaient parmi les groupes avec des plateaux de jus de fruits et de cocktails.","lemma":"serviteur (n.m.)","en":"servant","zh":"仆人；服务人员","pos":5081,"order":40},{"word":"circulaient","freq":2,"sentence":"Des serviteurs en veste blanche circulaient parmi les groupes avec des plateaux de jus de fruits et de cocktails.","lemma":"circuler (v.)","en":"to circulate, move around","zh":"走动；流动","pos":5109,"order":41},{"word":"groupes","freq":2,"sentence":"Des serviteurs en veste blanche circulaient parmi les groupes avec des plateaux de jus de fruits et de cocktails.","lemma":"groupe (n.m.)","en":"group","zh":"群体；小组","pos":5131,"order":42},{"word":"plateaux","freq":2,"sentence":"Des serviteurs en veste blanche circulaient parmi les groupes avec des plateaux de jus de fruits et de cocktails.","lemma":"plateau (n.m.pl.)","en":"trays (pl.)","zh":"托盘（复数）","pos":5148,"order":43},{"word":"invités","freq":2,"sentence":"Certains des invités étaient debout, leur verre à la main, d’autres assis sous des parasols.","lemma":"invités (n.m.pl.)","en":"guests (pl.)","zh":"宾客","pos":5300,"order":47},{"word":"enfants","freq":2,"sentence":"Dans cette foule, nous étions les seuls enfants.","lemma":"enfant (n.m/f.)","en":"child","zh":"孩子","pos":5513,"order":49},{"word":"groupe","freq":2,"sentence":"Nous avons fini par nous trouver, au bord de la terrasse, parmi un groupe de femmes et d’hommes très élégants.","lemma":"groupe (n.m.)","en":"group","zh":"群体","pos":5764,"order":51},{"word":"chuchoté","freq":2,"sentence":"– Ecoute-moi bien, Catherine, m’a chuchoté papa, en tripotant son chapeau.","lemma":"chuchoter (v.)","en":"to whisper","zh":"低声说；耳语","pos":5842,"order":52},{"word":"couturier","freq":2,"sentence":"Ce monsieur blond et mince qui s’appuie à la balustrade, c’est un grand couturier…","lemma":"couturier (n.m.)","en":"fashion designer","zh":"时装设计师","pos":5955,"order":53},{"word":"joueur","freq":2,"sentence":"Et, à côté de lui, le monsieur en culotte de cheval, un joueur de polo de l’île de Saint-Domingue…","lemma":"joueur (n.m.)","en":"player (sport)","zh":"运动员；玩家","pos":6022,"order":55},{"word":"distingué","freq":2,"sentence":"Et cette dame, qui a l’air si distingué, était la femme de Sacha Guitry…","lemma":"distingué (adj.)","en":"distinguished, refined","zh":"高贵的；出众的","pos":6135,"order":56},{"word":"prince","freq":2,"sentence":"– Et ce monsieur brun, c’est le prince Ali Khan…","lemma":"prince (n.m.)","en":"prince","zh":"王子","pos":6421,"order":57},{"word":"hier","freq":2,"sentence":"– J’ai failli me tuer hier soir dans la Talbot, a dit le couturier, en désignant une voiture de grand luxe, en bas.","lemma":"hier (adv.)","en":"yesterday","zh":"昨天","pos":6738,"order":58},{"word":"pourtant","freq":2,"sentence":"Et pourtant, je garderai toujours un faible pour les Talbot.","lemma":"pourtant (adv.)","en":"yet, however","zh":"然而；但是","pos":6835,"order":60},{"word":"sûr","freq":2,"sentence":"Elles me plaisent parce qu’on n’est jamais sûr de leurs freins.","lemma":"sûr (adj.)","en":"sure, certain","zh":"确信的；肯定的","pos":6989,"order":61},{"word":"serré","freq":2,"sentence":"Papa m’a serré très fort la main.","lemma":"serrer (v.)","en":"gripped; jouer serré = play carefully","zh":"握紧；谨慎","pos":7019,"order":62},{"word":"remarque","freq":2,"sentence":"Personne ne semblait avoir entendu la remarque de papa.","lemma":"remarque (n.f.)","en":"remark, comment","zh":"评论；注意","pos":7292,"order":66},{"word":"sauf","freq":2,"sentence":"Sauf l’un des serviteurs à veste blanche qui circulaient avec des plateaux.","lemma":"sauf (prép.)","en":"except, apart from","zh":"除了；除非","pos":7310,"order":67},{"word":"voler","freq":2,"sentence":"– Mais on est en train de vous la voler, votre voiture, a-t-il dit à papa.","lemma":"voler (v.)","en":"to fly; to steal","zh":"飞翔；偷","pos":7420,"order":68},{"word":"effet","freq":2,"sentence":"En effet, la traction avant démarrait et disparaissait au coin de la rue.","lemma":"effet (n.m.)","en":"effect; en effet = indeed","zh":"效果；确实","pos":7464,"order":69},{"word":"tournant","freq":2,"sentence":"Puis, se tournant vers le groupe de personnes élégantes, il est revenu à la charge.","lemma":"tourner (v.)","en":"turning; au tournant = at the corner","zh":"转动；街角","pos":7622,"order":70},{"word":"personnes","freq":2,"sentence":"Puis, se tournant vers le groupe de personnes élégantes, il est revenu à la charge.","lemma":"personnes (n.f.pl.)","en":"people, persons","zh":"人们","pos":7649,"order":71},{"word":"blonde","freq":2,"sentence":"Une femme blonde, qui portait des lunettes de soleil et une robe bleu pâle, et un homme aux cheveux noirs et soyeux étaient entourés par quelques personnes d’apparence aussi gracieuse que celles dont papa m’avait révélé les noms tout à l’heure.","lemma":"blonde (adj.)","en":"blonde, fair-haired","zh":"金发的","pos":8239,"order":73},{"word":"cheveux","freq":2,"sentence":"Une femme blonde, qui portait des lunettes de soleil et une robe bleu pâle, et un homme aux cheveux noirs et soyeux étaient entourés par quelques personnes d’apparence aussi gracieuse que celles dont papa m’avait révélé les noms tout à l’heure.","lemma":"cheveux (n.m.pl.)","en":"hair","zh":"头发","pos":8321,"order":74},{"word":"bonjour","freq":2,"sentence":"– Bonjour, a dit le père d’Odile en lui tendant une main nonchalante.","lemma":"bonjour (interj.)","en":"hello, good morning","zh":"你好；早上好","pos":8970,"order":75},{"word":"lance","freq":2,"sentence":"C’était l’une de ces phrases que l’on lance sans bien réfléchir, comme un appel de phares.","lemma":"lancer (v.)","en":"to launch; se lancer dans = to embark on","zh":"发起；投入","pos":9293,"order":76},{"word":"sourcils","freq":2,"sentence":"Monsieur Ancorena a haussé légèrement les sourcils.","lemma":"sourcil (n.m.)","en":"eyebrow","zh":"眉毛","pos":9388,"order":77},{"word":"moustache","freq":2,"sentence":"Odile a voulu me montrer sa chambre et, quand nous sommes revenues sur la terrasse, mon père avait engagé la conversation avec un homme corpulent qui portait une moustache.","lemma":"moustache (n.f.)","en":"moustache","zh":"小胡子","pos":9626,"order":78},{"word":"mystérieuse","freq":2,"sentence":"Ils parlaient tous les deux dans une langue mystérieuse que je ne comprenais pas.","lemma":"mystérieux (adj.)","en":"mysterious","zh":"神秘的","pos":9681,"order":79},{"word":"fallu","freq":2,"sentence":"– Il a fallu jouer serré, a dit papa.","lemma":"falloir (v.)","en":"il a fallu = it was necessary","zh":"必须；不得不","pos":10332,"order":82},{"word":"pourquoi","freq":2,"sentence":"– Pourquoi êtes-vous partis sans me dire au revoir ?","lemma":"pourquoi (adv.)","en":"why","zh":"为什么","pos":10439,"order":83},{"word":"partis","freq":2,"sentence":"– Pourquoi êtes-vous partis sans me dire au revoir ?","lemma":"partir (v.)","en":"left, departed (past part. pl.)","zh":"离开了（复数）","pos":10458,"order":84},{"word":"revoir","freq":2,"sentence":"– Pourquoi êtes-vous partis sans me dire au revoir ?","lemma":"revoir (v.)","en":"to see again; au revoir = goodbye","zh":"再见；再次见面","pos":10481,"order":85},{"word":"invité","freq":2,"sentence":"J’y ai fait des rencontres très importantes pour moi et je te remercie de m’avoir invité.","lemma":"invité (n.m.)","en":"guest","zh":"客人","pos":10708,"order":86},{"word":"grâce","freq":2,"sentence":"Mes affaires vont prendre une autre dimension grâce à ce cocktail…","lemma":"grâce (n.f.)","en":"grace; grâce à = thanks to","zh":"优雅；多亏了","pos":10858,"order":87},{"word":"paru","freq":2,"sentence":"Odile a froncé les sourcils, mais elle a paru encore plus étonnée quand nous nous sommes arrêtés devant la camionnette.","lemma":"paraître (v.)","en":"appeared; seemed (past part.)","zh":"出现了；似乎","pos":10920,"order":88},{"word":"penché","freq":2,"sentence":"Il s’est penché vers Monsieur Chevreau qui attendait au volant :","lemma":"pencher (v.)","en":"leaning, bent toward","zh":"俯身；倾向","pos":11087,"order":89},{"word":"écouté","freq":2,"sentence":"Odile avait écouté papa avec une extrême attention et nos regards se sont croisés.","lemma":"écouter (v.)","en":"listened (past part.)","zh":"听了","pos":11301,"order":90},{"word":"extrême","freq":2,"sentence":"Odile avait écouté papa avec une extrême attention et nos regards se sont croisés.","lemma":"extrême (adj.)","en":"extreme","zh":"极端的","pos":11322,"order":91},{"word":"rougi","freq":2,"sentence":"Elle a rougi très fort.","lemma":"rougir (v.)","en":"blushed (past part.)","zh":"脸红了","pos":8060,"order":72},{"word":"conseil","freq":1,"sentence":"Il a demandé conseil à Monsieur Casterade, qui lui a dit :","lemma":"conseil (n.m.)","en":"advice; council","zh":"建议；议会","pos":1472,"order":12},{"word":"accouru","freq":1,"sentence":"Chevreau est accouru.","lemma":"accourir (v.)","en":"rushed over (past part.)","zh":"跑来了；赶来了","pos":2276,"order":14},{"word":"mondain","freq":1,"sentence":"– Des gens très bien, ces Ancorena, me répétait-il d’un ton mondain que je ne lui connaissais pas.","lemma":"mondain (adj.)","en":"worldly; society (tone)","zh":"世故的；上流社会的","pos":2979,"order":20},{"word":"précédait","freq":1,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"précéder (v.)","en":"preceded (imperf.)","zh":"在前面；在前（过去时）","pos":4408,"order":34},{"word":"jardin","freq":1,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"jardin (n.m.)","en":"garden","zh":"花园","pos":4421,"order":35},{"word":"pelouse","freq":1,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"pelouse (n.f.)","en":"lawn","zh":"草坪","pos":4437,"order":36},{"word":"taillée","freq":1,"sentence":"C’était un hôtel particulier que précédait un jardin avec une pelouse taillée ras.","lemma":"tailler (v.)","en":"trimmed, cut (past part.)","zh":"修剪的","pos":4445,"order":37},{"word":"fluides","freq":1,"sentence":"Les femmes portaient des robes très fluides, les hommes avaient tous une désinvolture sportive.","lemma":"fluide (adj.)","en":"flowing, fluid","zh":"流动的；轻盈的","pos":5227,"order":45},{"word":"désinvolture","freq":1,"sentence":"Les femmes portaient des robes très fluides, les hommes avaient tous une désinvolture sportive.","lemma":"désinvolture (n.f.)","en":"nonchalance, ease","zh":"随意；无拘束","pos":5264,"order":46},{"word":"badin","freq":1,"sentence":"– Moi, a-t-il dit sur un ton qu’il s’efforçait de rendre badin, je reste fidèle à la traction avant.","lemma":"badin (adj.)","en":"playful, light-hearted","zh":"轻松愉快的","pos":7149,"order":63},{"word":"fidèle","freq":1,"sentence":"– Moi, a-t-il dit sur un ton qu’il s’efforçait de rendre badin, je reste fidèle à la traction avant.","lemma":"fidèle (adj.)","en":"faithful, loyal","zh":"忠实的；忠诚的","pos":7165,"order":64}],"9":[{"word":"triste","freq":4,"sentence":"J’étais très triste et j’ai demandé à Madame Dismaïlova si elle savait les raisons de la disparition d’Odile.","lemma":"triste (adj.)","en":"sad","zh":"悲伤的；难过的","pos":119,"order":0},{"word":"trouvé","freq":2,"sentence":"Dans l’annuaire, nous n’avons pas trouvé un seul Ancorena et le 21 boulevard de la Saussaye n’était pas mentionné.","lemma":"trouver (v.)","en":"found (past part.)","zh":"找到了","pos":393,"order":1},{"word":"façon","freq":2,"sentence":"– De toute façon, a dit papa, je compte sur Tabélion pour m’indiquer leur numéro de téléphone.","lemma":"façon (n.f.)","en":"way, manner","zh":"方式；方法","pos":554,"order":2},{"word":"visite","freq":2,"sentence":"Ce Tabélion avait dû beaucoup frapper l’imagination de papa : trente ans plus tard, il garde encore sa carte de visite dans son portefeuille.","lemma":"visite (n.f.)","en":"visit","zh":"访问；参观","pos":940,"order":3},{"word":"rond","freq":2,"sentence":"Oui, je me souvenais de cet homme rond avec une moustache, une chemise au col grand ouvert et une ceinture de crocodile, avec qui mon père parlait dans une langue mystérieuse.","lemma":"rond (adj.)","en":"round; chubby","zh":"圆的；圆润的","pos":1270,"order":4},{"word":"ceinture","freq":2,"sentence":"Oui, je me souvenais de cet homme rond avec une moustache, une chemise au col grand ouvert et une ceinture de crocodile, avec qui mon père parlait dans une langue mystérieuse.","lemma":"ceinture (n.f.)","en":"belt; waistband","zh":"腰带","pos":1334,"order":5},{"word":"appeler","freq":2,"sentence":"Et, à partir de ce moment, je l’ai vu souvent appeler Elysées 83-50.","lemma":"appeler (v.)","en":"to call; s'appeler = to be named","zh":"叫；称呼","pos":1778,"order":6},{"word":"nouvelles","freq":2,"sentence":"Pas de nouvelles ?","lemma":"nouvelle (n.f.)","en":"news; short story","zh":"新闻；短篇小说","pos":2417,"order":7}],"10":[],"11":[],"12":[],"13":[{"word":"poème","freq":3,"sentence":"Ce même jour, Monsieur Casterade avait voulu nous lire un poème et nous l’écoutions dans le bureau.","lemma":"poème (n.m.)","en":"poem","zh":"诗歌","pos":94,"order":0},{"word":"dîner","freq":3,"sentence":"– Excusez-moi, Raymond, mais il est sept heures et demie et j’emmène ma fille dîner au restaurant Charlot, roi des Coquillages.","lemma":"dîner (v./n.m.)","en":"to have dinner; dinner","zh":"晚餐；吃晚饭","pos":507,"order":1},{"word":"coquillages","freq":3,"sentence":"– Excusez-moi, Raymond, mais il est sept heures et demie et j’emmène ma fille dîner au restaurant Charlot, roi des Coquillages.","lemma":"coquillage (n.m.)","en":"seashell","zh":"贝壳","pos":544,"order":2}],"14":[{"word":"anglais","freq":3,"sentence":"Tu veux que je te donne ta première leçon d’anglais ?","lemma":"anglais (adj./n.m.)","en":"English","zh":"英语；英国的","pos":1196,"order":3},{"word":"ballets","freq":2,"sentence":"D’ailleurs ta maman l’avait prévu, dès que nous nous sommes rencontrés, bien avant ta naissance, quand elle était danseuse dans les ballets de Miss Maekers…","lemma":"ballet (n.m.)","en":"ballet","zh":"芭蕾舞","pos":887,"order":0},{"word":"veux","freq":2,"sentence":"Tu veux que je te donne ta première leçon d’anglais ?","lemma":"vouloir (v.)","en":"want (1st/2nd pers.)","zh":"想要","pos":1155,"order":1},{"word":"première","freq":2,"sentence":"Tu veux que je te donne ta première leçon d’anglais ?","lemma":"première (adj.)","en":"first (fem.)","zh":"第一（阴性）","pos":1179,"order":2},{"word":"bateau","freq":2,"sentence":"– Je prends les billets de bateau pour le mois prochain, Catherine…","lemma":"bateau (n.m.)","en":"boat","zh":"船","pos":1825,"order":4},{"word":"attendre","freq":2,"sentence":"A New York, maman viendra nous attendre sur le quai…","lemma":"attendre (v.)","en":"to wait; to wait for","zh":"等待","pos":1897,"order":5},{"word":"ainsi","freq":2,"sentence":"Ainsi il y aura toujours une petite fille nommée Catherine Certitude qui se promènera avec son père dans les rues du Xe arrondissement, à Paris.","lemma":"ainsi (adv.)","en":"thus, in this way; ainsi de suite = and so on","zh":"这样；以此类推","pos":5883,"order":6}],"15":[]};
+const OPENERS = {"1": "A New York, il neige aujourd'hui et je regarde, par la fenêtre de mon appartement de la 59e rue…", "2": "Plus tard, en Amérique, le magasin de la rue d'Hauteville et Monsieur Casterade nous semblaient si lointains…", "3": "Au-dessus de la façade du magasin – une grande vitre dépolie qui décourageait la curiosité des passants…", "4": "A partir du mois d'avril, les fins d'après-midi, il m'accompagnait dans le square, devant l'église Saint-Vincent-de-Paul…", "5": "Le matin, papa me réveillait. Il avait préparé le petit déjeuner qui nous attendait sur la table du fond…", "6": "Un dimanche, nous prenions notre petit déjeuner quand nous avons entendu la sonnerie du magasin…", "7": "Je me souviens de mon premier cours de danse. Papa en avait choisi un, dans le quartier, rue de Maubeuge…", "8": "Ma seule amie, à ce cours de danse, était une petite fille qui venait chez Madame Dismaïlova chaque jeudi soir…", "9": "Les semaines suivantes, je n'ai plus revu mon amie au cours de danse. J'étais très triste…", "10": "Un soir d'hiver que nous revenions du cours de danse à pied, en suivant la rue de Maubeuge…", "11": "La dernière fois que nous sommes allés au cours de danse, papa m'a dit…", "12": "Un matin, je suis allée chercher le courrier, comme d'habitude, pour le donner à papa…", "13": "Ce même jour, Monsieur Casterade avait voulu nous lire un poème et nous l'écoutions dans le bureau…", "14": "Si je t'ai invitée ce soir au restaurant, m'a dit papa, c'est pour te parler de ce voyage…", "15": "Hier dimanche, avec ma fille, j'ai rendu visite à mes parents, du côté de Greenwich Village…"};
+
+let currentMode = 'list';
+let currentSort = 'freq';   // 'freq' or 'order'
+let activeChapter = 'all';
+let searchTerm = '';
+
+function highlightText(text, term) {
+  if (!term) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return escaped.replace(re, '<mark class="highlight">$1</mark>');
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function highlightWordInSentence(sentence, word) {
+  const re = new RegExp('(' + word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return escapeHtml(sentence).replace(re, '<em>$1</em>');
+}
+
+function freqClass(f) {
+  if (f >= 10) return 'high';
+  if (f >= 5) return 'med';
+  return '';
+}
+
+function renderListCard(w, term) {
+  const wordHl = highlightText(w.word, term);
+  const enHl = highlightText(w.en, term);
+  const zhHl = highlightText(w.zh, term);
+  const ex = w.sentence ? highlightWordInSentence(w.sentence, w.word) : '';
+  const indicator = currentSort === 'order'
+    ? `<span class="order-pill">#${w.order + 1}</span>`
+    : `<span class="freq-pill">${w.freq}×</span>`;
+  return `<div class="word-card" data-word="${escapeHtml(w.word)}">
+    <div class="word-card-top">
+      <span class="word-fr">${indicator} ${wordHl}</span>
+      <span class="word-lemma">${escapeHtml(w.lemma)}</span>
+    </div>
+    <div class="word-defs">
+      <span class="def-en">${enHl}</span>
+      <span class="def-zh">· ${zhHl}</span>
+    </div>
+    ${ex ? `<div class="word-example">${ex}</div>` : ''}
+  </div>`;
+}
+
+function renderFlashCard(w, term) {
+  const pos = w.lemma.match(/\(([^)]+)\)/)?.[1] || '';
+  const ex = w.sentence ? highlightWordInSentence(w.sentence, w.word) : '';
+  return `<div class="flash-card" onclick="this.classList.toggle('flipped')">
+    <div class="flash-inner">
+      <div class="flash-front">
+        <div class="word-big">${escapeHtml(w.word)}</div>
+        <div class="word-pos">${escapeHtml(pos)}</div>
+        <div class="flip-hint">Cliquez pour retourner</div>
+      </div>
+      <div class="flash-back">
+        <div class="back-en">${escapeHtml(w.en)}</div>
+        <div class="back-zh">${escapeHtml(w.zh)}</div>
+        ${ex ? `<div class="back-ex">${ex}</div>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildSidebar() {
+  const nav = document.getElementById('sidebar');
+  let html = '<div class="sidebar-title">Chapitres</div>';
+  for (let ch = 1; ch <= 15; ch++) {
+    const words = VOCAB[ch] || [];
+    if (words.length === 0) continue;
+    const opener = (OPENERS[ch] || '').slice(0, 55) + '…';
+    html += `<div class="chapter-item" data-ch="${ch}" onclick="jumpToChapter(${ch})">
+      <div class="ch-num">${ch}</div>
+      <div class="ch-info">
+        <div class="ch-label">Chapitre ${ch}</div>
+        <div class="ch-count">${words.length} mot${words.length>1?'s':''}</div>
+        <div class="ch-preview">${escapeHtml(opener)}</div>
+      </div>
+    </div>`;
+  }
+  nav.innerHTML = html;
+}
+
+function render() {
+  const content = document.getElementById('content');
+  const term = searchTerm.toLowerCase();
+  let totalVisible = 0;
+  let html = '';
+
+  for (let ch = 1; ch <= 15; ch++) {
+    const words = VOCAB[ch] || [];
+    if (words.length === 0) continue;
+    if (activeChapter !== 'all' && activeChapter !== String(ch)) continue;
+
+    // Sort according to current preference
+    const sorted = [...words].sort((a, b) =>
+      currentSort === 'order' ? a.order - b.order : b.freq - a.freq
+    );
+
+    // Filter
+    const filtered = term
+      ? sorted.filter(w =>
+          w.word.toLowerCase().includes(term) ||
+          w.en.toLowerCase().includes(term) ||
+          w.zh.includes(term))
+      : sorted;
+
+    if (filtered.length === 0) continue;
+    totalVisible += filtered.length;
+
+    const opener = escapeHtml(OPENERS[ch] || '');
+    const gridClass = currentMode === 'flash' ? 'flashcard-grid' : 'word-grid';
+    const cards = filtered.map(w =>
+      currentMode === 'flash' ? renderFlashCard(w, term) : renderListCard(w, term)
+    ).join('');
+
+    html += `<section class="chapter-section" id="ch-${ch}">
+      <div class="chapter-header">
+        <span class="chapter-num-big">${ch}</span>
+        <span class="chapter-title-text">Chapitre ${ch}</span>
+        <span class="chapter-count-badge">${filtered.length} mot${filtered.length>1?'s':''}</span>
+      </div>
+      ${opener ? `<div class="chapter-opener">${opener}</div>` : ''}
+      <div class="${gridClass}">${cards}</div>
+    </section>`;
+  }
+
+  if (totalVisible === 0) {
+    html = `<div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <p>Aucun mot trouvé pour « ${escapeHtml(searchTerm)} »</p>
+    </div>`;
+  }
+
+  content.innerHTML = html;
+  document.getElementById('visible-count').textContent = totalVisible;
+
+  // Add animation delays
+  content.querySelectorAll('.word-card, .flash-card').forEach((el, i) => {
+    el.style.animationDelay = (i * 15) + 'ms';
+  });
+}
+
+function jumpToChapter(ch) {
+  document.querySelectorAll('.chapter-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.ch === String(ch)));
+  const el = document.getElementById('ch-' + ch);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Search
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+// Mode (list vs flashcard)
+document.querySelectorAll('.mode-btns:not(.sort-btns) .mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btns:not(.sort-btns) .mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    render();
+  });
+});
+
+// Sort toggle
+document.querySelectorAll('.sort-btns .mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btns .mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.dataset.sort;
+    render();
+  });
+});
+
+// Chapter filter (top bar)
+document.querySelectorAll('.ch-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeChapter = btn.dataset.ch;
+    render();
+  });
+});
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const total = document.body.scrollHeight - window.innerHeight;
+  const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+
+
+// ═══════ STUDY MODE ═══════
+let selectedChapters = new Set();
+let selectedCount = 20;
+let priority = 'freq';
+let session = null;
+
+function getAllWordsFlat() {
+  const out = [];
+  for (let ch = 1; ch <= 15; ch++) {
+    (VOCAB[ch] || []).forEach(w => out.push({ ...w, chapter: ch }));
+  }
+  return out;
+}
+
+function buildChapterChips() {
+  const wrap = document.getElementById('chapter-chips');
+  let html = '<button class="chip chip-all selected" data-ch="all">Tous</button>';
+  for (let ch = 1; ch <= 15; ch++) {
+    const count = (VOCAB[ch] || []).length;
+    if (count === 0) continue;
+    html += `<button class="chip" data-ch="${ch}">Ch ${ch}<span class="chip-count">${count}</span></button>`;
+  }
+  wrap.innerHTML = html;
+  selectedChapters = new Set(['all']);
+
+  wrap.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const v = chip.dataset.ch;
+      if (v === 'all') {
+        wrap.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        selectedChapters = new Set(['all']);
+      } else {
+        wrap.querySelector('[data-ch="all"]').classList.remove('selected');
+        selectedChapters.delete('all');
+        chip.classList.toggle('selected');
+        if (chip.classList.contains('selected')) selectedChapters.add(v);
+        else selectedChapters.delete(v);
+        if (selectedChapters.size === 0) {
+          wrap.querySelector('[data-ch="all"]').classList.add('selected');
+          selectedChapters = new Set(['all']);
+        }
+      }
+      updateSummary();
+    });
+  });
+}
+
+function getEligibleWords() {
+  let pool = getAllWordsFlat();
+  if (!selectedChapters.has('all')) {
+    pool = pool.filter(w => selectedChapters.has(String(w.chapter)));
+  }
+  return pool;
+}
+
+function updateSummary() {
+  const pool = getEligibleWords();
+  const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
+  document.getElementById('summary-count').textContent = n;
+  document.getElementById('summary-desc').textContent =
+    n === pool.length ? `mots disponibles · 全部` : `mots sur ${pool.length} disponibles`;
+  document.getElementById('start-btn').disabled = n === 0;
+}
+
+function openStudy() {
+  buildChapterChips();
+  document.getElementById('study-overlay').classList.add('active');
+  showScreen('setup-screen');
+  updateSummary();
+  document.body.style.overflow = 'hidden';
+}
+function closeStudy() {
+  document.getElementById('study-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  session = null;
+}
+function showScreen(id) {
+  document.querySelectorAll('.study-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Count buttons
+document.querySelectorAll('#count-buttons .chip').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#count-buttons .chip').forEach(x => x.classList.remove('selected'));
+    b.classList.add('selected');
+    const v = b.dataset.count;
+    selectedCount = v === 'all' ? 'all' : parseInt(v);
+    document.getElementById('count-custom').value = '';
+    updateSummary();
+  });
+});
+document.getElementById('count-custom').addEventListener('input', e => {
+  const v = parseInt(e.target.value);
+  if (v > 0) {
+    document.querySelectorAll('#count-buttons .chip').forEach(x => x.classList.remove('selected'));
+    selectedCount = v;
+    updateSummary();
+  }
+});
+
+// Priority buttons
+document.querySelectorAll('#priority-select .priority-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#priority-select .priority-btn').forEach(x => x.classList.remove('selected'));
+    b.classList.add('selected');
+    priority = b.dataset.priority;
+  });
+});
+
+// ─── SESSION LOGIC ───
+function startSession(wordList) {
+  let pool = wordList || getEligibleWords();
+
+  // Order pool by priority
+  if (!wordList) {
+    if (priority === 'freq')        pool = [...pool].sort((a,b) => b.freq - a.freq);
+    else if (priority === 'order')  pool = [...pool].sort((a,b) => a.chapter - b.chapter || a.order - b.order);
+    else                            pool = [...pool].sort(() => Math.random() - 0.5);
+
+    const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
+    pool = pool.slice(0, n);
+
+    // Shuffle the chosen pool (except when 'order' is chosen — preserve narrative order)
+    if (priority !== 'order') pool = [...pool].sort(() => Math.random() - 0.5);
+  }
+
+  session = {
+    queue: pool.map(w => ({ ...w, box: 0, failCount: 0 })),
+    total: pool.length,
+    mastered: 0,
+    failed: 0,
+    flips: 0,
+    failedWords: {}, // word -> fail count
+    current: null,
+    revealed: false
+  };
+  showScreen('card-screen');
+  nextCard();
+}
+
+function nextCard() {
+  if (!session) return;
+  if (session.queue.length === 0) {
+    finishSession();
+    return;
+  }
+  session.current = session.queue.shift();
+  session.revealed = false;
+  document.getElementById('study-card').classList.remove('flipped');
+
+  const c = session.current;
+  document.getElementById('card-chapter').textContent = `Chapitre ${c.chapter}`;
+  document.getElementById('card-word').textContent = c.word;
+  const pos = c.lemma.match(/\(([^)]+)\)/)?.[1] || '';
+  document.getElementById('card-pos').textContent = pos;
+
+  document.getElementById('back-word').innerHTML = `<strong>${c.lemma.split(' (')[0]}</strong>${pos ? ' · ' + pos : ''}`;
+  document.getElementById('back-en').textContent = c.en;
+  document.getElementById('back-zh').textContent = c.zh;
+  if (c.sentence) {
+    const re = new RegExp('(' + c.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    document.getElementById('back-example').innerHTML = escapeHtml(c.sentence).replace(re, '<em>$1</em>');
+    document.getElementById('back-example').style.display = '';
+  } else {
+    document.getElementById('back-example').style.display = 'none';
+  }
+
+  updateSessionStats();
+}
+
+function flipCard() {
+  if (!session || !session.current) return;
+  if (!session.revealed) {
+    document.getElementById('study-card').classList.add('flipped');
+    session.revealed = true;
+  }
+}
+
+function answerCard(pass) {
+  if (!session || !session.current) return;
+  // If user fails without flipping, briefly reveal the answer before advancing,
+  // so they actually see what they missed. Passing without flipping skips immediately.
+  if (!session.revealed && !pass) {
+    document.getElementById('study-card').classList.add('flipped');
+    session.revealed = true;
+    setTimeout(() => answerCardCommit(false), 1400);
+    return;
+  }
+  answerCardCommit(pass);
+}
+
+function answerCardCommit(pass) {
+  if (!session || !session.current) return;
+  const c = session.current;
+  session.flips++;
+
+  if (pass) {
+    c.box++;
+    if (c.box >= 2) {
+      // mastered — remove from queue
+      session.mastered++;
+    } else {
+      // passed once, send back to be reviewed later (~6 cards away)
+      const insertAt = Math.min(session.queue.length, 6 + Math.floor(Math.random() * 2));
+      session.queue.splice(insertAt, 0, c);
+    }
+  } else {
+    c.box = 0;
+    c.failCount++;
+    session.failed++;
+    session.failedWords[c.word] = (session.failedWords[c.word] || 0) + 1;
+    // failed — come back soon (~3 cards away)
+    const insertAt = Math.min(session.queue.length, 3);
+    session.queue.splice(insertAt, 0, c);
+  }
+  nextCard();
+}
+
+function updateSessionStats() {
+  const remaining = session.queue.length + (session.current ? 1 : 0);
+  document.getElementById('stat-remaining').textContent = remaining;
+  document.getElementById('stat-mastered').textContent = session.mastered;
+  document.getElementById('stat-failed').textContent = session.failed;
+
+  // Box meter: count current state across queue
+  let nNew = 0, nLearn = 0;
+  session.queue.forEach(c => { if (c.box === 0) nNew++; else nLearn++; });
+  if (session.current) {
+    if (session.current.box === 0) nNew++; else nLearn++;
+  }
+  const total = session.total;
+  document.querySelector('.seg-mastered').style.width = (session.mastered/total*100) + '%';
+  document.querySelector('.seg-learning').style.width = (nLearn/total*100) + '%';
+  document.querySelector('.seg-new').style.width = (nNew/total*100) + '%';
+}
+
+function finishSession() {
+  showScreen('result-screen');
+  const total = session.total;
+  const flips = session.flips;
+  const correctFlips = flips - session.failed;
+  const accuracy = flips > 0 ? Math.round(correctFlips / flips * 100) : 0;
+
+  document.getElementById('r-mastered').textContent = `${session.mastered}/${total}`;
+  document.getElementById('r-accuracy').textContent = accuracy + '%';
+  document.getElementById('r-flips').textContent = flips;
+
+  const hardEntries = Object.entries(session.failedWords)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 12);
+  if (hardEntries.length > 0) {
+    document.getElementById('hardest-section').style.display = '';
+    document.getElementById('hardest-list').innerHTML = hardEntries.map(([w,n]) =>
+      `<span class="hardest-item">${escapeHtml(w)}<span class="fail-count">×${n}</span></span>`
+    ).join('');
+    document.getElementById('practice-failed-btn').style.display = '';
+  } else {
+    document.getElementById('hardest-section').style.display = 'none';
+    document.getElementById('practice-failed-btn').style.display = 'none';
+  }
+
+  // Choose icon + msg based on accuracy
+  const icon = document.getElementById('result-icon');
+  const title = document.getElementById('result-title');
+  const sub = document.getElementById('result-subtitle');
+  if (accuracy >= 90) {
+    icon.textContent = '🏆'; title.textContent = 'Excellent !'; sub.textContent = '完美的表现 · Mémoire exceptionnelle';
+  } else if (accuracy >= 75) {
+    icon.textContent = '🎉'; title.textContent = 'Bien joué !'; sub.textContent = '不错的成绩';
+  } else if (accuracy >= 60) {
+    icon.textContent = '📚'; title.textContent = 'Continue !'; sub.textContent = '继续努力';
+  } else {
+    icon.textContent = '💪'; title.textContent = 'Persévère !'; sub.textContent = '需要再练几遍';
+  }
+}
+
+function practiceFailed() {
+  const wordSet = new Set(Object.keys(session.failedWords));
+  const allWords = getAllWordsFlat();
+  const failedList = allWords.filter(w => wordSet.has(w.word));
+  if (failedList.length === 0) return;
+  startSession(failedList.sort(() => Math.random() - 0.5));
+}
+
+function restartSetup() {
+  showScreen('setup-screen');
+  updateSummary();
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('study-overlay').classList.contains('active')) return;
+  if (e.key === 'Escape') { closeStudy(); return; }
+  if (!document.getElementById('card-screen').classList.contains('active')) return;
+  if (!session || !session.current) return;
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    if (!session.revealed) flipCard();
+    return;
+  }
+  if (e.key === '1' || e.key.toLowerCase() === 'f') answerCard(false);
+  else if (e.key === '2' || e.key.toLowerCase() === 'j') answerCard(true);
+});
+
+
+// Boot
+buildSidebar();
+render();
+</script>
+
+</body>
+</html>
