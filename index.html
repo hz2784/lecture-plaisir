@@ -915,7 +915,7 @@ header h1 em {
 .study-card-front .tts-btn { color: var(--muted); margin-top: 0.5rem; }
 .study-card-front .tts-btn:hover { color: var(--accent); }
 .study-card-front .tts-btn.speaking { color: var(--accent); }
-.study-card-back .tts-btn { margin-left: 0.4rem; }
+.study-card-back .tts-btn { margin-left: 0.3rem; display: inline-flex; vertical-align: middle; }
 
 /* ═══════ STUDY MODE ═══════ */
 .study-trigger {
@@ -1355,12 +1355,30 @@ header h1 em {
   border-color: #5a8252;
   color: #5a8252;
 }
-.action-pass:hover { background: #5a8252; color: var(--paper); }
-.action-prev {
-  border-color: var(--border);
-  color: var(--muted);
+.action-fuzzy {
+  border-color: var(--gold);
+  color: #876b27;
 }
-.action-prev:hover { background: var(--cream); }
+.action-fuzzy:hover { background: var(--gold); color: var(--paper); }
+.action-pass:hover { background: #5a8252; color: var(--paper); }
+.action-prev-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+}
+.action-prev-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.action-prev-btn:hover { color: var(--accent); }
 .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .srs-stats {
@@ -1495,6 +1513,116 @@ header h1 em {
   .priority-select { flex-direction: column; }
   .result-stats { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── Conjugation Side Card ── */
+.conj-overlay {
+  position: fixed; top: 50%; right: 1.5rem;
+  z-index: 10000; width: 300px;
+  --drag-x: 0px; --drag-y: 0px;
+  transform: translateY(-50%) translateX(calc(100% + 2rem)) translate(var(--drag-x), var(--drag-y));
+  transition: transform 0.3s ease, opacity 0.3s;
+  pointer-events: none; opacity: 0;
+}
+.conj-overlay.active { transform: translateY(-50%) translateX(0) translate(var(--drag-x), var(--drag-y)); pointer-events: auto; opacity: 1; }
+.conj-overlay.dragging { transition: none; }
+.conj-panel {
+  background: var(--card-bg);
+  width: 100%;
+  max-height: 80vh;
+  display: flex; flex-direction: column;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+.conj-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  cursor: grab; user-select: none;
+}
+.conj-header:active { cursor: grabbing; }
+.conj-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem; font-weight: 400;
+  pointer-events: none;
+}
+.conj-header h3 strong { color: var(--accent); }
+.conj-drag-hint {
+  font-size: 0.6rem; color: var(--muted);
+  letter-spacing: 0.08em; opacity: 0.5;
+  pointer-events: none;
+}
+.conj-close {
+  background: none; border: none; font-size: 1.1rem;
+  color: var(--muted); cursor: pointer; padding: 0.2rem 0.3rem;
+  line-height: 1; border-radius: 4px;
+  transition: all 0.15s;
+}
+.conj-close:hover { color: var(--ink); background: rgba(0,0,0,0.05); }
+.conj-tense-tabs {
+  display: flex; gap: 0;
+  overflow-x: auto;
+  background: var(--cream);
+  padding: 0 0.3rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.conj-tense-tabs::-webkit-scrollbar { display: none; }
+.conj-tense-btn {
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.55rem;
+  font-family: inherit; font-size: 0.68rem;
+  color: var(--muted); cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.conj-tense-btn:hover { color: var(--ink); }
+.conj-tense-btn.active {
+  color: var(--accent); font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+.conj-forms {
+  flex: 1; padding: 0;
+  overflow-y: auto;
+}
+.conj-forms .conj-table {
+  list-style: none; padding: 0;
+}
+.conj-table li {
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  display: flex; gap: 0.5rem;
+  align-items: baseline;
+}
+.conj-table li:nth-child(odd) { background: rgba(0,0,0,0.018); }
+.conj-pronoun { color: #3a8a7b; width: 56px; text-align: right; flex-shrink: 0; font-size: 0.82rem; }
+.conj-ending { color: var(--ink); font-weight: 700; }
+.conj-tense-head {
+  padding: 0.8rem 1rem 0.3rem;
+}
+.conj-tense-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--ink);
+}
+.conj-tense-desc {
+  font-size: 0.7rem; color: var(--muted);
+  font-style: italic; line-height: 1.45;
+  margin-top: 0.15rem;
+}
+.conj-btn {
+  background: none; border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.35rem 0.7rem;
+  font-family: inherit; font-size: 0.78rem;
+  color: var(--accent); cursor: pointer;
+  margin-top: 0.8rem;
+  transition: all 0.15s;
+}
+.conj-btn:hover { background: var(--accent); color: var(--paper); border-color: var(--accent); }
 
 </style>
 </head>
@@ -1704,23 +1832,29 @@ header h1 em {
           <div class="back-meaning" id="back-en">English</div>
           <div class="back-meaning-zh" id="back-zh">中文</div>
           <div class="back-example" id="back-example"></div>
-          <button class="tts-btn" id="back-tts" onclick="speak(document.getElementById('back-example').textContent, event)" title="Écouter la phrase" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg> Écouter la phrase</button>
+          <button class="tts-btn" id="back-tts" onclick="speak(document.getElementById('back-example').textContent, event)" title="Écouter la phrase" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></button>
+          <button class="conj-btn" id="back-conj" onclick="openConjFromCard(event)" style="display:none">Conjugaison ›</button>
         </div>
       </div>
     </div>
 
-    <div class="action-row">
-      <button class="action-btn action-prev" id="btn-prev" onclick="prevCard()" style="display:none">
-        <span>← Précédent</span>
-        <span class="key-hint">上一个</span>
+    <div class="action-prev-row">
+      <button class="action-prev-btn" id="btn-prev" onclick="prevCard()" style="display:none">
+        ← 上一个
       </button>
+    </div>
+    <div class="action-row">
       <button class="action-btn action-fail" id="btn-fail" onclick="answerCard(false)">
-        <span>✕ Pas encore</span>
-        <span class="key-hint">1 · 没记住</span>
+        <span id="fail-label">✕ Pas encore</span>
+        <span class="key-hint" id="fail-hint">1 · 没记住</span>
+      </button>
+      <button class="action-btn action-fuzzy" id="btn-fuzzy" onclick="answerCard('fuzzy')" style="display:none">
+        <span>~ Vaguement</span>
+        <span class="key-hint">2 · 模糊</span>
       </button>
       <button class="action-btn action-pass" id="btn-pass" onclick="answerCard(true)">
-        <span>✓ Je m'en souviens</span>
-        <span class="key-hint">2 · 记住了</span>
+        <span id="pass-label">✓ Je m'en souviens</span>
+        <span class="key-hint" id="pass-hint">3 · 记住了</span>
       </button>
     </div>
   </div>
@@ -2127,14 +2261,16 @@ function updateSummary() {
   const pool = getEligibleWords();
   const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
   const stats = srsDueCount(pool);
-  const dueInSession = Math.min(stats.due, n);
-  const newInSession = Math.max(0, n - dueInSession);
+  const available = stats.due + stats.new;
+  const actual = Math.min(n, available);
+  const dueInSession = Math.min(stats.due, actual);
+  const newInSession = Math.min(stats.new, Math.max(0, actual - dueInSession));
 
-  document.getElementById('summary-count').textContent = n;
+  document.getElementById('summary-count').textContent = actual;
   document.getElementById('summary-desc').textContent =
     stats.due > 0
       ? `${dueInSession} 到期复习 + ${newInSession} 新词`
-      : `${n} mots · 全部为新词`;
+      : `${newInSession} 新词`;
   document.getElementById('start-btn').disabled = n === 0;
 
   document.getElementById('srs-stats').innerHTML =
@@ -2199,31 +2335,34 @@ function startSession(wordList) {
   if (!wordList) {
     const n = selectedCount === 'all' ? pool.length : Math.min(selectedCount, pool.length);
 
-    // Split into due (needs review) and non-due (new + not yet due)
+    // Split into: due (needs review), new (never seen), not-yet-due (skip)
     const due = [];
-    const rest = [];
+    const newWords = [];
     pool.forEach(w => {
       const card = srsData[w.word];
-      if (card && now >= card.nextReview && card.reps > 0) due.push(w);
-      else rest.push(w);
+      if (!card || card.reps === 0) {
+        newWords.push(w);
+      } else if (now >= card.nextReview) {
+        due.push(w);
+      }
+      // else: learned but not yet due — skip entirely
     });
 
     // Sort due words: most overdue first
     due.sort((a, b) => (srsData[a.word].nextReview || 0) - (srsData[b.word].nextReview || 0));
 
-    // Sort new/not-yet-due words by selected mode
-    if (priority === 'freq')       rest.sort((a,b) => b.freq - a.freq);
-    else if (priority === 'order') rest.sort((a,b) => a.chapter - b.chapter || a.order - b.order);
-    else                           rest.sort(() => Math.random() - 0.5);
+    // Sort new words by selected mode
+    if (priority === 'freq')       newWords.sort((a,b) => b.freq - a.freq);
+    else if (priority === 'order') newWords.sort((a,b) => a.chapter - b.chapter || a.order - b.order);
+    else                           newWords.sort(() => Math.random() - 0.5);
 
-    // Take due words first, fill remaining slots with new words
+    // Take due words first, fill remaining slots with NEW words only
     const selected = due.slice(0, n);
     const remaining = n - selected.length;
-    if (remaining > 0) selected.push(...rest.slice(0, remaining));
+    if (remaining > 0) selected.push(...newWords.slice(0, remaining));
 
-    // Shuffle the final set (due words mixed in with new), except in order mode
+    // Shuffle the final set, except in order mode
     if (priority !== 'order') {
-      // Keep due words at the front, shuffle within each group
       const dueSet = new Set(due.map(w => w.word));
       const sessionDue = selected.filter(w => dueSet.has(w.word));
       const sessionNew = selected.filter(w => !dueSet.has(w.word));
@@ -2236,7 +2375,11 @@ function startSession(wordList) {
   }
 
   session = {
-    queue: pool.map(w => ({ ...w, box: 0, failCount: 0 })),
+    queue: pool.map(w => {
+      const card = srsData[w.word];
+      const firstTime = !card || card.reps === 0;
+      return { ...w, box: 0, failCount: 0, firstTime, seen: !firstTime };
+    }),
     total: pool.length,
     mastered: 0,
     failed: 0,
@@ -2272,7 +2415,34 @@ function displayCard(c) {
     document.getElementById('back-tts').style.display = 'none';
   }
 
+  const isVerb = /\(v\.\)/.test(c.lemma);
+  document.getElementById('back-conj').style.display = isVerb ? '' : 'none';
+
   document.getElementById('btn-prev').style.display = session.history.length > 0 ? '' : 'none';
+
+  // Reset state
+  if (session.countdownId) { clearInterval(session.countdownId); session.countdownId = null; }
+  session.pendingAnswer = undefined;
+  document.getElementById('btn-fail').style.display = '';
+  document.getElementById('btn-pass').style.display = '';
+
+  // Introduction (first time, never seen) vs review (seen before)
+  if (!c.seen) {
+    // Introduction mode: 没见过 / 见过
+    document.getElementById('fail-label').textContent = '✕ Pas vu';
+    document.getElementById('fail-hint').textContent = '1 · 没见过';
+    document.getElementById('btn-fuzzy').style.display = 'none';
+    document.getElementById('pass-label').textContent = '✓ Déjà vu';
+    document.getElementById('pass-hint').textContent = '2 · 见过';
+  } else {
+    // Review mode: 没记住 / 模糊 / 记住了
+    document.getElementById('fail-label').textContent = '✕ Pas encore';
+    document.getElementById('fail-hint').textContent = '1 · 没记住';
+    document.getElementById('btn-fuzzy').style.display = '';
+    document.getElementById('pass-label').textContent = '✓ Je m\'en souviens';
+    document.getElementById('pass-hint').textContent = '3 · 记住了';
+  }
+
   updateSessionStats();
 }
 
@@ -2322,11 +2492,75 @@ function flipCard() {
 
 function answerCard(pass) {
   if (!session || !session.current) return;
-  if (!session.revealed && !pass) {
+  const c = session.current;
+
+  // Waiting after auto-reveal
+  if (session.pendingAnswer !== undefined) {
+    if (pass === false && session.countdownId) {
+      // Red button during countdown: extend → switch to fail (manual)
+      clearInterval(session.countdownId);
+      session.countdownId = null;
+      session.pendingAnswer = false;
+      document.getElementById('btn-fail').style.display = 'none';
+      document.getElementById('pass-label').textContent = '→ Suivant';
+      document.getElementById('pass-hint').textContent = '下一个';
+      return;
+    }
+    // Green button or manual mode: advance
+    if (session.countdownId) { clearInterval(session.countdownId); session.countdownId = null; }
+    const pending = session.pendingAnswer;
+    session.pendingAnswer = undefined;
+    answerCardCommit(pending);
+    return;
+  }
+
+  // Introduction mode: green = already known, skip
+  if (pass === true && !c.seen) {
+    if (!session.revealed) {
+      document.getElementById('study-card').classList.add('flipped');
+      session.revealed = true;
+    }
+    answerCardCommit('known');
+    return;
+  }
+  // Fail/fuzzy without flipping: reveal and wait
+  if (!session.revealed && (pass === false || pass === 'fuzzy')) {
     document.getElementById('study-card').classList.add('flipped');
     session.revealed = true;
-    speak(session.current.word, null);
-    setTimeout(() => answerCardCommit(false), 1400);
+    speak(c.word, null);
+    session.pendingAnswer = pass;
+    document.getElementById('btn-fail').style.display = 'none';
+    document.getElementById('btn-fuzzy').style.display = 'none';
+    document.getElementById('btn-pass').style.display = '';
+
+    if (pass === 'fuzzy') {
+      // Fuzzy: auto-advance after 3s
+      // Red = extend (becomes fail), Green = advance now
+      let countdown = 3;
+      document.getElementById('btn-fail').style.display = '';
+      document.getElementById('fail-label').textContent = `⏸ ${countdown}s`;
+      document.getElementById('fail-hint').textContent = '延时';
+      document.getElementById('pass-label').textContent = '→ Suivant';
+      document.getElementById('pass-hint').textContent = '下一个';
+      session.countdownId = setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+          clearInterval(session.countdownId);
+          session.countdownId = null;
+          if (session.pendingAnswer !== undefined) {
+            const pending = session.pendingAnswer;
+            session.pendingAnswer = undefined;
+            answerCardCommit(pending);
+          }
+        } else {
+          document.getElementById('fail-label').textContent = `⏸ ${countdown}s`;
+        }
+      }, 1000);
+    } else {
+      // Fail: manual advance only, green button
+      document.getElementById('pass-label').textContent = '→ Suivant';
+      document.getElementById('pass-hint').textContent = '下一个';
+    }
     return;
   }
   answerCardCommit(pass);
@@ -2338,9 +2572,30 @@ function answerCardCommit(pass) {
   const prevBox = c.box;
   session.flips++;
 
-  srsUpdate(c.word, pass);
+  if (pass === 'known') {
+    // Mark as already known — set high interval so it's "mastered" and won't come back
+    const data = srsLoad();
+    data[c.word] = { ease: 2.5, interval: 90, nextReview: Date.now() + 90 * 86400000, lapses: 0, reps: 5 };
+    srsSave(data);
+    if (currentUser) saveToCloud(c.word, data[c.word]);
+    session.mastered++;
+    session.history.push({ card: { ...c }, wasAnswered: true, passed: 'known', prevBox });
+    nextCard();
+    return;
+  }
 
-  if (pass) {
+  // Mark as seen after first encounter (introduction → review on next appearance)
+  c.seen = true;
+
+  if (pass === 'fuzzy') {
+    // Fuzzy: partial recall — don't fail hard, but come back sooner than a full pass
+    srsUpdate(c.word, true);
+    c.box++;
+    // Come back in ~4 cards (between fail@3 and pass@6)
+    const insertAt = Math.min(session.queue.length, 4 + Math.floor(Math.random() * 2));
+    session.queue.splice(insertAt, 0, c);
+  } else if (pass) {
+    srsUpdate(c.word, true);
     c.box++;
     if (c.box >= 2) {
       session.mastered++;
@@ -2349,6 +2604,7 @@ function answerCardCommit(pass) {
       session.queue.splice(insertAt, 0, c);
     }
   } else {
+    srsUpdate(c.word, false);
     c.box = 0;
     c.failCount++;
     session.failed++;
@@ -2452,12 +2708,24 @@ document.addEventListener('keydown', e => {
   if (!session || !session.current) return;
   if (e.key === ' ' || e.key === 'Enter') {
     e.preventDefault();
+    if (session.pendingAnswer !== undefined) {
+      // Space = green button behavior: advance
+      if (session.countdownId) { clearInterval(session.countdownId); session.countdownId = null; }
+      const pending = session.pendingAnswer;
+      session.pendingAnswer = undefined;
+      answerCardCommit(pending);
+      return;
+    }
     if (!session.revealed) flipCard();
     return;
   }
   if (e.key === 'ArrowLeft' || e.key === 'Backspace') { prevCard(); return; }
   if (e.key === '1' || e.key.toLowerCase() === 'f') answerCard(false);
-  else if (e.key === '2' || e.key.toLowerCase() === 'j') answerCard(true);
+  else if (e.key === '2') {
+    if (document.getElementById('btn-fuzzy').style.display !== 'none') answerCard('fuzzy');
+    else answerCard(true);
+  }
+  else if (e.key === '3' || e.key.toLowerCase() === 'j') answerCard(true);
 });
 
 
@@ -2504,6 +2772,7 @@ try {
   console.error('Firebase init error:', e);
 }
 
+if (auth) auth.getRedirectResult().catch(e => console.error('Redirect result error:', e));
 if (auth) auth.onAuthStateChanged(user => {
   currentUser = user;
   const info = document.getElementById('user-info');
@@ -2532,10 +2801,12 @@ function toggleAuth() {
   } else {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).catch(e => {
-      console.error('Auth error:', e);
-      if (e.code === 'auth/popup-blocked') alert('Popup blocked — please allow popups for this site.');
-      else if (e.code === 'auth/unauthorized-domain') alert('This domain is not authorized in Firebase. Add it in Firebase Console > Authentication > Settings > Authorized domains.');
-      else alert('Login failed: ' + e.message);
+      console.error('Auth popup error, trying redirect:', e);
+      if (e.code === 'auth/unauthorized-domain') {
+        alert('This domain is not authorized in Firebase. Add it in Firebase Console > Authentication > Settings > Authorized domains.');
+      } else {
+        auth.signInWithRedirect(provider);
+      }
     });
   }
 }
@@ -3132,7 +3403,504 @@ function buildSoundPicks() {
 }
 buildSoundPicks();
 updatePomoDisplay();
+
+/* ══════════════════════════════════════════
+   CONJUGATION ENGINE
+   ══════════════════════════════════════════ */
+
+const CONJ_TENSES = [
+  { key: 'present', label: 'Présent Indicatif', desc: "Décrit ce qui se passe maintenant ou habituellement." },
+  { key: 'imperfect', label: 'Imparfait', desc: "Décrit des actions habituelles ou en cours dans le passé." },
+  { key: 'future', label: 'Futur Simple', desc: "Décrit ce qui va se passer." },
+  { key: 'conditional', label: 'Conditionnel', desc: "Exprime une action hypothétique ou polie." },
+  { key: 'subjunctive', label: 'Subjonctif Présent', desc: "Exprime le doute, le souhait, la nécessité." },
+  { key: 'passeCompose', label: 'Passé Composé', desc: "Décrit une action terminée dans le passé." },
+];
+
+const PRONOUNS = ['je','tu','il/elle','nous','vous','ils/elles'];
+
+const IRREG = {
+  être: {
+    present: ['suis','es','est','sommes','êtes','sont'],
+    imperfect: ['étais','étais','était','étions','étiez','étaient'],
+    future: ['serai','seras','sera','serons','serez','seront'],
+    conditional: ['serais','serais','serait','serions','seriez','seraient'],
+    subjunctive: ['sois','sois','soit','soyons','soyez','soient'],
+    passeCompose: { aux: 'avoir', pp: 'été' },
+  },
+  avoir: {
+    present: ['ai','as','a','avons','avez','ont'],
+    imperfect: ['avais','avais','avait','avions','aviez','avaient'],
+    future: ['aurai','auras','aura','aurons','aurez','auront'],
+    conditional: ['aurais','aurais','aurait','aurions','auriez','auraient'],
+    subjunctive: ['aie','aies','ait','ayons','ayez','aient'],
+    passeCompose: { aux: 'avoir', pp: 'eu' },
+  },
+  faire: {
+    present: ['fais','fais','fait','faisons','faites','font'],
+    imperfect: ['faisais','faisais','faisait','faisions','faisiez','faisaient'],
+    future: ['ferai','feras','fera','ferons','ferez','feront'],
+    conditional: ['ferais','ferais','ferait','ferions','feriez','feraient'],
+    subjunctive: ['fasse','fasses','fasse','fassions','fassiez','fassent'],
+    passeCompose: { aux: 'avoir', pp: 'fait' },
+  },
+  aller: {
+    present: ['vais','vas','va','allons','allez','vont'],
+    imperfect: ['allais','allais','allait','allions','alliez','allaient'],
+    future: ['irai','iras','ira','irons','irez','iront'],
+    conditional: ['irais','irais','irait','irions','iriez','iraient'],
+    subjunctive: ['aille','ailles','aille','allions','alliez','aillent'],
+    passeCompose: { aux: 'être', pp: 'allé' },
+  },
+  dire: {
+    present: ['dis','dis','dit','disons','dites','disent'],
+    future: ['dirai','diras','dira','dirons','direz','diront'],
+    conditional: ['dirais','dirais','dirait','dirions','diriez','diraient'],
+    subjunctive: ['dise','dises','dise','disions','disiez','disent'],
+    passeCompose: { aux: 'avoir', pp: 'dit' },
+  },
+  pouvoir: {
+    present: ['peux','peux','peut','pouvons','pouvez','peuvent'],
+    future: ['pourrai','pourras','pourra','pourrons','pourrez','pourront'],
+    conditional: ['pourrais','pourrais','pourrait','pourrions','pourriez','pourraient'],
+    subjunctive: ['puisse','puisses','puisse','puissions','puissiez','puissent'],
+    passeCompose: { aux: 'avoir', pp: 'pu' },
+  },
+  vouloir: {
+    present: ['veux','veux','veut','voulons','voulez','veulent'],
+    future: ['voudrai','voudras','voudra','voudrons','voudrez','voudront'],
+    conditional: ['voudrais','voudrais','voudrait','voudrions','voudriez','voudraient'],
+    subjunctive: ['veuille','veuilles','veuille','voulions','vouliez','veuillent'],
+    passeCompose: { aux: 'avoir', pp: 'voulu' },
+  },
+  savoir: {
+    present: ['sais','sais','sait','savons','savez','savent'],
+    future: ['saurai','sauras','saura','saurons','saurez','sauront'],
+    conditional: ['saurais','saurais','saurait','saurions','sauriez','sauraient'],
+    subjunctive: ['sache','saches','sache','sachions','sachiez','sachent'],
+    passeCompose: { aux: 'avoir', pp: 'su' },
+  },
+  voir: {
+    present: ['vois','vois','voit','voyons','voyez','voient'],
+    future: ['verrai','verras','verra','verrons','verrez','verront'],
+    conditional: ['verrais','verrais','verrait','verrions','verriez','verraient'],
+    subjunctive: ['voie','voies','voie','voyions','voyiez','voient'],
+    passeCompose: { aux: 'avoir', pp: 'vu' },
+  },
+  venir: {
+    present: ['viens','viens','vient','venons','venez','viennent'],
+    future: ['viendrai','viendras','viendra','viendrons','viendrez','viendront'],
+    conditional: ['viendrais','viendrais','viendrait','viendrions','viendriez','viendraient'],
+    subjunctive: ['vienne','viennes','vienne','venions','veniez','viennent'],
+    passeCompose: { aux: 'être', pp: 'venu' },
+  },
+  tenir: {
+    present: ['tiens','tiens','tient','tenons','tenez','tiennent'],
+    future: ['tiendrai','tiendras','tiendra','tiendrons','tiendrez','tiendront'],
+    conditional: ['tiendrais','tiendrais','tiendrait','tiendrions','tiendriez','tiendraient'],
+    subjunctive: ['tienne','tiennes','tienne','tenions','teniez','tiennent'],
+    passeCompose: { aux: 'avoir', pp: 'tenu' },
+  },
+  prendre: {
+    present: ['prends','prends','prend','prenons','prenez','prennent'],
+    future: ['prendrai','prendras','prendra','prendrons','prendrez','prendront'],
+    conditional: ['prendrais','prendrais','prendrait','prendrions','prendriez','prendraient'],
+    subjunctive: ['prenne','prennes','prenne','prenions','preniez','prennent'],
+    passeCompose: { aux: 'avoir', pp: 'pris' },
+  },
+  mettre: {
+    present: ['mets','mets','met','mettons','mettez','mettent'],
+    passeCompose: { aux: 'avoir', pp: 'mis' },
+  },
+  partir: {
+    present: ['pars','pars','part','partons','partez','partent'],
+    passeCompose: { aux: 'être', pp: 'parti' },
+  },
+  sortir: {
+    present: ['sors','sors','sort','sortons','sortez','sortent'],
+    passeCompose: { aux: 'être', pp: 'sorti' },
+  },
+  dormir: {
+    present: ['dors','dors','dort','dormons','dormez','dorment'],
+    passeCompose: { aux: 'avoir', pp: 'dormi' },
+  },
+  vivre: {
+    present: ['vis','vis','vit','vivons','vivez','vivent'],
+    passeCompose: { aux: 'avoir', pp: 'vécu' },
+  },
+  lire: {
+    present: ['lis','lis','lit','lisons','lisez','lisent'],
+    passeCompose: { aux: 'avoir', pp: 'lu' },
+  },
+  écrire: {
+    present: ['écris','écris','écrit','écrivons','écrivez','écrivent'],
+    passeCompose: { aux: 'avoir', pp: 'écrit' },
+  },
+  croire: {
+    present: ['crois','crois','croit','croyons','croyez','croient'],
+    subjunctive: ['croie','croies','croie','croyions','croyiez','croient'],
+    passeCompose: { aux: 'avoir', pp: 'cru' },
+  },
+  connaître: {
+    present: ['connais','connais','connaît','connaissons','connaissez','connaissent'],
+    passeCompose: { aux: 'avoir', pp: 'connu' },
+  },
+  paraître: {
+    present: ['parais','parais','paraît','paraissons','paraissez','paraissent'],
+    passeCompose: { aux: 'avoir', pp: 'paru' },
+  },
+  disparaître: {
+    present: ['disparais','disparais','disparaît','disparaissons','disparaissez','disparaissent'],
+    passeCompose: { aux: 'avoir', pp: 'disparu' },
+  },
+  ouvrir: {
+    present: ['ouvre','ouvres','ouvre','ouvrons','ouvrez','ouvrent'],
+    passeCompose: { aux: 'avoir', pp: 'ouvert' },
+  },
+  devenir: {
+    present: ['deviens','deviens','devient','devenons','devenez','deviennent'],
+    future: ['deviendrai','deviendras','deviendra','deviendrons','deviendrez','deviendront'],
+    conditional: ['deviendrais','deviendrais','deviendrait','deviendrions','deviendriez','deviendraient'],
+    subjunctive: ['devienne','deviennes','devienne','devenions','deveniez','deviennent'],
+    passeCompose: { aux: 'être', pp: 'devenu' },
+  },
+  revenir: {
+    present: ['reviens','reviens','revient','revenons','revenez','reviennent'],
+    future: ['reviendrai','reviendras','reviendra','reviendrons','reviendrez','reviendront'],
+    conditional: ['reviendrais','reviendrais','reviendrait','reviendrions','reviendriez','reviendraient'],
+    passeCompose: { aux: 'être', pp: 'revenu' },
+  },
+  falloir: {
+    present: [null,null,'faut',null,null,null],
+    imperfect: [null,null,'fallait',null,null,null],
+    future: [null,null,'faudra',null,null,null],
+    conditional: [null,null,'faudrait',null,null,null],
+    subjunctive: [null,null,'faille',null,null,null],
+    passeCompose: { aux: 'avoir', pp: 'fallu', impersonal: true },
+  },
+  résoudre: {
+    present: ['résous','résous','résout','résolvons','résolvez','résolvent'],
+    passeCompose: { aux: 'avoir', pp: 'résolu' },
+  },
+  rejoindre: {
+    present: ['rejoins','rejoins','rejoint','rejoignons','rejoignez','rejoignent'],
+    passeCompose: { aux: 'avoir', pp: 'rejoint' },
+  },
+  surprendre: {
+    present: ['surprends','surprends','surprend','surprenons','surprenez','surprennent'],
+    passeCompose: { aux: 'avoir', pp: 'surpris' },
+  },
+  comprendre: {
+    present: ['comprends','comprends','comprend','comprenons','comprenez','comprennent'],
+    passeCompose: { aux: 'avoir', pp: 'compris' },
+  },
+  promettre: {
+    present: ['promets','promets','promet','promettons','promettez','promettent'],
+    passeCompose: { aux: 'avoir', pp: 'promis' },
+  },
+  remettre: {
+    present: ['remets','remets','remet','remettons','remettez','remettent'],
+    passeCompose: { aux: 'avoir', pp: 'remis' },
+  },
+  rendre: {
+    passeCompose: { aux: 'avoir', pp: 'rendu' },
+  },
+  répondre: {
+    passeCompose: { aux: 'avoir', pp: 'répondu' },
+  },
+  attendre: {
+    passeCompose: { aux: 'avoir', pp: 'attendu' },
+  },
+  entendre: {
+    passeCompose: { aux: 'avoir', pp: 'entendu' },
+  },
+  inscrire: {
+    present: ['inscris','inscris','inscrit','inscrivons','inscrivez','inscrivent'],
+    passeCompose: { aux: 'avoir', pp: 'inscrit' },
+  },
+  appeler: {
+    present: ['appelle','appelles','appelle','appelons','appelez','appellent'],
+    future: ['appellerai','appelleras','appellera','appellerons','appellerez','appelleront'],
+    passeCompose: { aux: 'avoir', pp: 'appelé' },
+  },
+  épeler: {
+    present: ['épelle','épelles','épelle','épelons','épelez','épellent'],
+    passeCompose: { aux: 'avoir', pp: 'épelé' },
+  },
+  lever: {
+    present: ['lève','lèves','lève','levons','levez','lèvent'],
+    future: ['lèverai','lèveras','lèvera','lèverons','lèverez','lèveront'],
+    passeCompose: { aux: 'avoir', pp: 'levé' },
+  },
+  préférer: {
+    present: ['préfère','préfères','préfère','préférons','préférez','préfèrent'],
+    passeCompose: { aux: 'avoir', pp: 'préféré' },
+  },
+  répéter: {
+    present: ['répète','répètes','répète','répétons','répétez','répètent'],
+    passeCompose: { aux: 'avoir', pp: 'répété' },
+  },
+  précéder: {
+    present: ['précède','précèdes','précède','précédons','précédez','précèdent'],
+    passeCompose: { aux: 'avoir', pp: 'précédé' },
+  },
+  peser: {
+    present: ['pèse','pèses','pèse','pesons','pesez','pèsent'],
+    future: ['pèserai','pèseras','pèsera','pèserons','pèserez','pèseront'],
+    passeCompose: { aux: 'avoir', pp: 'pesé' },
+  },
+};
+
+// Compound base verbs: se souvenir → souvenir → based on venir
+const COMPOUND_BASES = {
+  souvenir: 'venir', endormir: 'dormir', asseoir: null,
+  repartir: 'partir', refermer: 'fermer', recommencer: 'commencer',
+  retrouver: 'trouver',
+};
+
+// être verbs for passé composé
+const ETRE_VERBS = new Set([
+  'aller','venir','revenir','devenir','partir','repartir','sortir',
+  'arriver','entrer','rentrer','monter','descendre','tomber',
+  'naître','mourir','rester','retourner','passer',
+]);
+
+function getBaseVerb(infinitive) {
+  let inf = infinitive.replace(/^se\s+|^s'/, '');
+  if (IRREG[inf]) return { base: inf, data: IRREG[inf] };
+  if (COMPOUND_BASES[inf] && IRREG[COMPOUND_BASES[inf]]) {
+    return { base: inf, data: null, pattern: COMPOUND_BASES[inf] };
+  }
+  return { base: inf, data: IRREG[inf] || null };
+}
+
+function conjugateRegular(infinitive, tense) {
+  const inf = infinitive;
+  let stem, endings;
+
+  if (tense === 'present') {
+    if (inf.endsWith('er')) {
+      stem = inf.slice(0, -2);
+      endings = ['e','es','e','ons','ez','ent'];
+    } else if (inf.endsWith('ir')) {
+      stem = inf.slice(0, -2);
+      endings = ['is','is','it','issons','issez','issent'];
+    } else if (inf.endsWith('re')) {
+      stem = inf.slice(0, -2);
+      endings = ['s','s','','ons','ez','ent'];
+    } else return null;
+  } else if (tense === 'imperfect') {
+    if (inf.endsWith('er')) stem = inf.slice(0, -2);
+    else if (inf.endsWith('ir')) stem = inf.slice(0, -2) + 'iss';
+    else if (inf.endsWith('re')) stem = inf.slice(0, -2);
+    else return null;
+    endings = ['ais','ais','ait','ions','iez','aient'];
+  } else if (tense === 'future') {
+    let futStem;
+    if (inf.endsWith('er')) futStem = inf;
+    else if (inf.endsWith('ir')) futStem = inf;
+    else if (inf.endsWith('re')) futStem = inf.slice(0, -1);
+    else return null;
+    return PRONOUNS.map((_, i) => {
+      const e = ['ai','as','a','ons','ez','ont'][i];
+      return futStem + e;
+    });
+  } else if (tense === 'conditional') {
+    let futStem;
+    if (inf.endsWith('er')) futStem = inf;
+    else if (inf.endsWith('ir')) futStem = inf;
+    else if (inf.endsWith('re')) futStem = inf.slice(0, -1);
+    else return null;
+    endings = ['ais','ais','ait','ions','iez','aient'];
+    return PRONOUNS.map((_, i) => futStem + endings[i]);
+  } else if (tense === 'subjunctive') {
+    if (inf.endsWith('er')) stem = inf.slice(0, -2);
+    else if (inf.endsWith('ir')) stem = inf.slice(0, -2) + 'iss';
+    else if (inf.endsWith('re')) stem = inf.slice(0, -2);
+    else return null;
+    endings = ['e','es','e','ions','iez','ent'];
+  } else return null;
+
+  return PRONOUNS.map((_, i) => stem + endings[i]);
+}
+
+function getPasseCompose(infinitive, isReflexive) {
+  const info = getBaseVerb(infinitive);
+  let pp, auxVerb;
+  if (info.data && info.data.passeCompose) {
+    pp = info.data.passeCompose.pp;
+    auxVerb = info.data.passeCompose.aux;
+    if (info.data.passeCompose.impersonal) {
+      const auxForms = IRREG[auxVerb].present;
+      return [null, null, auxForms[2] + ' ' + pp, null, null, null];
+    }
+  } else if (info.pattern && IRREG[info.pattern] && IRREG[info.pattern].passeCompose) {
+    const basePC = IRREG[info.pattern].passeCompose;
+    const prefix = infinitive.slice(0, infinitive.length - info.pattern.length);
+    pp = prefix + basePC.pp;
+    auxVerb = basePC.aux;
+  } else {
+    if (infinitive.endsWith('er')) pp = infinitive.slice(0, -2) + 'é';
+    else if (infinitive.endsWith('ir')) pp = infinitive.slice(0, -2) + 'i';
+    else if (infinitive.endsWith('re')) pp = infinitive.slice(0, -2) + 'u';
+    else pp = infinitive;
+    auxVerb = ETRE_VERBS.has(infinitive) ? 'être' : 'avoir';
+  }
+  if (isReflexive) auxVerb = 'être';
+  const auxForms = IRREG[auxVerb].present;
+  return PRONOUNS.map((_, i) => auxForms[i] + ' ' + pp);
+}
+
+function conjugate(infinitive) {
+  const isReflexive = /^se\s|^s'/.test(infinitive);
+  const bare = infinitive.replace(/^se\s+|^s'/, '');
+  const info = getBaseVerb(infinitive);
+  const result = {};
+
+  for (const t of CONJ_TENSES) {
+    if (t.key === 'passeCompose') {
+      result[t.key] = getPasseCompose(bare, isReflexive);
+    } else {
+      let forms = null;
+      if (info.data && info.data[t.key]) {
+        forms = info.data[t.key];
+      } else if (info.pattern && IRREG[info.pattern] && IRREG[info.pattern][t.key]) {
+        const baseForms = IRREG[info.pattern][t.key];
+        const prefix = bare.slice(0, bare.length - info.pattern.length);
+        forms = baseForms.map(f => f ? prefix + f : null);
+      }
+      if (!forms) {
+        forms = conjugateRegular(bare, t.key);
+      }
+      result[t.key] = forms;
+    }
+  }
+
+  if (isReflexive) {
+    const reflexive = ["me ","te ","se ","nous ","vous ","se "];
+    const reflexiveElided = ["m'","t'","s'","nous ","vous ","s'"];
+    for (const t of CONJ_TENSES) {
+      if (result[t.key]) {
+        result[t.key] = result[t.key].map((form, i) => {
+          if (!form) return null;
+          const vowel = /^[aeéèêiîoôuûyhœæ]/i.test(form);
+          return (vowel ? reflexiveElided[i] : reflexive[i]) + form;
+        });
+      }
+    }
+  }
+
+  return result;
+}
+
+function renderConjTable(forms, tenseKey) {
+  if (!forms) return '<div class="conj-tense-head"><div class="conj-tense-desc" style="color:var(--accent)">Conjugaison non disponible</div></div>';
+  const tenseInfo = CONJ_TENSES.find(t => t.key === tenseKey);
+  let html = '<div class="conj-tense-head">';
+  if (tenseInfo) {
+    html += `<div class="conj-tense-title">${tenseInfo.label}</div>`;
+    html += `<div class="conj-tense-desc">${tenseInfo.desc}</div>`;
+  }
+  html += '</div><ul class="conj-table">';
+  PRONOUNS.forEach((p, i) => {
+    if (forms[i] === null) return;
+    const display = p === 'je' && /^[aeéèêiîoôuûyhœæ]/i.test(forms[i]) ? "j'" : p + ' ';
+    html += `<li><span class="conj-pronoun">${display}</span><span class="conj-ending">${forms[i]}</span></li>`;
+  });
+  html += '</ul>';
+  return html;
+}
+
+let conjState = { verb: '', tense: 'present' };
+
+function openConj(infinitive) {
+  conjState.verb = infinitive;
+  conjState.tense = 'present';
+  const conjs = conjugate(infinitive);
+  document.getElementById('conj-title').innerHTML = `Conjugaison de <strong>${infinitive}</strong>`;
+
+  const tensesEl = document.getElementById('conj-tenses');
+  tensesEl.innerHTML = CONJ_TENSES.map(t =>
+    `<button class="conj-tense-btn${t.key === 'present' ? ' active' : ''}" data-tense="${t.key}">${t.label}</button>`
+  ).join('');
+
+  const formsEl = document.getElementById('conj-forms');
+  formsEl.innerHTML = renderConjTable(conjs.present, 'present');
+
+  tensesEl.querySelectorAll('.conj-tense-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tensesEl.querySelectorAll('.conj-tense-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      conjState.tense = btn.dataset.tense;
+      formsEl.innerHTML = renderConjTable(conjs[btn.dataset.tense], btn.dataset.tense);
+    });
+  });
+
+  document.getElementById('conj-overlay').classList.add('active');
+}
+
+function closeConj() {
+  document.getElementById('conj-overlay').classList.remove('active');
+  if (window.resetConjDrag) resetConjDrag();
+}
+
+function openConjFromCard(e) {
+  e.stopPropagation();
+  if (!session || !session.current) return;
+  const lemma = session.current.lemma;
+  const inf = lemma.split(' (')[0];
+  openConj(inf);
+}
+
+
 </script>
 
+<div class="conj-overlay" id="conj-overlay">
+  <div class="conj-panel">
+    <div class="conj-header" id="conj-header">
+      <h3 id="conj-title">Conjugaison</h3>
+      <button class="conj-close" onclick="closeConj()">✕</button>
+    </div>
+    <div class="conj-tense-tabs" id="conj-tenses"></div>
+    <div class="conj-forms" id="conj-forms"></div>
+  </div>
+</div>
+<script>
+(function() {
+  const overlay = document.getElementById('conj-overlay');
+  const header = document.getElementById('conj-header');
+  let isDragging = false, startX, startY, origX, origY;
+  let offsetX = 0, offsetY = 0;
+
+  function applyOffset() {
+    overlay.style.setProperty('--drag-x', offsetX + 'px');
+    overlay.style.setProperty('--drag-y', offsetY + 'px');
+  }
+
+  header.addEventListener('mousedown', e => {
+    if (e.target.closest('.conj-close')) return;
+    isDragging = true;
+    overlay.classList.add('dragging');
+    startX = e.clientX; startY = e.clientY;
+    origX = offsetX; origY = offsetY;
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    offsetX = origX + (e.clientX - startX);
+    offsetY = origY + (e.clientY - startY);
+    applyOffset();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    overlay.classList.remove('dragging');
+  });
+
+  window.resetConjDrag = function() { offsetX = 0; offsetY = 0; applyOffset(); };
+})();
+</script>
 </body>
 </html>
