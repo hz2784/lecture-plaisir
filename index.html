@@ -6,6 +6,9 @@
 <title>Catherine Certitude — Vocabulaire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <style>
 :root {
   --ink: #1a1410;
@@ -535,12 +538,342 @@ header h1 em {
   transition: width 0.1s;
 }
 
+/* ─── AUTH BAR ─── */
+.auth-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  padding: 0.5rem 2rem;
+  background: rgba(0,0,0,0.15);
+  font-size: 0.78rem;
+  position: relative;
+  z-index: 1;
+}
+.auth-bar .user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(245,240,232,0.7);
+}
+.auth-bar .user-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.auth-bar .user-name { font-weight: 600; color: var(--paper); }
+.auth-btn {
+  background: none;
+  border: 1px solid rgba(245,240,232,0.25);
+  color: var(--paper);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.auth-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
+.sync-status {
+  font-size: 0.65rem;
+  color: rgba(245,240,232,0.4);
+  letter-spacing: 0.05em;
+}
+.sync-status.synced { color: rgba(144,238,144,0.7); }
+
+/* ─── POMODORO (inline in controls) ─── */
+.pomo-wrap {
+  position: relative;
+  margin-left: auto;
+}
+.pomo-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.pomo-trigger:hover { border-color: var(--accent); color: var(--accent); }
+.pomo-trigger.active { background: var(--accent); color: white; border-color: var(--accent); }
+.pomo-trigger .pomo-inline-time {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* ─── POMODORO DROPDOWN ─── */
+.pomo-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 600;
+  width: 280px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 1.4rem;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+.pomo-dropdown.open { display: flex; }
+.pomo-phase {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pomo-phase.focus { color: var(--accent); }
+.pomo-phase.break { color: #5a8252; }
+.pomo-timer {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.pomo-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+.pomo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: all 0.3s;
+}
+.pomo-dot.done { background: var(--accent); border-color: var(--accent); }
+.pomo-dot.current { border-color: var(--accent); }
+.pomo-controls {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+.pomo-btn {
+  flex: 1;
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--ink);
+}
+.pomo-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pomo-btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pomo-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+.pomo-audio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.pomo-audio-row span { white-space: nowrap; }
+.pomo-volume {
+  flex: 1;
+  accent-color: var(--accent);
+  height: 4px;
+}
+.pomo-session-info {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.pomo-sound-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+.pomo-sound-label {
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  min-width: 28px;
+}
+.pomo-sound-picks {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.sound-pick {
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--muted);
+}
+.sound-pick:hover { border-color: var(--accent); color: var(--accent); }
+.sound-pick.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ─── DASHBOARD ─── */
+.dash-btn {
+  background: none;
+  border: 1px solid rgba(245,240,232,0.25);
+  color: var(--paper);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.dash-btn:hover { background: rgba(255,255,255,0.1); }
+.dash-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 9998;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.dash-overlay.active { display: flex; }
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+}
+.dash-topbar h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.dash-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+.dash-section {
+  margin-bottom: 2.5rem;
+}
+.dash-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.dash-stat {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+}
+.dash-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+}
+.dash-stat-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dash-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.dash-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.dash-history-date {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.dash-history-acc {
+  font-weight: 600;
+  color: var(--accent);
+}
+.dash-srs-bar {
+  display: flex;
+  height: 24px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+.dash-srs-bar > div {
+  transition: width 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: white;
+  font-weight: 600;
+}
+.dash-srs-due { background: var(--accent); }
+.dash-srs-learning { background: var(--gold); }
+.dash-srs-new { background: var(--border); color: var(--muted) !important; }
+.dash-srs-mastered { background: #5a8252; }
+.dash-legend {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.dash-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+.dash-legend .l-due::before { background: var(--accent); }
+.dash-legend .l-learning::before { background: var(--gold); }
+.dash-legend .l-new::before { background: var(--border); }
+.dash-legend .l-mastered::before { background: #5a8252; }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { display: none; }
   .word-grid, .flashcard-grid { grid-template-columns: 1fr; }
   .controls { padding: 0.75rem 1rem; }
+  .pomo-dropdown { right: 0; left: auto; width: 260px; }
+  .auth-bar { padding: 0.5rem 1rem; }
 }
 
 /* ─── ANIMATIONS ─── */
@@ -644,6 +977,27 @@ header h1 em {
   color: var(--ink);
   font-style: normal;
   font-weight: 600;
+}
+.study-pomo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.9rem;
+  background: rgba(139,58,42,0.08);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+.study-pomo-phase {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.study-pomo-time {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
 }
 .study-close {
   background: none;
@@ -1149,6 +1503,15 @@ header h1 em {
 <div class="progress-bar" id="progress"></div>
 
 <header>
+  <div class="auth-bar" id="auth-bar">
+    <span class="sync-status" id="sync-status"></span>
+    <div class="user-info" id="user-info" style="display:none">
+      <img class="user-avatar" id="user-avatar" src="" alt="">
+      <span class="user-name" id="user-name"></span>
+    </div>
+    <button class="dash-btn" id="dash-btn" onclick="openDashboard()" style="display:none">Dashboard</button>
+    <button class="auth-btn" id="auth-btn" onclick="toggleAuth()">Se connecter</button>
+  </div>
   <div class="header-inner">
     <div class="book-label">Patrick Modiano · Sempé · Gallimard</div>
     <h1><em>Catherine Certitude</em></h1>
@@ -1193,6 +1556,39 @@ header h1 em {
     Étudier · 学习
   </button>
 
+  <div class="pomo-wrap">
+    <button class="pomo-trigger" id="pomo-trigger" onclick="togglePomoPanel()">
+      🍅 <span class="pomo-inline-time" id="pomo-inline-time">25:00</span>
+    </button>
+    <div class="pomo-dropdown" id="pomo-dropdown">
+      <div class="pomo-phase" id="pomo-phase">FOCUS · 专注</div>
+      <div class="pomo-timer" id="pomo-timer">25:00</div>
+      <div class="pomo-dots" id="pomo-dots">
+        <div class="pomo-dot current"></div>
+        <div class="pomo-dot"></div>
+        <div class="pomo-dot"></div>
+        <div class="pomo-dot"></div>
+      </div>
+      <div class="pomo-controls">
+        <button class="pomo-btn primary" id="pomo-start" onclick="pomoToggle()">Commencer</button>
+        <button class="pomo-btn" onclick="pomoReset()">Reset</button>
+      </div>
+      <div class="pomo-sound-row">
+        <div class="pomo-sound-label">专注</div>
+        <div class="pomo-sound-picks" id="focus-sounds"></div>
+      </div>
+      <div class="pomo-sound-row">
+        <div class="pomo-sound-label">休息</div>
+        <div class="pomo-sound-picks" id="break-sounds"></div>
+      </div>
+      <div class="pomo-audio-row">
+        <span id="pomo-audio-status">🔇 Son off</span>
+        <input type="range" class="pomo-volume" id="pomo-volume" min="0" max="100" value="40">
+      </div>
+      <div class="pomo-session-info" id="pomo-session-info">Session 1/4</div>
+    </div>
+  </div>
+
   <div class="chapter-filter">
     <button class="ch-btn all active" data-ch="all">Tous</button>
     <button class="ch-btn" data-ch="1">1</button>
@@ -1223,6 +1619,10 @@ header h1 em {
 <div class="study-overlay" id="study-overlay">
   <div class="study-topbar">
     <div class="study-topbar-title" id="study-topbar-title">Mode d'étude · <strong>Catherine Certitude</strong></div>
+    <div class="study-pomo" id="study-pomo" style="display:none">
+      <span class="study-pomo-phase" id="study-pomo-phase">🍅 FOCUS</span>
+      <span class="study-pomo-time" id="study-pomo-time">25:00</span>
+    </div>
     <button class="study-close" onclick="closeStudy()" title="Fermer (Esc)">✕</button>
   </div>
 
@@ -2070,6 +2470,668 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 // Boot
 buildSidebar();
 render();
+</script>
+
+<!-- ═══════ DASHBOARD OVERLAY ═══════ -->
+<div class="dash-overlay" id="dash-overlay">
+  <div class="dash-topbar">
+    <h2>Tableau de bord · 学习仪表板</h2>
+    <button class="study-close" onclick="closeDashboard()">✕</button>
+  </div>
+  <div class="dash-content" id="dash-content"></div>
+</div>
+
+
+<script>
+// ═══════ FIREBASE ═══════
+const firebaseConfig = {
+  apiKey: "AIzaSyD-u3WRLKs_Kr5KLmvkR_DZxVNHlzNRFPA",
+  authDomain: "lecture-plaisir.firebaseapp.com",
+  projectId: "lecture-plaisir",
+  storageBucket: "lecture-plaisir.firebasestorage.app",
+  messagingSenderId: "150517416340",
+  appId: "1:150517416340:web:266edf67919fddbd5b8f81",
+  measurementId: "G-0C92BXBRNM"
+};
+
+let auth, db, currentUser = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  auth = firebase.auth();
+  db = firebase.firestore();
+  db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+} catch(e) {
+  console.error('Firebase init error:', e);
+}
+
+if (auth) auth.onAuthStateChanged(user => {
+  currentUser = user;
+  const info = document.getElementById('user-info');
+  const btn = document.getElementById('auth-btn');
+  const dashBtn = document.getElementById('dash-btn');
+  if (user) {
+    info.style.display = 'flex';
+    dashBtn.style.display = '';
+    document.getElementById('user-avatar').src = user.photoURL || '';
+    document.getElementById('user-name').textContent = user.displayName || user.email;
+    btn.textContent = 'Déconnexion';
+    syncFromCloud();
+  } else {
+    info.style.display = 'none';
+    dashBtn.style.display = 'none';
+    document.getElementById('sync-status').textContent = '';
+    document.getElementById('sync-status').className = 'sync-status';
+    btn.textContent = 'Se connecter';
+  }
+});
+
+function toggleAuth() {
+  if (!auth) { alert('Firebase not loaded. Check your connection.'); return; }
+  if (currentUser) {
+    auth.signOut();
+  } else {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(e => {
+      console.error('Auth error:', e);
+      if (e.code === 'auth/popup-blocked') alert('Popup blocked — please allow popups for this site.');
+      else if (e.code === 'auth/unauthorized-domain') alert('This domain is not authorized in Firebase. Add it in Firebase Console > Authentication > Settings > Authorized domains.');
+      else alert('Login failed: ' + e.message);
+    });
+  }
+}
+
+// ─── Cloud Sync ───
+function setSyncStatus(msg, ok) {
+  const el = document.getElementById('sync-status');
+  el.textContent = msg;
+  el.className = ok ? 'sync-status synced' : 'sync-status';
+}
+
+async function syncFromCloud() {
+  if (!currentUser) return;
+  setSyncStatus('Synchronisation...', false);
+  try {
+    const srsSnap = await db.collection('users').doc(currentUser.uid).collection('srs').get();
+    if (!srsSnap.empty) {
+      const cloudData = {};
+      srsSnap.forEach(doc => { cloudData[doc.id] = doc.data(); });
+      const localData = srsLoad();
+      const merged = { ...localData };
+      for (const [word, cloudCard] of Object.entries(cloudData)) {
+        const local = localData[word];
+        if (!local || (cloudCard.nextReview || 0) > (local.nextReview || 0)) {
+          merged[word] = cloudCard;
+        }
+      }
+      srsSave(merged);
+    }
+    const histSnap = await db.collection('users').doc(currentUser.uid)
+      .collection('sessions').orderBy('date', 'desc').limit(100).get();
+    if (!histSnap.empty) {
+      const cloudHist = [];
+      histSnap.forEach(doc => cloudHist.push(doc.data()));
+      const localHist = historyLoad();
+      const seen = new Set(localHist.map(h => h.date));
+      cloudHist.forEach(h => { if (!seen.has(h.date)) localHist.push(h); });
+      localHist.sort((a, b) => new Date(a.date) - new Date(b.date));
+      historySave(localHist);
+    }
+    setSyncStatus('Synced', true);
+  } catch (e) {
+    console.error('Sync error:', e);
+    setSyncStatus('Sync error', false);
+  }
+}
+
+async function saveToCloud(word, cardData) {
+  if (!currentUser) return;
+  try {
+    await db.collection('users').doc(currentUser.uid).collection('srs').doc(word).set(cardData);
+  } catch (e) { console.error('Cloud save error:', e); }
+}
+
+async function saveSessionToCloud(sessionData) {
+  if (!currentUser) return;
+  try {
+    await db.collection('users').doc(currentUser.uid).collection('sessions').add(sessionData);
+    setSyncStatus('Synced', true);
+  } catch (e) { console.error('Session save error:', e); }
+}
+
+// Patch srsUpdate to also save to cloud
+const _origSrsUpdate = srsUpdate;
+srsUpdate = function(word, passed) {
+  _origSrsUpdate(word, passed);
+  const data = srsLoad();
+  if (data[word]) saveToCloud(word, data[word]);
+};
+
+// Patch finishSession to also save to cloud
+const _origFinishSession = finishSession;
+finishSession = function() {
+  _origFinishSession();
+  if (session) {
+    const hist = historyLoad();
+    const latest = hist[hist.length - 1];
+    if (latest) saveSessionToCloud(latest);
+  }
+};
+
+// ═══════ DASHBOARD ═══════
+function openDashboard() {
+  const overlay = document.getElementById('dash-overlay');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderDashboard();
+}
+function closeDashboard() {
+  document.getElementById('dash-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function renderDashboard() {
+  const allWords = getAllWordsFlat();
+  const srsData = srsLoad();
+  const history = historyLoad();
+  const now = Date.now();
+
+  let due = 0, learning = 0, mastered = 0, newW = 0, totalReviews = 0;
+  allWords.forEach(w => {
+    const card = srsData[w.word];
+    if (!card) { newW++; return; }
+    totalReviews += card.reps + card.lapses;
+    if (card.interval >= 21) { mastered++; return; }
+    if (now >= card.nextReview && card.reps > 0) { due++; return; }
+    if (card.reps > 0) { learning++; return; }
+    newW++;
+  });
+  const total = allWords.length;
+
+  const totalSessions = history.length;
+  const avgAcc = totalSessions > 0
+    ? Math.round(history.reduce((s, h) => s + (h.accuracy || 0), 0) / totalSessions)
+    : 0;
+
+  const recentHist = history.slice(-10).reverse();
+
+  // Next review schedule
+  const upcoming = [];
+  allWords.forEach(w => {
+    const card = srsData[w.word];
+    if (card && card.nextReview && card.reps > 0) {
+      upcoming.push({ word: w.word, next: card.nextReview, interval: card.interval });
+    }
+  });
+  upcoming.sort((a, b) => a.next - b.next);
+
+  const formatDate = ts => {
+    const d = new Date(ts);
+    const diff = Math.round((ts - now) / 86400000);
+    if (diff <= 0) return '现在到期';
+    if (diff === 1) return '明天';
+    if (diff <= 7) return `${diff}天后`;
+    return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+  };
+
+  let html = `
+    <div class="dash-section">
+      <h3>Vue d'ensemble · 总览</h3>
+      <div class="dash-grid">
+        <div class="dash-stat"><span class="dash-stat-num">${due}</span><span class="dash-stat-label">到期复习</span></div>
+        <div class="dash-stat"><span class="dash-stat-num">${mastered}</span><span class="dash-stat-label">已掌握</span></div>
+        <div class="dash-stat"><span class="dash-stat-num">${learning}</span><span class="dash-stat-label">学习中</span></div>
+        <div class="dash-stat"><span class="dash-stat-num">${newW}</span><span class="dash-stat-label">新词</span></div>
+        <div class="dash-stat"><span class="dash-stat-num">${totalSessions}</span><span class="dash-stat-label">练习次数</span></div>
+        <div class="dash-stat"><span class="dash-stat-num">${avgAcc}%</span><span class="dash-stat-label">平均正确率</span></div>
+      </div>
+    </div>
+
+    <div class="dash-section">
+      <h3>Progression SRS · 记忆进度</h3>
+      <div class="dash-srs-bar">
+        ${mastered > 0 ? `<div class="dash-srs-mastered" style="width:${mastered/total*100}%">${mastered}</div>` : ''}
+        ${learning > 0 ? `<div class="dash-srs-learning" style="width:${learning/total*100}%">${learning}</div>` : ''}
+        ${due > 0 ? `<div class="dash-srs-due" style="width:${due/total*100}%">${due}</div>` : ''}
+        ${newW > 0 ? `<div class="dash-srs-new" style="width:${newW/total*100}%">${newW}</div>` : ''}
+      </div>
+      <div class="dash-legend">
+        <span class="l-mastered">已掌握 (≥21天)</span>
+        <span class="l-learning">学习中</span>
+        <span class="l-due">到期复习</span>
+        <span class="l-new">新词</span>
+      </div>
+    </div>
+
+    <div class="dash-section">
+      <h3>Prochaines révisions · 复习计划</h3>
+      <div class="dash-history">
+        ${upcoming.slice(0, 8).map(u =>
+          `<div class="dash-history-item">
+            <span>${escapeHtml(u.word)}</span>
+            <span class="dash-history-date">间隔${u.interval}天 · ${formatDate(u.next)}</span>
+          </div>`
+        ).join('') || '<div style="color:var(--muted);font-size:0.85rem">还没有复习记录</div>'}
+      </div>
+    </div>
+
+    <div class="dash-section">
+      <h3>Historique · 学习记录</h3>
+      <div class="dash-history">
+        ${recentHist.map(h => {
+          const d = new Date(h.date);
+          return `<div class="dash-history-item">
+            <span class="dash-history-date">${d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+            <span>${h.mastered || 0}/${h.total || 0} maîtrisés</span>
+            <span class="dash-history-acc">${h.accuracy || 0}%</span>
+          </div>`;
+        }).join('') || '<div style="color:var(--muted);font-size:0.85rem">还没有练习记录</div>'}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('dash-content').innerHTML = html;
+}
+
+// ═══════ POMODORO TIMER ═══════
+let pomoState = {
+  running: false,
+  phase: 'focus',
+  timeLeft: 25 * 60,
+  completedPomos: 0,
+  intervalId: null,
+  audioCtx: null,
+  audioNodes: null,
+};
+
+function togglePomoPanel() {
+  const dd = document.getElementById('pomo-dropdown');
+  dd.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.pomo-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('pomo-dropdown').classList.remove('open');
+  }
+});
+
+function pomoToggle() {
+  if (pomoState.running) {
+    pomoPause();
+  } else {
+    pomoStart();
+  }
+}
+
+function pomoStart() {
+  pomoState.running = true;
+  document.getElementById('pomo-start').textContent = 'Pause';
+  document.getElementById('pomo-trigger').classList.add('active');
+  startPomoAudio();
+  pomoState.intervalId = setInterval(pomoTick, 1000);
+}
+
+function pomoPause() {
+  pomoState.running = false;
+  document.getElementById('pomo-start').textContent = 'Reprendre';
+  clearInterval(pomoState.intervalId);
+  stopPomoAudio();
+}
+
+function pomoReset() {
+  pomoState.running = false;
+  pomoState.phase = 'focus';
+  pomoState.timeLeft = 25 * 60;
+  pomoState.completedPomos = 0;
+  clearInterval(pomoState.intervalId);
+  stopPomoAudio();
+  document.getElementById('pomo-start').textContent = 'Commencer';
+  document.getElementById('pomo-trigger').classList.remove('active');
+  updatePomoDisplay();
+}
+
+function pomoTick() {
+  pomoState.timeLeft--;
+  if (pomoState.timeLeft <= 0) {
+    pomoPhaseEnd();
+  }
+  updatePomoDisplay();
+}
+
+function pomoPhaseEnd() {
+  stopPomoAudio();
+  if (pomoState.phase === 'focus') {
+    pomoState.completedPomos++;
+    if (pomoState.completedPomos >= 4) {
+      pomoState.phase = 'long-break';
+      pomoState.timeLeft = 30 * 60;
+    } else {
+      pomoState.phase = 'break';
+      pomoState.timeLeft = 5 * 60;
+    }
+  } else {
+    if (pomoState.phase === 'long-break') {
+      pomoState.completedPomos = 0;
+    }
+    pomoState.phase = 'focus';
+    pomoState.timeLeft = 25 * 60;
+  }
+  startPomoAudio();
+  updatePomoDisplay();
+}
+
+function updatePomoDisplay() {
+  const min = Math.floor(pomoState.timeLeft / 60);
+  const sec = pomoState.timeLeft % 60;
+  const timeStr = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  document.getElementById('pomo-timer').textContent = timeStr;
+
+  const phaseEl = document.getElementById('pomo-phase');
+  if (pomoState.phase === 'focus') {
+    phaseEl.textContent = 'FOCUS · 专注';
+    phaseEl.className = 'pomo-phase focus';
+  } else if (pomoState.phase === 'break') {
+    phaseEl.textContent = 'PAUSE · 休息';
+    phaseEl.className = 'pomo-phase break';
+  } else {
+    phaseEl.textContent = 'LONGUE PAUSE · 长休息';
+    phaseEl.className = 'pomo-phase break';
+  }
+
+  const dots = document.getElementById('pomo-dots');
+  dots.innerHTML = [0,1,2,3].map(i => {
+    let cls = 'pomo-dot';
+    if (i < pomoState.completedPomos) cls += ' done';
+    else if (i === pomoState.completedPomos && pomoState.phase === 'focus') cls += ' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const session = Math.min(pomoState.completedPomos + 1, 4);
+  document.getElementById('pomo-session-info').textContent = `Session ${session}/4`;
+
+  document.getElementById('pomo-inline-time').textContent = timeStr;
+
+  // Update study overlay timer
+  const studyPomo = document.getElementById('study-pomo');
+  if (pomoState.running) {
+    studyPomo.style.display = 'flex';
+    document.getElementById('study-pomo-time').textContent = timeStr;
+    const phaseLabel = pomoState.phase === 'focus' ? '🍅 FOCUS' : pomoState.phase === 'break' ? '☕ PAUSE' : '🌿 LONGUE PAUSE';
+    document.getElementById('study-pomo-phase').textContent = phaseLabel;
+  } else {
+    studyPomo.style.display = 'none';
+  }
+}
+
+// ─── Pomodoro Audio ───
+const SOUND_PRESETS = {
+  rain:   { label: '🌧️ Pluie',   type: 'synth' },
+  forest: { label: '🌿 Forêt',   type: 'synth' },
+  ocean:  { label: '🌊 Océan',   type: 'synth' },
+  cafe:   { label: '☕ Café',    type: 'synth' },
+  piano:  { label: '🎹 Piano',   type: 'synth' },
+};
+pomoState.focusSound = 'rain';
+pomoState.breakSound = 'piano';
+
+function getAudioCtx() {
+  if (!pomoState.audioCtx) {
+    pomoState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (pomoState.audioCtx.state === 'suspended') pomoState.audioCtx.resume();
+  return pomoState.audioCtx;
+}
+
+function makeNoise(ctx, seconds, type) {
+  const len = seconds * ctx.sampleRate;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,last=0;
+    for (let i = 0; i < len; i++) {
+      const w = Math.random() * 2 - 1;
+      if (type === 'brown') {
+        d[i] = (last + 0.02 * w) / 1.02;
+        last = d[i];
+        d[i] *= 3.5;
+      } else if (type === 'pink') {
+        b0 = 0.99886*b0 + w*0.0555179;
+        b1 = 0.99332*b1 + w*0.0750759;
+        b2 = 0.96900*b2 + w*0.1538520;
+        b3 = 0.86650*b3 + w*0.3104856;
+        b4 = 0.55000*b4 + w*0.5329522;
+        b5 = -0.7616*b5 - w*0.0168980;
+        d[i] = (b0+b1+b2+b3+b4+b5+b6+w*0.5362) * 0.11;
+        b6 = w * 0.115926;
+      } else {
+        d[i] = w;
+      }
+    }
+  }
+  return buf;
+}
+
+function createSynthSound(ctx, name) {
+  const master = ctx.createGain();
+  master.gain.value = getPomoVolume();
+  master.connect(ctx.destination);
+  const sources = [];
+  const intervals = [];
+
+  if (name === 'rain') {
+    // Layer 1: steady rain bed (brown noise, lowpassed)
+    const s1 = ctx.createBufferSource();
+    s1.buffer = makeNoise(ctx, 4, 'brown');
+    s1.loop = true;
+    const lp1 = ctx.createBiquadFilter(); lp1.type = 'lowpass'; lp1.frequency.value = 800;
+    const hp1 = ctx.createBiquadFilter(); hp1.type = 'highpass'; hp1.frequency.value = 60;
+    const g1 = ctx.createGain(); g1.gain.value = 0.7;
+    s1.connect(lp1); lp1.connect(hp1); hp1.connect(g1); g1.connect(master);
+    s1.start(); sources.push(s1);
+
+    // Layer 2: higher patter (pink noise, bandpassed)
+    const s2 = ctx.createBufferSource();
+    s2.buffer = makeNoise(ctx, 3, 'pink');
+    s2.loop = true;
+    const bp2 = ctx.createBiquadFilter(); bp2.type = 'bandpass'; bp2.frequency.value = 3000; bp2.Q.value = 0.5;
+    const g2 = ctx.createGain(); g2.gain.value = 0.15;
+    s2.connect(bp2); bp2.connect(g2); g2.connect(master);
+    s2.start(); sources.push(s2);
+
+    // Layer 3: drip accents (periodic amplitude modulation)
+    const s3 = ctx.createBufferSource();
+    s3.buffer = makeNoise(ctx, 2, 'white');
+    s3.loop = true;
+    const bp3 = ctx.createBiquadFilter(); bp3.type = 'bandpass'; bp3.frequency.value = 4500; bp3.Q.value = 2;
+    const g3 = ctx.createGain(); g3.gain.value = 0;
+    const lfo = ctx.createOscillator(); lfo.frequency.value = 0.8;
+    const lfoG = ctx.createGain(); lfoG.gain.value = 0.08;
+    lfo.connect(lfoG); lfoG.connect(g3.gain);
+    s3.connect(bp3); bp3.connect(g3); g3.connect(master);
+    s3.start(); lfo.start(); sources.push(s3, lfo);
+
+  } else if (name === 'forest') {
+    // Gentle wind base (pink noise, very soft)
+    const s1 = ctx.createBufferSource();
+    s1.buffer = makeNoise(ctx, 5, 'pink');
+    s1.loop = true;
+    const lp1 = ctx.createBiquadFilter(); lp1.type = 'lowpass'; lp1.frequency.value = 1200;
+    const g1 = ctx.createGain(); g1.gain.value = 0.3;
+    // Slow wind modulation
+    const windLfo = ctx.createOscillator(); windLfo.frequency.value = 0.1;
+    const windG = ctx.createGain(); windG.gain.value = 0.15;
+    windLfo.connect(windG); windG.connect(g1.gain);
+    s1.connect(lp1); lp1.connect(g1); g1.connect(master);
+    s1.start(); windLfo.start(); sources.push(s1, windLfo);
+
+    // Bird chirps: random sine pings
+    function chirp() {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      const freq = 2000 + Math.random() * 3000;
+      o.frequency.value = freq;
+      o.frequency.linearRampToValueAtTime(freq * (0.7 + Math.random() * 0.6), ctx.currentTime + 0.15);
+      o.type = 'sine';
+      g.gain.value = 0.04 * getPomoVolume();
+      g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.2);
+      o.connect(g); g.connect(master);
+      o.start(); o.stop(ctx.currentTime + 0.2);
+    }
+    const birdInt = setInterval(() => { if (Math.random() < 0.4) chirp(); }, 2000 + Math.random() * 3000);
+    intervals.push(birdInt);
+    // Start with a couple chirps
+    setTimeout(chirp, 500); setTimeout(chirp, 1800);
+
+  } else if (name === 'ocean') {
+    // Deep rumble (brown noise)
+    const s1 = ctx.createBufferSource();
+    s1.buffer = makeNoise(ctx, 6, 'brown');
+    s1.loop = true;
+    const lp1 = ctx.createBiquadFilter(); lp1.type = 'lowpass'; lp1.frequency.value = 300;
+    const g1 = ctx.createGain(); g1.gain.value = 0.6;
+    s1.connect(lp1); lp1.connect(g1); g1.connect(master);
+    s1.start(); sources.push(s1);
+
+    // Wave crests (pink noise with slow amplitude sweep)
+    const s2 = ctx.createBufferSource();
+    s2.buffer = makeNoise(ctx, 4, 'pink');
+    s2.loop = true;
+    const lp2 = ctx.createBiquadFilter(); lp2.type = 'lowpass'; lp2.frequency.value = 1500;
+    const g2 = ctx.createGain(); g2.gain.value = 0;
+    const waveLfo = ctx.createOscillator(); waveLfo.frequency.value = 0.08;
+    const waveG = ctx.createGain(); waveG.gain.value = 0.35;
+    waveLfo.connect(waveG); waveG.connect(g2.gain);
+    s2.connect(lp2); lp2.connect(g2); g2.connect(master);
+    s2.start(); waveLfo.start(); sources.push(s2, waveLfo);
+
+    // Foam hiss
+    const s3 = ctx.createBufferSource();
+    s3.buffer = makeNoise(ctx, 3, 'white');
+    s3.loop = true;
+    const bp3 = ctx.createBiquadFilter(); bp3.type = 'bandpass'; bp3.frequency.value = 6000; bp3.Q.value = 0.3;
+    const g3 = ctx.createGain(); g3.gain.value = 0;
+    const foamLfo = ctx.createOscillator(); foamLfo.frequency.value = 0.08; foamLfo.phase = Math.PI * 0.5;
+    const foamG = ctx.createGain(); foamG.gain.value = 0.06;
+    foamLfo.connect(foamG); foamG.connect(g3.gain);
+    s3.connect(bp3); bp3.connect(g3); g3.connect(master);
+    s3.start(); foamLfo.start(); sources.push(s3, foamLfo);
+
+  } else if (name === 'cafe') {
+    // Ambient murmur (pink noise, bandpassed to vocal range)
+    const s1 = ctx.createBufferSource();
+    s1.buffer = makeNoise(ctx, 5, 'pink');
+    s1.loop = true;
+    const bp1 = ctx.createBiquadFilter(); bp1.type = 'bandpass'; bp1.frequency.value = 800; bp1.Q.value = 0.3;
+    const g1 = ctx.createGain(); g1.gain.value = 0.35;
+    s1.connect(bp1); bp1.connect(g1); g1.connect(master);
+    s1.start(); sources.push(s1);
+
+    // Gentle clinking / high sparkle
+    const s2 = ctx.createBufferSource();
+    s2.buffer = makeNoise(ctx, 2, 'white');
+    s2.loop = true;
+    const bp2 = ctx.createBiquadFilter(); bp2.type = 'bandpass'; bp2.frequency.value = 5000; bp2.Q.value = 3;
+    const g2 = ctx.createGain(); g2.gain.value = 0;
+    const clinkLfo = ctx.createOscillator(); clinkLfo.frequency.value = 0.15;
+    const clinkG = ctx.createGain(); clinkG.gain.value = 0.02;
+    clinkLfo.connect(clinkG); clinkG.connect(g2.gain);
+    s2.connect(bp2); bp2.connect(g2); g2.connect(master);
+    s2.start(); clinkLfo.start(); sources.push(s2, clinkLfo);
+
+    // Low warmth
+    const s3 = ctx.createBufferSource();
+    s3.buffer = makeNoise(ctx, 4, 'brown');
+    s3.loop = true;
+    const lp3 = ctx.createBiquadFilter(); lp3.type = 'lowpass'; lp3.frequency.value = 200;
+    const g3 = ctx.createGain(); g3.gain.value = 0.25;
+    s3.connect(lp3); lp3.connect(g3); g3.connect(master);
+    s3.start(); sources.push(s3);
+
+  } else if (name === 'piano') {
+    // Gentle ambient piano-like pad with pentatonic tones
+    const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+    function playNote() {
+      const freq = notes[Math.floor(Math.random() * notes.length)] * (Math.random() < 0.3 ? 0.5 : 1);
+      const o = ctx.createOscillator();
+      o.type = 'triangle';
+      o.frequency.value = freq;
+      const g = ctx.createGain();
+      const vol = 0.04 * getPomoVolume();
+      const dur = 2 + Math.random() * 3;
+      g.gain.setValueAtTime(0, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      o.connect(g); g.connect(master);
+      o.start(); o.stop(ctx.currentTime + dur);
+    }
+    // Play notes with gentle spacing
+    playNote(); setTimeout(playNote, 600);
+    const noteInt = setInterval(() => {
+      playNote();
+      if (Math.random() < 0.3) setTimeout(playNote, 300 + Math.random() * 400);
+    }, 2500 + Math.random() * 2000);
+    intervals.push(noteInt);
+
+    // Warm pad underneath
+    const pad = ctx.createOscillator();
+    pad.type = 'sine';
+    pad.frequency.value = 130.81;
+    const padG = ctx.createGain(); padG.gain.value = 0.025;
+    pad.connect(padG); padG.connect(master);
+    pad.start(); sources.push(pad);
+  }
+
+  return { gain: master, sources, intervals };
+}
+
+function getPomoVolume() {
+  return (document.getElementById('pomo-volume').value || 40) / 100;
+}
+
+function startPomoAudio() {
+  stopPomoAudio();
+  const ctx = getAudioCtx();
+  const soundName = pomoState.phase === 'focus' ? pomoState.focusSound : pomoState.breakSound;
+  pomoState.audioNodes = createSynthSound(ctx, soundName);
+  document.getElementById('pomo-audio-status').textContent = SOUND_PRESETS[soundName].label;
+}
+
+function stopPomoAudio() {
+  if (!pomoState.audioNodes) return;
+  try {
+    (pomoState.audioNodes.sources || []).forEach(s => { try { s.stop(); } catch(e){} });
+    (pomoState.audioNodes.intervals || []).forEach(i => clearInterval(i));
+    if (pomoState.audioNodes.gain) pomoState.audioNodes.gain.disconnect();
+  } catch(e) {}
+  pomoState.audioNodes = null;
+}
+
+document.getElementById('pomo-volume').addEventListener('input', () => {
+  if (pomoState.audioNodes && pomoState.audioNodes.gain) {
+    pomoState.audioNodes.gain.gain.value = getPomoVolume();
+  }
+});
+
+// Build sound pickers
+function buildSoundPicks() {
+  ['focus', 'break'].forEach(mode => {
+    const wrap = document.getElementById(mode + '-sounds');
+    const current = mode === 'focus' ? pomoState.focusSound : pomoState.breakSound;
+    wrap.innerHTML = Object.entries(SOUND_PRESETS).map(([k, v]) =>
+      `<button class="sound-pick${k === current ? ' active' : ''}" data-sound="${k}" data-mode="${mode}">${v.label}</button>`
+    ).join('');
+    wrap.querySelectorAll('.sound-pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.sound-pick').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (mode === 'focus') pomoState.focusSound = btn.dataset.sound;
+        else pomoState.breakSound = btn.dataset.sound;
+        if (pomoState.running) startPomoAudio();
+      });
+    });
+  });
+}
+buildSoundPicks();
+updatePomoDisplay();
 </script>
 
 </body>
