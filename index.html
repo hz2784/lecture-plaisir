@@ -17,6 +17,9 @@
   --border: #d4cdc0;
   --card-bg: #faf7f2;
   --shadow: rgba(26,20,16,0.12);
+  --green: #3a8a5c;
+  --blue: #3a6a8a;
+  --orange: #c97a2a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,7 +67,7 @@ header p {
   font-style: italic;
 }
 
-.library {
+.container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
@@ -78,6 +81,120 @@ header p {
   margin-bottom: 1.2rem;
 }
 
+/* ─── DASHBOARD ─── */
+.dashboard {
+  margin-bottom: 2.5rem;
+}
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.dash-stat {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+.dash-stat .num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.dash-stat .label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+.dash-stat .num.green { color: var(--green); }
+.dash-stat .num.blue { color: var(--blue); }
+.dash-stat .num.orange { color: var(--orange); }
+.dash-stat .num.accent { color: var(--accent); }
+
+.dash-books {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.dash-book {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.dash-book-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.progress-bar {
+  height: 8px;
+  background: var(--cream);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s;
+}
+.progress-fill.catherine { background: var(--accent); }
+.progress-fill.hiver { background: var(--blue); }
+.dash-book-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.overlap-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.overlap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.overlap-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.overlap-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.overlap-bar {
+  height: 8px;
+  background: var(--cream);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+.overlap-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 4px;
+  transition: width 0.4s;
+}
+.overlap-detail {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* ─── BOOK CARDS ─── */
 .book-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -168,8 +285,10 @@ footer {
 
 @media (max-width: 600px) {
   header h1 { font-size: 1.8rem; }
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-books { grid-template-columns: 1fr; }
   .book-card { padding: 1.2rem 1.4rem; gap: 1.2rem; }
-  .book-cover { width: 56px; height: 78px; font-size: 1.5rem; }
+  .book-cover { width: 56px; height: 78px; }
   .book-title { font-size: 1.1rem; }
 }
 </style>
@@ -183,14 +302,67 @@ footer {
   </div>
 </header>
 
-<div class="library">
+<div class="container">
+
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <div class="section-label">Overview</div>
+    <div class="dash-grid">
+      <div class="dash-stat">
+        <div class="num" id="d-total">2,305</div>
+        <div class="label">Total Words</div>
+      </div>
+      <div class="dash-stat">
+        <div class="num green" id="d-mastered">0</div>
+        <div class="label">Mastered</div>
+      </div>
+      <div class="dash-stat">
+        <div class="num blue" id="d-learning">0</div>
+        <div class="label">Learning</div>
+      </div>
+      <div class="dash-stat">
+        <div class="num orange" id="d-due">0</div>
+        <div class="label">Due Today</div>
+      </div>
+    </div>
+
+    <div class="dash-books">
+      <div class="dash-book">
+        <div class="dash-book-title">Catherine Certitude</div>
+        <div class="progress-bar"><div class="progress-fill catherine" id="p-catherine" style="width:0%"></div></div>
+        <div class="dash-book-stats">
+          <span id="s-catherine-progress">0 / 611</span>
+          <span id="s-catherine-pct">0%</span>
+        </div>
+      </div>
+      <div class="dash-book">
+        <div class="dash-book-title">Conte d'hiver</div>
+        <div class="progress-bar"><div class="progress-fill hiver" id="p-hiver" style="width:0%"></div></div>
+        <div class="dash-book-stats">
+          <span id="s-hiver-progress">0 / 1,956</span>
+          <span id="s-hiver-pct">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlap-card">
+      <div class="overlap-header">
+        <div class="overlap-title">Shared Vocabulary</div>
+        <div class="overlap-count">262 words in both books</div>
+      </div>
+      <div class="overlap-bar"><div class="overlap-fill" id="p-overlap" style="width:0%"></div></div>
+      <div class="overlap-detail" id="s-overlap">0 / 262 mastered in at least one book</div>
+    </div>
+  </div>
+
+  <!-- Library -->
   <div class="section-label">My Library</div>
 
   <a class="book-card" href="catherine.html">
     <div class="book-cover"><img src="cover-catherine.jpg" alt="Catherine Certitude"></div>
     <div class="book-info">
       <div class="book-title">Catherine Certitude</div>
-      <div class="book-author">Patrick Modiano &middot; Jean-Jacques Sempé</div>
+      <div class="book-author">Patrick Modiano &middot; Jean-Jacques Semp&eacute;</div>
       <div class="book-meta">
         <span>&#128218; 611 words</span>
         <span>&#128196; 14 chapters</span>
@@ -219,5 +391,68 @@ footer {
   Lecture Plaisir &mdash; Learn French through reading
 </footer>
 
+<script>
+const OVERLAP_WORDS = ["accord","affaires","ailleurs","air","amie","amis","annoncer","années","ans","appartement","appeler","appelle","arrêté","asseoir","attendre","attention","avions","bagages","banlieue","bas","bateau","bibliothèque","bon","bonjour","bonne","bouche","bout","bras","brumeux","bureau","chambre","chercher","chose","chérie","compris","compte","connu","contraire","conversation","courage","cours","crois","côté","debout","dehors","demain","demandé","derrière","dessus","devant","devenu","dirige","disparu","donne","donner","dos","douceur","doux","droit","drôle","début","décidé","déjeuner","départ","détails","dîner","embrasse","enfants","entendre","entendu","exactement","exemple","face","failli","famille","façon","femme","femmes","fenêtre","fille","fin","fois","fond","fort","fou","français","gare","gens","geste","glace","grand","grande","gros","habitude","haut","heure","heures","hier","homme","hommes","hôtel","immeuble","immobile","important","intérieur","invités","jardin","jeune","joue","jour","journée","juste","laisser","lettre","licence","lieu","livre","long","lumière","lunettes","madame","mademoiselle","magasin","main","mains","maman","manger","marché","matin","mesure","midi","mieux","milieu","mois","moment","monde","monsieur","montre","morale","mots","mouvement","musique","mère","métro","mêmes","naissance","neige","noir","nom","nouvelles","nuit","numéro","ouvert","papiers","parents","parler","part","partie","partir","paru","passé","peine","pense","personne","petit","petite","peur","photo","pied","place","poche","point","porte","poste","pourquoi","pourtant","premier","première","prendre","presque","prince","pris","promis","préfère","père","quartier","raison","raisons","regard","regarde","rejoindre","remarque","remettre","rendez","rendu","repas","restaurant","reste","resté","retrouver","retrouvé","revoir","rideau","rire","rue","répondre","rêve","rêver","seconde","semaine","serré","serviteurs","seul","seule","silence","simple","simplement","soir","soleil","sortie","souvenir","souviens","station","suite","surpris","surtout","sûr","table","tant","tard","tel","temps","tendre","terrasse","travail","travers","triste","trottoir","trouvé","téléphone","tête","vague","venu","veste","vie","vieux","visite","vite","vivre","voit","voiture","voix","voyais","vrai","vraiment","yeux","écrit","église","épaule","époque","étagères","œil"];
+const OVERLAP_SET = new Set(OVERLAP_WORDS);
+
+const BOOKS = [
+  { key: 'lecture-plaisir-srs', total: 611, id: 'catherine' },
+  { key: 'conte-hiver-srs', total: 1956, id: 'hiver' },
+];
+
+function getSRS(key) {
+  try { return JSON.parse(localStorage.getItem(key)) || {}; } catch { return {}; }
+}
+
+function countStats(srs) {
+  const now = Date.now();
+  let mastered = 0, learning = 0, due = 0;
+  const masteredWords = new Set();
+  for (const [word, data] of Object.entries(srs)) {
+    if (data.interval >= 21) {
+      mastered++;
+      masteredWords.add(word);
+    } else if (data.interval > 0) {
+      learning++;
+    }
+    if (data.next && data.next <= now) due++;
+  }
+  return { mastered, learning, due, masteredWords };
+}
+
+function updateDashboard() {
+  let totalMastered = 0, totalLearning = 0, totalDue = 0;
+  const allMastered = new Set();
+
+  BOOKS.forEach(book => {
+    const srs = getSRS(book.key);
+    const stats = countStats(srs);
+    totalMastered += stats.mastered;
+    totalLearning += stats.learning;
+    totalDue += stats.due;
+    stats.masteredWords.forEach(w => allMastered.add(w));
+
+    const studied = stats.mastered + stats.learning;
+    const pct = Math.round(studied / book.total * 100);
+    document.getElementById('p-' + book.id).style.width = pct + '%';
+    document.getElementById('s-' + book.id + '-progress').textContent =
+      studied.toLocaleString() + ' / ' + book.total.toLocaleString();
+    document.getElementById('s-' + book.id + '-pct').textContent = pct + '%';
+  });
+
+  document.getElementById('d-mastered').textContent = totalMastered.toLocaleString();
+  document.getElementById('d-learning').textContent = totalLearning.toLocaleString();
+  document.getElementById('d-due').textContent = totalDue.toLocaleString();
+
+  let overlapMastered = 0;
+  OVERLAP_WORDS.forEach(w => { if (allMastered.has(w)) overlapMastered++; });
+  const overlapPct = Math.round(overlapMastered / OVERLAP_WORDS.length * 100);
+  document.getElementById('p-overlap').style.width = overlapPct + '%';
+  document.getElementById('s-overlap').textContent =
+    overlapMastered + ' / ' + OVERLAP_WORDS.length + ' mastered in at least one book';
+}
+
+updateDashboard();
+</script>
 </body>
 </html>

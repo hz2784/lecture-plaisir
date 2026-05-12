@@ -468,6 +468,16 @@ header h1 em {
 }
 .star-filter:hover { border-color: var(--gold); color: var(--gold); }
 .star-filter.active { background: var(--gold); color: var(--paper); border-color: var(--gold); }
+.overlap-filter {
+  background: none; border: 1.5px solid var(--border);
+  color: var(--muted); padding: 0.45rem 0.9rem;
+  border-radius: 6px; font-family: inherit;
+  font-size: 0.78rem; cursor: pointer;
+  transition: all 0.15s; margin-left: 0.3rem;
+}
+.overlap-filter:hover { border-color: #8b3a2a; color: #8b3a2a; }
+.overlap-filter.active { background: #8b3a2a; color: var(--paper); border-color: #8b3a2a; }
+.overlap-filter.unique { background: #3a6a8a; color: var(--paper); border-color: #3a6a8a; }
 .srs-pill {
   font-size: 0.6rem; padding: 0.1rem 0.45rem;
   border-radius: 8px; font-weight: 600;
@@ -1831,6 +1841,7 @@ header h1 em {
     🔄 Révision du jour (<span id="today-trigger-count">0</span>)
   </button>
   <button class="star-filter" id="star-filter-btn" onclick="toggleStarFilter()" style="display:none">★ 0</button>
+  <button class="overlap-filter" id="overlap-filter-btn" onclick="cycleOverlapFilter()">Catherine ∩</button>
   <button class="review-today-trigger" id="study-starred-btn" onclick="studyStarred()" style="display:none">
     ★ Favoris
   </button>
@@ -2220,6 +2231,12 @@ function render() {
     if (starFilterActive) {
       const stars = starsLoad();
       filtered = filtered.filter(w => stars.has(w.word));
+    }
+
+    if (overlapFilterMode === 'shared') {
+      filtered = filtered.filter(w => OVERLAP_WORDS_SET.has(w.word));
+    } else if (overlapFilterMode === 'unique') {
+      filtered = filtered.filter(w => !OVERLAP_WORDS_SET.has(w.word));
     }
 
     if (filtered.length === 0) continue;
@@ -4386,6 +4403,27 @@ function toggleStudyStar(e) {
   const starEl = document.getElementById('study-star');
   starEl.textContent = starred ? '★' : '☆';
   starEl.classList.toggle('starred', starred);
+}
+
+const OVERLAP_WORDS_SET = new Set(["accord","affaires","ailleurs","air","amie","amis","annoncer","années","ans","appartement","appeler","appelle","arrêté","asseoir","attendre","attention","avions","bagages","banlieue","bas","bateau","bibliothèque","bon","bonjour","bonne","bouche","bout","bras","brumeux","bureau","chambre","chercher","chose","chérie","compris","compte","connu","contraire","conversation","courage","cours","crois","côté","debout","dehors","demain","demandé","derrière","dessus","devant","devenu","dirige","disparu","donne","donner","dos","douceur","doux","droit","drôle","début","décidé","déjeuner","départ","détails","dîner","embrasse","enfants","entendre","entendu","exactement","exemple","face","failli","famille","façon","femme","femmes","fenêtre","fille","fin","fois","fond","fort","fou","français","gare","gens","geste","glace","grand","grande","gros","habitude","haut","heure","heures","hier","homme","hommes","hôtel","immeuble","immobile","important","intérieur","invités","jardin","jeune","joue","jour","journée","juste","laisser","lettre","licence","lieu","livre","long","lumière","lunettes","madame","mademoiselle","magasin","main","mains","maman","manger","marché","matin","mesure","midi","mieux","milieu","mois","moment","monde","monsieur","montre","morale","mots","mouvement","musique","mère","métro","mêmes","naissance","neige","noir","nom","nouvelles","nuit","numéro","ouvert","papiers","parents","parler","part","partie","partir","paru","passé","peine","pense","personne","petit","petite","peur","photo","pied","place","poche","point","porte","poste","pourquoi","pourtant","premier","première","prendre","presque","prince","pris","promis","préfère","père","quartier","raison","raisons","regard","regarde","rejoindre","remarque","remettre","rendez","rendu","repas","restaurant","reste","resté","retrouver","retrouvé","revoir","rideau","rire","rue","répondre","rêve","rêver","seconde","semaine","serré","serviteurs","seul","seule","silence","simple","simplement","soir","soleil","sortie","souvenir","souviens","station","suite","surpris","surtout","sûr","table","tant","tard","tel","temps","tendre","terrasse","travail","travers","triste","trottoir","trouvé","téléphone","tête","vague","venu","veste","vie","vieux","visite","vite","vivre","voit","voiture","voix","voyais","vrai","vraiment","yeux","écrit","église","épaule","époque","étagères","œil"]);
+let overlapFilterMode = 'off';
+
+function cycleOverlapFilter() {
+  if (overlapFilterMode === 'off') overlapFilterMode = 'shared';
+  else if (overlapFilterMode === 'shared') overlapFilterMode = 'unique';
+  else overlapFilterMode = 'off';
+  const btn = document.getElementById('overlap-filter-btn');
+  btn.classList.remove('active', 'unique');
+  if (overlapFilterMode === 'shared') {
+    btn.classList.add('active');
+    btn.textContent = 'Shared with Catherine';
+  } else if (overlapFilterMode === 'unique') {
+    btn.classList.add('unique');
+    btn.textContent = 'Only in Conte d\'hiver';
+  } else {
+    btn.textContent = 'Catherine ∩';
+  }
+  render();
 }
 
 function updateStarFilter() {
